@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/empty-state";
 import ServiceCard from "@/components/service-card";
+import SearchField from "@/components/search-field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getCategories, getServices, getTechnicians } from "@/lib/public-api";
@@ -37,7 +38,7 @@ export default async function ServicesPage({ searchParams }: { searchParams: Pro
         <p className="text-sm text-muted-foreground">Find available professionals by category, location, rating, and price.</p>
       </div>
       <form action="/services" method="get" className="grid gap-3 rounded-lg border p-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Service filters">
-        <div className="space-y-1"><Label htmlFor="q">Search</Label><Input id="q" name="q" defaultValue={typeof raw.q === "string" ? raw.q : ""} placeholder="Service or technician" aria-invalid={!!errors.q} aria-describedby={errors.q ? "q-error" : undefined} />{errors.q && <p id="q-error" className="text-xs text-destructive">{errors.q[0]}</p>}</div>
+        <SearchField id="q" name="q" label="Search" defaultValue={typeof raw.q === "string" ? raw.q : ""} placeholder="Service or technician" error={errors.q?.[0]} />
         <div className="space-y-1"><Label htmlFor="categoryId">Category</Label><select id="categoryId" name="categoryId" defaultValue={typeof raw.categoryId === "string" ? raw.categoryId : ""} aria-invalid={!!errors.categoryId} aria-describedby={errors.categoryId ? "category-error" : undefined} className="flex h-7 w-full rounded-md border bg-background px-2 text-xs"><option value="">All categories</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select>{errors.categoryId && <p id="category-error" className="text-xs text-destructive">{errors.categoryId[0]}</p>}</div>
         <div className="space-y-1"><Label htmlFor="location">Location</Label><Input id="location" name="location" defaultValue={typeof raw.location === "string" ? raw.location : ""} placeholder="City or area" aria-invalid={!!errors.location} aria-describedby={errors.location ? "location-error" : undefined} />{errors.location && <p id="location-error" className="text-xs text-destructive">{errors.location[0]}</p>}</div>
         <div className="space-y-1"><Label htmlFor="minRating">Minimum rating</Label><select id="minRating" name="minRating" defaultValue={typeof raw.minRating === "string" ? raw.minRating : ""} aria-invalid={!!errors.minRating} aria-describedby={errors.minRating ? "rating-error" : undefined} className="flex h-7 w-full rounded-md border bg-background px-2 text-xs"><option value="">Any rating</option>{[3, 4, 5].map((rating) => <option key={rating} value={rating}>{rating}+ stars</option>)}</select>{errors.minRating && <p id="rating-error" className="text-xs text-destructive">{errors.minRating[0]}</p>}</div>
