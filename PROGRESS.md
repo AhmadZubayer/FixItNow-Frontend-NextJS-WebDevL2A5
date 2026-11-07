@@ -1,18 +1,18 @@
 # FixItNow project progress â€” authoritative restart checkpoint
 
-**Verified project completion: 87% (87 / 100 points).**
+**Verified project completion: 89% (89 / 100 points).**
 
 **Method:** count only checked **weighted** `- [x] (N pts)` rows (not manual video or form evidence rows). Each weighted row has a fixed point weight; sum the weights of verified completed rows and divide by 100. No partial credit for unfinished rows. Recalculate after every verified task. Do not manually guess percent. If scope changes, revise `PLAN.md` and this ledger together without changing the 100-point total.
 
 **Current milestone:** M8 local quality and release preparation
 **Current task:** complete remaining loading/API/accessibility evidence, verify hosted Stripe configuration, and prepare Vercel release after local completion
 **State:** M0 and M2 complete; M1/M3/M4/M5/M6/M7 partly verified, M8 open. Local backend uses configured Prisma Postgres and test-mode Stripe. The user completed a real Checkout; a live Stripe CLI listener delivered the signed completed event, Express persisted payment `COMPLETED` and booking `PAID`, and Chrome confirmed frontend reconciliation. Expiration, invalid signatures, and completed/expired replays passed. Hosted webhook secret and deployment remain open per user direction.
-**Last successful verification:** 2026-11-08 frontend lint, TypeScript, production build and full local Chrome suite passed after shared UI changes. Chrome covered public/auth/admin/technician, keyboard focus, reduced-motion preference, narrow layouts, breadcrumbs, errors, and empty states. Earlier Stripe paid/expired webhook, payment initiation, review, booking lifecycle/race, and backend type/build passed.
-**Frontend last local commit:** `ef28eea test: cover customer lifecycle and booking concurrency`
-**Frontend last pushed SHA / branch:** `c6ee33d` on configured `origin/main`, verified by `git ls-remote` before and successful `git push origin main` on 2026-11-08
-**Meaningful frontend commits verified:** 18 new goal commits through `ef28eea` / minimum 20
+**Last successful verification:** 2026-11-08 frontend lint, TypeScript, production build and full local Chrome suite passed after shared UI changes. Chrome verified a delayed public route loading skeleton, search/empty/error/API mapping, keyboard focus, reduced-motion preference, narrow layouts, breadcrumbs, and role forms. Earlier Stripe paid/expired webhook, payment initiation, review, booking lifecycle/race, and backend type/build passed.
+**Frontend last local commit:** `f79d935 docs: record paid Stripe and role-flow verification`
+**Frontend last pushed SHA / branch:** `f79d935` on configured `origin/main`, verified by `git ls-remote` before and successful `git push origin main` on 2026-11-08
+**Meaningful frontend commits verified:** 19 new goal commits through `f79d935` / minimum 20
 **Backend changes not pushed:** Local-only `8940ead` Stripe returns, `45f1e7e` owner-managed technician operations, and `aef1ecc` admin category edits. Never push backend. Pre-existing backend tree still has deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`. Backend `.env` now holds the local listener signing secret; it is ignored by Git.
-**Last checkpoint:** 2026-11-08 87-point shared UI and Chrome verification
+**Last checkpoint:** 2026-11-08 89-point public loading and Chrome verification
 
 ## Weighted verified task checklist
 
@@ -41,7 +41,7 @@
 - [X] (3 pts) Implement home with live services and featured technician data
 - [x] (4 pts) Implement searchable, filterable services/technicians listing with Zod-validated form/query input
 - [x] (3 pts) Implement technician profile with live details, ratings, and availability
-- [ ] (2 pts) Verify responsive/loading/error/empty cases and API mapping
+- [x] (2 pts) Verify responsive/loading/error/empty cases and API mapping
 
 ### M4: Customer bookings
 
@@ -98,13 +98,13 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 
 ## Session handoff — update at every stopping point
 
-**Active work and exact files:** Uncommitted frontend docs are `API_INTEGRATION.md`, `STRIPE_INTEGRATION.md`, and `PROGRESS.md`. Shared UI and Stripe/customer test scripts are now committed in `ab4ff21`, `ad7bb45`, and `ef28eea`. No new backend source edits this turn.
+**Active work and exact files:** Uncommitted frontend files are `tests/e2e-local.mjs` (delayed public skeleton check) and `PROGRESS.md` (89-point checkpoint). Shared UI and Stripe/customer test scripts are committed in `ab4ff21`, `ad7bb45`, and `ef28eea`; audit docs are committed in `f79d935`. No new backend source edits this turn.
 **Completed in this session:** Real user-completed Stripe test Checkout reached the frontend success URL; official Stripe CLI delivered a signed completed event to fresh Express, persisting payment `COMPLETED` and booking `PAID`. Chrome confirmed both records. Actual Stripe event replay twice remained safe. An expired Session, invalid signature, signed expiration and replay all passed. Browser lifecycle covered booking create/cancel/decline and paid technician start/complete and review valid/invalid/API-error/duplicate. Booking race produced one 201 and one 409. Admin valid category create and error paths passed. Shared search field and breadcrumbs are reused; reduced-motion CSS added. Chrome verified keyboard focus, narrow layouts and both role breadcrumbs.
-**Git state:** Local `main` is `ef28eea` with 18 genuine goal commits; pushed `origin/main` is `c6ee33d`. Docs remain uncommitted. Two more genuine frontend commits are needed. Backend changes remain local-only.
+**Git state:** Local `main` and pushed `origin/main` are `f79d935` with 19 genuine goal commits. The loading test and checkpoint are uncommitted. One more genuine frontend commit is needed. Backend changes remain local-only.
 **Backend modifications / migrations / uncommitted edits:** Local-only SHAs `8940ead` (Stripe return URLs), `45f1e7e` (owner-managed technician operations), `aef1ecc` (admin category edits). Never push backend. Backend `.env` contains the local listener-specific `STRIPE_WEBHOOK_SECRET` and configured database/Stripe/admin variables; no values recorded here. No migrations or resets. Preserve pre-existing deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`.
 **Verification and results:** Frontend `npm run lint`, `tsc --noEmit`, production `npm run build` passed after shared UI edits. Chrome `tests/e2e-local.mjs` passed all default cases including public/auth/admin/technician forms, outage/empty, keyboard/reduced-motion/mobile and breadcrumbs. New integration scripts pass syntax checks and their guarded runtime cases passed earlier this turn. Backend type/build passed earlier. Paid and expired Stripe records and duplicate safety verified; generated payment pending count zero. Browser credentials and Checkout artifacts are in system TEMP `fixitnow-tech-5aafbb653691`, never commit or print values.
 **Blockers / limits:** Hosted Stripe webhook endpoint and its Dashboard signing secret have not been verified. Vercel deployment is intentionally deferred until full local completion per user direction. The current signing secret is for a local CLI listener and must not be assumed valid for hosted endpoint. CUA host unavailable; local Chrome works. Need finish M3 loading/API case and M8 full accessibility/role/payment release checks. User-owned video stays unchecked outside 100 points.
-**Next precise action:** Commit the documentation checkpoint, then push the completed M1 frontend milestone to configured `origin/main` after direct remote and staged-secret checks. Add missing loading/API evidence, run final local quality checks, and finish local milestone. Deploy frontend through authorized GitHub/Vercel route only after local completion and verify hosted backend webhook signing configuration and admin test access. Never push backend.
+**Next precise action:** Commit the verified public loading test and checkpoint, then finish final local quality and role/payment checks. Deploy frontend through authorized GitHub/Vercel route only after local completion and verify hosted backend webhook signing configuration and admin test access. Never push backend.
 ## Milestone Git history
 
 | Milestone | Frontend commit SHAs | Branch pushed | Validation evidence |

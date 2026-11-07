@@ -87,6 +87,20 @@ try {
     await page.emulateMedia({ reducedMotion: "no-preference" });
   });
 
+  await check("public route loading skeleton", async () => {
+    await page.route("**/services?*", async (route) => {
+      if (route.request().headers().rsc === "1") await new Promise((resolveDelay) => setTimeout(resolveDelay, 1500));
+      await route.continue().catch((error) => {
+        if (!error.message.includes("already handled")) throw error;
+      });
+    });
+    await page.goto(base);
+    await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Services" }).click();
+    await page.getByRole("status", { name: "Loading content" }).waitFor({ timeout: 5000 });
+    await page.getByRole("heading", { name: "Browse services" }).waitFor();
+    await page.unroute("**/services?*");
+  });
+
   await check("public filter validation", async () => {
     await page.goto(`${base}/services?minPrice=100&maxPrice=10`);
     await page.getByText("Check the highlighted filters and try again.").waitFor();
