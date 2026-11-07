@@ -14,7 +14,7 @@
 | Installed shadcn preset | `base-mira`, `mist` base color, CSS variables in `app/globals.css` |
 | Payment gateway | **Stripe only**; user reports backend Stripe integration already configured. Verify without reimplementing. |
 | Frontend deploy target | Vercel via the frontend GitHub repository, after local project completion (user direction 2026-11-07) |
-| Backend API base URL(s) | `SERVER_URL`, `APP_URL`, `PORT` environment names observed; actual values and reachable URL unverified |
+| Backend API base URL(s) | Deployed `https://ph-l2-a4-fix-it-now-banckend-server-tau.vercel.app` returns 200 for `/api/categories`; local `SERVER_URL` is localhost and `PORT` is 8001. The deployed backend is behind the local source: owner technician profile route returned 404 on 2026-11-08. |
 | Auth/session transport | Express accepts `accessToken` cookie or Bearer token; login returns access and refresh JWTs in JSON |
 | Preview/test account provisioning | User requested admin test credentials remain only in the backend `.env` for now; never commit or print values |
 | Video submission (sixth assignment requirement) | **User will record and submit manually; outside Codex scope** |
