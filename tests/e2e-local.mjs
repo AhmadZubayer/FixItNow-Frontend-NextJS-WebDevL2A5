@@ -290,9 +290,13 @@ try {
     await check("shared breadcrumbs on role pages", async () => {
       await page.goto(`${base}/dashboard/technician/bookings`);
       await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Technician workspace" }).waitFor();
+      await page.setViewportSize({ width: 375, height: 812 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
       await login(page, testCredentials.customerEmail, testCredentials.customerPassword, "/dashboard/customer");
       await page.goto(`${base}/dashboard/customer/payments`);
       await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Bookings" }).waitFor();
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+      await page.setViewportSize({ width: 1280, height: 800 });
     });
 
     if (process.env.FIXITNOW_MUTATION_TESTS === "1") await check("technician availability add and block", async () => {

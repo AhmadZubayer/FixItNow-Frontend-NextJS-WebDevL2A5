@@ -52,7 +52,7 @@ If the backend is deployed, register/verify the **real public HTTPS webhook URL*
 - [x] Duplicate/retried completed and expired event handling preserved the existing status in local replay tests.
 - [x] The frontend success page reads backend-confirmed state; the cancel page makes no paid claim, and expiration persisted `CANCELLED`.
 - [x] Booking and payment history display real persisted records in Chrome.
-- [ ] No secrets occur in frontend code, Git, documentation or logs.
+- [x] No server secrets occur in tracked frontend code or documentation; staged/tracked scans for full Stripe secret and database URL patterns passed, and local test output recorded status only.
 - [ ] Final hosted endpoint signing-secret match and release results are logged in `PROGRESS.md` **without secret values**. Local paid test evidence is recorded.
 
 **Do not** reimplement the checkout/webhook if the backend code already passes these tests. If test-mode environment or webhook configuration is absent, mark the gate blocked and document exactly what is needed from the user; do not fabricate a passing transaction.
