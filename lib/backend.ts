@@ -5,7 +5,12 @@ export const backend = axios.create({
   timeout: 10000,
 });
 
+export class SessionError extends Error {
+  status = 401;
+}
+
 export function apiError(error: unknown) {
+  if (error instanceof SessionError) return { status: 401, message: "Please log in" };
   if (axios.isAxiosError(error)) {
     const status = error.response?.status ?? 502;
     const message = typeof error.response?.data?.message === "string"

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Button } from "@/components/ui/button";
 import SessionActions from "@/components/session-actions";
@@ -12,7 +13,7 @@ export default function SiteHeader() {
         </Link>
         <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-2">
           <Button variant="ghost" render={<Link href="/services" />}>Services</Button>
-          <SessionActions />
+          <Suspense fallback={<div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" />}><SessionActions /></Suspense>
         </nav>
       </div>
     </header>
