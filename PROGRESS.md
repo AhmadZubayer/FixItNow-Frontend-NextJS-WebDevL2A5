@@ -5,12 +5,12 @@
 **Method:** count only checked **weighted** `- [x] (N pts)` rows (not manual video or form evidence rows). Each weighted row has a fixed point weight; sum the weights of verified completed rows and divide by 100. No partial credit for unfinished rows. Recalculate after every verified task. Do not manually guess percent. If scope changes, revise `PLAN.md` and this ledger together without changing the 100-point total.
 
 **Current milestone:** M1 — design foundation
-**Current task:** complete M3 public discovery and search form acceptance, then auth/navigation dependencies
-**State:** M0 source audit complete; M1 partial. Home, public services, and technician pages use live backend data, but booking interaction, browser visual checks, and full search form acceptance are unfinished.
-**Last successful verification:** 2026-11-07 frontend `tsc --noEmit`, changed-app ESLint, and `next build` passed. Backend `tsc --noEmit` passed. Full frontend ESLint has two pre-existing preset errors.
-**Frontend last local commit:** `e7d6678 feat: add shared app shell and feedback states`
+**Current task:** implement role dashboards and complete auth valid-path verification
+**State:** M0 complete; M1 and M3 partial. M2 auth forms, HTTP-only session routes, refresh/logout, and `proxy.ts` exist, but no dashboard landing or valid login test yet. No M2 points claimed.
+**Last successful verification:** 2026-11-07 full frontend ESLint, TypeScript, and production build passed; backend TypeScript passed. Invalid session and credential HTTP checks passed.
+**Frontend last local commit:** `9bb872f feat: show live services and technicians on home`
 **Frontend last pushed SHA / branch:** `origin/main` tracks local `main`; push state not independently verified
-**Meaningful frontend commits verified:** 2 new goal commits (`39b364d`, `e7d6678`) / minimum 20
+**Meaningful frontend commits verified:** 4 new goal commits (`39b364d`, `e7d6678`, `acc538e`, `9bb872f`) / minimum 20
 **Backend changes not pushed:** None by this agent; pre-existing backend tree has deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`
 **Last checkpoint:** 2026-11-07 M0 source audit
 
@@ -83,8 +83,8 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 
 | Form | Central Zod schema path | UI and inline errors | Valid/invalid/error test evidence | State |
 |---|---|---|---|---|
-| Registration | Not created | Not audited | Not run | Unverified |
-| Login | Not created | Not audited | Not run | Unverified |
+| Registration | `validations/auth.validation.ts` | `components/auth/register-form.tsx` has field errors, pending button, and Sonner | Invalid payload rejected HTTP 400 by Next handler; valid registration, duplicate and backend-error UI tests pending | Unverified |
+| Login | `validations/auth.validation.ts` | `components/auth/login-form.tsx` has field errors, pending button, and Sonner | Missing session HTTP 401, invalid payload HTTP 400, well-formed wrong credentials HTTP 401; valid login, browser inline/toast, and expiry tests pending | Unverified |
 | Service search / filters | `validations/search.validation.ts` | `app/services/page.tsx` validates URL inputs and renders field errors with `aria-invalid` and `aria-describedby` | Built-app HTTP 200 for live valid listing, empty text search, and invalid min/max price; unavailable API produced `ECONNREFUSED` on server but rendered client error boundary not yet visually checked; pending/navigation behavior not checked | Unverified |
 | Booking selection/request | Not created | Not audited | Not run | Unverified |
 | Technician profile / service/pricing edit | Not created | Not audited | Not run | Unverified |
@@ -95,13 +95,13 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 
 ## Session handoff — update at every stopping point
 
-**Active work and exact files:** Public discovery in `app/page.tsx`, `app/services/page.tsx`, `app/services/loading.tsx`, `app/technicians/[id]/page.tsx`, `app/technicians/[id]/loading.tsx`, `components/service-card.tsx`, `lib/public-api.ts`, `validations/search.validation.ts`; API and progress documentation.
-**Completed in this session:** Completed M0 audit and first M1 UI foundation. Added Sonner because the installed preset provided only a Base UI toast and Sonner was explicitly required. Built live public listing, filters, and technician detail against deployed backend data.
-**Uncommitted frontend edits:** M0 docs, M1 UI, and public discovery were committed as `39b364d`, `e7d6678`, and `acc538e`. Live homepage and latest progress note are uncommitted; inspect Git status before committing.
+**Active work and exact files:** Auth route handlers under `app/api/session/`, auth pages under `app/auth/`, forms under `components/auth/`, `validations/auth.validation.ts`, `lib/backend.ts`, `proxy.ts`, session navigation, and hook lint fixes in `hooks/use-mobile.ts` and `components/ui/carousel.tsx`.
+**Completed in this session:** Completed M0 audit, first M1 UI foundation, and live public pages/home. Added auth form and session infrastructure with server-owned HTTP-only cookies. Full frontend lint is now green after behavior-preserving hook fixes.
+**Uncommitted frontend edits:** Four goal commits through `9bb872f`. Auth/session and lint fixes are uncommitted; inspect Git status before committing.
 **Backend modifications / migrations / uncommitted edits:** None by this agent; pre-existing backend status: deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`. No migrations run.
-**Verification commands and outcomes:** 2026-11-07 frontend and backend TypeScript checks passed. Full frontend ESLint failed with two pre-existing `react-hooks/set-state-in-effect` errors in installed `components/ui/carousel.tsx` and `hooks/use-mobile.ts`; changed application files lint passed. `next build` passed with `/`, `/services`, and `/technicians/[id]`. Built-app `curl` checks: `/` HTTP 200 with live service and technician data; `/services` HTTP 200 with live data; unmatched `q` HTTP 200 with empty state; `minPrice=200&maxPrice=100` HTTP 200 with field error; technician detail HTTP 200 with live data. The initially observed Next prerender `Date.now()` warning from Axios was resolved by `await connection()`; repeated smoke test had no such warning. An unreachable API produced `ECONNREFUSED` and the route error payload, but visual client boundary remains unverified. Initial `npm`/`npx` attempts were unavailable because the Node symlink is inaccessible in this shell; direct Node works with sandbox escalation. No protected API or Stripe test.
+**Verification commands and outcomes:** 2026-11-07 frontend and backend TypeScript checks passed. Full frontend ESLint now passes after fixing two initial `react-hooks/set-state-in-effect` errors in `components/ui/carousel.tsx` and `hooks/use-mobile.ts`. `next build` passes with public and auth pages plus session routes. Built-app `curl` checks: `/` HTTP 200 with live service and technician data; `/services` HTTP 200 with live data; unmatched `q` HTTP 200 with empty state; `minPrice=200&maxPrice=100` HTTP 200 with field error; technician detail HTTP 200 with live data; `/api/session/me` without cookies HTTP 401; invalid login/register JSON HTTP 400; well-formed nonexistent login HTTP 401; anonymous dashboard URL HTTP 307. An unreachable API produced `ECONNREFUSED` and the route error payload, but visual client boundary remains unverified. No valid auth or Stripe test.
 **Known blockers / missing access:** No hosted frontend target, live API base URL, test users, verified Stripe listener/deployed endpoint, or secure admin submission channel yet. No Node executable available without sandbox escalation. The reference has no forms/API client patterns.
-**Next precise action:** Commit the public discovery slice; implement auth/session and booking so pending actions and navigation are exercised; visually verify the error boundary and responsive layouts; resolve the full-lint gate without changing preset visual tokens.
+**Next precise action:** Commit auth/session and lint-fix slices separately, implement real role dashboards and protected API calls, then perform valid auth and browser form verification. Do not check M2 form tasks until matrix rows pass.
 **Potential risks:** Checkout currently returns to backend plain text. No payment audit checkbox implies live verification. Do not expose secrets or overwrite backend user changes.
 
 ## Milestone Git history
@@ -112,6 +112,7 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 
 ## Session log (append newest first)
 
+- 2026-11-07: Auth forms/session proxy implemented with HTTP-only cookies; invalid/unauthorized requests verified. Valid role paths and browser feedback unverified, so no M2 points claimed. Full ESLint and TypeScript now pass.
 - 2026-11-07: Home now renders live service and top-rated technician data. Production build and HTTP 200 smoke test with expected live records passed (3 M3 points).
 - 2026-11-07: Public service and technician source/live API integration built and smoke-tested. Search form remains unverified in the matrix because browser pending/error behavior is outstanding.
 - 2026-11-07: First M1 foundation verified (2 points); frontend typecheck, changed-app lint, and production build passed. Sonner installed. Runtime integration and visual testing remain unverified.

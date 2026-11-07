@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import SessionActions from "@/components/session-actions";
 
 export default function SiteHeader() {
   return (
@@ -11,8 +12,7 @@ export default function SiteHeader() {
         </Link>
         <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-2">
           <Button variant="ghost" render={<Link href="/services" />}>Services</Button>
-          <Button variant="ghost" render={<Link href="/auth/login" />}>Log in</Button>
-          <Button render={<Link href="/auth/register" />}>Sign up</Button>
+          <SessionActions />
         </nav>
       </div>
     </header>

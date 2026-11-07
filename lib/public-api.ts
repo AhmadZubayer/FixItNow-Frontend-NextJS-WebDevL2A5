@@ -1,9 +1,4 @@
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: process.env.API_BASE_URL ?? "https://ph-l2-a4-fix-it-now-banckend-server-tau.vercel.app",
-  timeout: 10000,
-});
+import { backend } from "@/lib/backend";
 
 export type Category = {
   id: string;
@@ -58,21 +53,21 @@ export type Technician = {
 type ApiResponse<T> = { data: T };
 
 export async function getCategories() {
-  const response = await api.get<ApiResponse<Category[]>>("/api/categories");
+  const response = await backend.get<ApiResponse<Category[]>>("/api/categories");
   return response.data.data;
 }
 
 export async function getServices(params?: Record<string, string>) {
-  const response = await api.get<ApiResponse<Service[]>>("/api/services", { params });
+  const response = await backend.get<ApiResponse<Service[]>>("/api/services", { params });
   return response.data.data;
 }
 
 export async function getTechnicians(params?: Record<string, string>) {
-  const response = await api.get<ApiResponse<Technician[]>>("/api/technicians", { params });
+  const response = await backend.get<ApiResponse<Technician[]>>("/api/technicians", { params });
   return response.data.data;
 }
 
 export async function getTechnician(id: string) {
-  const response = await api.get<ApiResponse<Technician>>(`/api/technicians/${id}`);
+  const response = await backend.get<ApiResponse<Technician>>(`/api/technicians/${id}`);
   return response.data.data;
 }
