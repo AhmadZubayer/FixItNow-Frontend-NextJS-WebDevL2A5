@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const cookieStore = await cookies();
     const secure = process.env.NODE_ENV === "production";
     cookieStore.set("accessToken", accessToken, { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: 60 * 60 });
-    cookieStore.set("refreshToken", refreshToken, { httpOnly: true, secure, sameSite: "lax", path: "/api/session", maxAge: 60 * 60 * 24 * 30 });
+    cookieStore.set("refreshToken", refreshToken, { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
     return NextResponse.json({ success: true });
   } catch (error) {
     const { status, message } = apiError(error);

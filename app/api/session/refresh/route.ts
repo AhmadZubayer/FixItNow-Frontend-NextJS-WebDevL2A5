@@ -14,6 +14,7 @@ export async function POST() {
     return NextResponse.json({ success: true });
   } catch (error) {
     cookieStore.delete("accessToken");
+    cookieStore.set("refreshToken", "", { httpOnly: true, path: "/", maxAge: 0 });
     cookieStore.set("refreshToken", "", { httpOnly: true, path: "/api/session", maxAge: 0 });
     const { status, message } = apiError(error);
     return NextResponse.json({ message }, { status });

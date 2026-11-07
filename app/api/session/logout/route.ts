@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export async function POST() {
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
+  cookieStore.set("refreshToken", "", { httpOnly: true, path: "/", maxAge: 0 });
   cookieStore.set("refreshToken", "", { httpOnly: true, path: "/api/session", maxAge: 0 });
   return NextResponse.json({ success: true });
 }
