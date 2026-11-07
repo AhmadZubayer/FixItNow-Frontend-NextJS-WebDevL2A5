@@ -7,16 +7,16 @@
 - [x] Locate actual Stripe library/version and environment variable **names** (never values).
 - [x] Locate actual Checkout Session/payment initiation endpoint, request/response shapes, role authorization and backend-controlled pricing.
 - [x] Locate actual webhook route/path, HTTP method, middleware order, body parsing, signature verification and handled event types.
-- [x] Inspect idempotent webhook logic and Prisma payment/booking status updates; live behavior remains unverified.
+- [x] Inspect idempotent webhook logic and Prisma payment/booking status updates; local paid/expired event behavior verified.
 - [x] Locate payment-status/booking read endpoint for return pages; note if one is missing.
 - [x] Document source-confirmed endpoints and relevant frontend use in `API_INTEGRATION.md`.
-- [x] Determine source-level changes needed for frontend returns; runtime verification is still required.
+- [x] Determine and apply minimal local backend change for frontend returns; real Checkout return verified.
 
 The backend depends on `stripe` 23.0.0 (`package.json`). `src/config/index.ts` reads `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRODUCT_PRICE_ID`, `SERVER_URL`, `APP_URL`, and `PORT`. `src/lib/stripe.ts` creates the Stripe client. No default port is declared in `src/server.ts`; the actual local port must be read from the running environment, without recording secret values.
 
 `POST /api/payments/create` is customer-only (`src/modules/payment/payment.route.ts`). It accepts a booking UUID and optional provider, defaults to Stripe, checks customer ownership and `ACCEPTED` status, and uses the persisted booking price (`payment.service.ts`). It returns `paymentId` and `checkoutUrl`. Stripe Checkout is created by `src/modules/payment/providers/stripe/stripe.provider.ts` in BDT, with booking/payment metadata and backend return URLs.
 
-`POST /api/payments/webhook` is mounted in `src/app.ts` **before** `express.json()`. The route applies `express.raw({ type: "application/json" })`, then `stripe.controller.ts` requires a `stripe-signature` header and Buffer body. `stripe.webhook.ts` verifies through `stripe.webhooks.constructEvent` using `STRIPE_WEBHOOK_SECRET`. It handles `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `refund.updated`, and `refund.failed`. `payment.service.ts` checks matching booking/payment/session/amount/currency, conditionally moves pending payment and accepted booking to completed/paid in one transaction, and returns the existing result on a matching duplicate completed event. Closed sessions conditionally update only pending records. Refund handling has explicit status guards and a provider idempotency key. These are code observations; duplicate delivery and signature verification still need runtime tests.
+`POST /api/payments/webhook` is mounted in `src/app.ts` **before** `express.json()`. The route applies `express.raw({ type: "application/json" })`, then `stripe.controller.ts` requires a `stripe-signature` header and Buffer body. `stripe.webhook.ts` verifies through `stripe.webhooks.constructEvent` using `STRIPE_WEBHOOK_SECRET`. It handles `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `refund.updated`, and `refund.failed`. `payment.service.ts` checks matching booking/payment/session/amount/currency, conditionally moves pending payment and accepted booking to completed/paid in one transaction, and returns the existing result on a matching duplicate completed event. Closed sessions conditionally update only pending records. Refund handling has explicit status guards and a provider idempotency key. Local signed paid/expired deliveries, invalid signature rejection and duplicate replay were verified; hosted signing remains unverified.
 
 `GET /api/payments/:id` and `GET /api/bookings/:id` are customer-owned reads for reconciliation. A local, unpushed backend edit points Checkout success/cancel URLs to frontend `/payment/success` and `/payment/cancel`, carrying non-secret payment/booking IDs (`stripe.provider.ts`). A real test-mode Checkout Session confirmed these URLs. Frontend return pages read the payment through authenticated backend reads; they do not set paid status. The existing plain-text `/api/payments/return/*` routes remain mounted but are no longer used by newly created sessions.
 
@@ -56,5 +56,7 @@ If the backend is deployed, register/verify the **real public HTTPS webhook URL*
 - [ ] Final hosted endpoint signing-secret match and release results are logged in `PROGRESS.md` **without secret values**. Local paid test evidence is recorded.
 
 **Do not** reimplement the checkout/webhook if the backend code already passes these tests. If test-mode environment or webhook configuration is absent, mark the gate blocked and document exactly what is needed from the user; do not fabricate a passing transaction.
+
+On 2026-11-08 the user explicitly deferred all deployment work. The registered hosted endpoint metadata has been audited, but its deployed signing secret and a hosted paid event must wait until deployment resumes. No local listener secret should be copied to that endpoint.
 
 Official references: https://docs.stripe.com/webhooks and https://docs.stripe.com/cli/listen
