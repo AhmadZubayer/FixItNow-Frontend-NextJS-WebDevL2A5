@@ -6,3 +6,7 @@ export const bookingSchema = z.object({
 });
 
 export type BookingValues = z.infer<typeof bookingSchema>;
+
+export const bookingStatusSchema = z.object({
+  status: z.enum(["ACCEPTED", "DECLINED", "IN_PROGRESS", "COMPLETED"]),
+});
