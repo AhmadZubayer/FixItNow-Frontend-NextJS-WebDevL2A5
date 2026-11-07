@@ -74,6 +74,19 @@ try {
     await page.setViewportSize({ width: 1280, height: 800 });
   });
 
+  await check("keyboard focus, reduced motion, and narrow service layout", async () => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(`${base}/services`);
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.getByRole("heading", { name: "Browse services" }).waitFor();
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.keyboard.press("Tab");
+    assert.equal(await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement !== document.body), true);
+    assert.equal(await page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches), true);
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+  });
+
   await check("public filter validation", async () => {
     await page.goto(`${base}/services?minPrice=100&maxPrice=10`);
     await page.getByText("Check the highlighted filters and try again.").waitFor();
@@ -260,6 +273,14 @@ try {
       await service;
     });
 
+    await check("shared breadcrumbs on role pages", async () => {
+      await page.goto(`${base}/dashboard/technician/bookings`);
+      await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Technician workspace" }).waitFor();
+      await login(page, testCredentials.customerEmail, testCredentials.customerPassword, "/dashboard/customer");
+      await page.goto(`${base}/dashboard/customer/payments`);
+      await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Bookings" }).waitFor();
+    });
+
     if (process.env.FIXITNOW_MUTATION_TESTS === "1") await check("technician availability add and block", async () => {
       const dateInput = (offset) => new Date(Date.now() + offset).toLocaleString("sv-SE", { timeZone: "Asia/Dhaka", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).replace(" ", "T");
       const profileResponse = await page.request.get(`${base}/api/technician/profile`);
@@ -286,6 +307,12 @@ try {
     await page.goto(`${base}/services?location=Dhaka`);
     await page.getByText("We could not load this page").waitFor({ timeout: 15000 });
     await page.getByRole("button", { name: "Try again" }).waitFor();
+  });
+
+  await check("cancel return does not claim payment", async () => {
+    await page.goto(`${base}/payment/cancel`);
+    await page.getByRole("heading", { name: "Checkout cancelled" }).waitFor();
+    await page.getByText("No payment is confirmed by this page.", { exact: false }).waitFor();
   });
 
   await page.close();
