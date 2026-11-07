@@ -1,18 +1,18 @@
-# FixItNow project progress — authoritative restart checkpoint
+# FixItNow project progress â€” authoritative restart checkpoint
 
-**Verified project completion: 49% (49 / 100 points).**
+**Verified project completion: 87% (87 / 100 points).**
 
 **Method:** count only checked **weighted** `- [x] (N pts)` rows (not manual video or form evidence rows). Each weighted row has a fixed point weight; sum the weights of verified completed rows and divide by 100. No partial credit for unfinished rows. Recalculate after every verified task. Do not manually guess percent. If scope changes, revise `PLAN.md` and this ledger together without changing the 100-point total.
 
-**Current milestone:** M6/M7 integration and M5 Stripe verification
-**Current task:** finish paid Stripe checkout/webhook and remaining role/form/browser checks, then release work
-**State:** M0 and M2 complete; M1/M3/M6/M7 partly verified, M4/M5/M8 remain open. Local backend uses configured Prisma Postgres and test-mode Stripe. Real Checkout creation, duplicate rejection, actual Session expiration, signed expiration handling, and duplicate handling passed. Paid Checkout and Stripe-delivered webhook remain unverified. Local Chrome E2E now works through Playwright Core; the CUA host remains unavailable. No deployment yet per user direction.
-**Last successful verification:** 2026-11-08 Chrome E2E passed public search/detail, auth, admin, technician forms, and API outage; frontend ESLint, TypeScript, and production build passed after adding Playwright Core; the final test-script edit passed `node --check`. Backend TypeScript/build passed after source changes.
-**Frontend last local commit:** `3017edc test: cover role flows and forms in local Chrome`
-**Frontend last pushed SHA / branch:** `origin/main` tracks local `main`; push state not independently verified
-**Meaningful frontend commits verified:** 14 new goal commits through `3017edc` / minimum 20
+**Current milestone:** M8 local quality and release preparation
+**Current task:** complete remaining loading/API/accessibility evidence, verify hosted Stripe configuration, and prepare Vercel release after local completion
+**State:** M0 and M2 complete; M1/M3/M4/M5/M6/M7 partly verified, M8 open. Local backend uses configured Prisma Postgres and test-mode Stripe. The user completed a real Checkout; a live Stripe CLI listener delivered the signed completed event, Express persisted payment `COMPLETED` and booking `PAID`, and Chrome confirmed frontend reconciliation. Expiration, invalid signatures, and completed/expired replays passed. Hosted webhook secret and deployment remain open per user direction.
+**Last successful verification:** 2026-11-08 frontend lint, TypeScript, production build and full local Chrome suite passed after shared UI changes. Chrome covered public/auth/admin/technician, keyboard focus, reduced-motion preference, narrow layouts, breadcrumbs, errors, and empty states. Earlier Stripe paid/expired webhook, payment initiation, review, booking lifecycle/race, and backend type/build passed.
+**Frontend last local commit:** `ef28eea test: cover customer lifecycle and booking concurrency`
+**Frontend last pushed SHA / branch:** `c6ee33d` on configured `origin/main`, verified by `git ls-remote` before and successful `git push origin main` on 2026-11-08
+**Meaningful frontend commits verified:** 18 new goal commits through `ef28eea` / minimum 20
 **Backend changes not pushed:** Local-only `8940ead` Stripe returns, `45f1e7e` owner-managed technician operations, and `aef1ecc` admin category edits. Never push backend. Pre-existing backend tree still has deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`. Backend `.env` now holds the local listener signing secret; it is ignored by Git.
-**Last checkpoint:** 2026-11-08 Chrome E2E and 49-point audit
+**Last checkpoint:** 2026-11-08 87-point shared UI and Chrome verification
 
 ## Weighted verified task checklist
 
@@ -25,9 +25,9 @@
 ### M1: Design foundation
 
 - [x] (3 pts) Build reference-consistent responsive shells and navigation
-- [ ] (3 pts) Build shared breadcrumbs/search/pending actions without redundant wrappers
+- [x] (3 pts) Build shared breadcrumbs/search/pending actions without redundant wrappers
 - [X] (2 pts) Implement skeletons, empty/error UI, and Sonner integration
-- [ ] (2 pts) Verify compact preset-faithful responsive and keyboard behavior
+- [x] (2 pts) Verify compact preset-faithful responsive and keyboard behavior
 
 ### M2: Authentication
 
@@ -45,30 +45,30 @@
 
 ### M4: Customer bookings
 
-- [ ] (5 pts) Implement Zod-validated service/technician/slot selection and booking request flow
-- [ ] (4 pts) Verify server-safe slot availability and booking status transitions
-- [ ] (4 pts) Implement customer booking/history and eligible cancellation
-- [ ] (3 pts) Test booking races, repeated clicks, failures, and lifecycle UI
+- [x] (5 pts) Implement Zod-validated service/technician/slot selection and booking request flow
+- [x] (4 pts) Verify server-safe slot availability and booking status transitions
+- [x] (4 pts) Implement customer booking/history and eligible cancellation
+- [x] (3 pts) Test booking races, repeated clicks, failures, and lifecycle UI
 
 ### M5: Payment and reviews
 
-- [ ] (4 pts) Audit/reuse existing Stripe backend checkout, integrate frontend initiation, and verify webhook flow
-- [ ] (3 pts) Implement success/cancel pages with authoritative payment reconciliation
-- [ ] (3 pts) Implement payment history and Zod-validated review eligibility/submission
+- [x] (4 pts) Audit/reuse existing Stripe backend checkout, integrate frontend initiation, and verify webhook flow
+- [x] (3 pts) Implement success/cancel pages with authoritative payment reconciliation
+- [x] (3 pts) Implement payment history and Zod-validated review eligibility/submission
 - [ ] (4 pts) Verify Stripe test-mode payment cases, webhook signing configuration, failure paths, and records
 
 ### M6: Technician
 
 - [x] (3 pts) Implement technician profile/services/pricing forms with centralized Zod schemas
 - [x] (3 pts) Implement Zod-validated availability scheduling, blocked slots, and backend integrity
-- [ ] (4 pts) Implement accept/decline/start/complete booking management
+- [x] (4 pts) Implement accept/decline/start/complete booking management
 - [X] (2 pts) Implement and verify technician dashboard aggregates
 
 ### M7: Admin
 
 - [X] (3 pts) Implement real admin dashboard KPIs
 - [x] (3 pts) Implement user search/pagination/ban/unban
-- [ ] (3 pts) Implement Zod-validated category management and verify RBAC/error paths
+- [x] (3 pts) Implement Zod-validated category management and verify RBAC/error paths
 
 ### M8: Release
 
@@ -77,7 +77,7 @@
 - [ ] (1 pts) Finish API documentation, deployment, and secure admin test access
 - [ ] (2 pts) Verify 20+ meaningful frontend commits, remote pushes, and final status
 
-## Per-form validation verification matrix — mandatory
+## Per-form validation verification matrix â€” mandatory
 
 For each row, verify **schema path + UI wiring and field errors + passing valid/invalid/boundary tests + API failure/pending feedback** before setting `Verified`. Add a row whenever an additional form is created; this table is an acceptance gate, not an additional percentage calculation. Candidate schema filenames are examples until reference naming is audited. See `FORM_VALIDATION.md`.
 
@@ -86,27 +86,25 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 | Registration | `validations/auth.validation.ts` | `components/auth/register-form.tsx`: inline errors, disabled pending button, Sonner | HTTP 201 unique registration; Chrome invalid field errors, duplicate 409 error toast, pending button disabled | Verified |
 | Login | `validations/auth.validation.ts` | `components/auth/login-form.tsx`: inline errors, disabled pending button, Sonner | Chrome invalid field errors, wrong credentials 401 toast, disabled pending button, valid admin role navigation; refresh-only and expired route checks passed | Verified |
 | Service search / filters | `validations/search.validation.ts` | `app/services/page.tsx`: Zod URL validation, inline errors, GET navigation | Chrome valid text search, invalid min/max price, empty result, technician detail navigation, controlled backend outage error boundary | Verified |
-| Booking selection/request                  | `validations/booking.validation.ts`      | `components/booking-form.tsx` has field errors, role gate, pending button, and Sonner                                            | Local configured Prisma DB: booking HTTP 201, repeated occupied slot HTTP 409, cancellation HTTP 200, slot released; browser field/pending UI unverified                                                                                          | Unverified    |
-| Stripe payment initiation                  | `validations/payment.validation.ts`      | `app/dashboard/customer/bookings/[id]/pay/page.tsx` validates booking ID, checks accepted status, uses pending button and Sonner | Accepted booking created real test Checkout 201; duplicate initiation 409; backend payment `PENDING`; actual Session return URLs point to frontend. Browser field/pending/error checks pending                                                  | Unverified    |
+| Booking selection/request | `validations/booking.validation.ts` | `components/booking-form.tsx`: role gate, inline errors, disabled pending button, Sonner | Chrome invalid slot, intercepted 503 toast/pending, real booking 201, cancellation 200, second booking 201 and decline 200; backend occupied-slot 409 and slot release | Verified |
+| Stripe payment initiation | `validations/payment.validation.ts` | `app/dashboard/customer/bookings/[id]/pay/page.tsx`: accepted status gate, disabled pending button, Sonner | Chrome invalid booking route, intercepted 503 toast/pending, real test Checkout 201, duplicate request 409; Session expired through Stripe test API and signed webhook cleanup; separate user-completed Checkout delivered paid webhook | Verified |
 | Technician profile edit | `validations/technician.validation.ts` | `components/technician/profile-form.tsx`: inline errors, disabled pending, Sonner | Chrome invalid location, real save 200, intercepted API 503 toast/pending; Express owner read/save 200, cross-role 403 | Verified |
 | Technician service/pricing create/edit | `validations/technician.validation.ts` | `components/technician/service-form.tsx`: inline errors, disabled pending, Sonner | Chrome invalid create fields, real edit 200, intercepted create 503 toast/pending; Express create 201, edit/pause 200 | Verified |
 | Technician availability editor | `validations/availability.validation.ts` | `components/technician/availability-editor.tsx`: inline errors, disabled pending, Sonner | Chrome invalid dates, real add/block 200, intercepted 503 toast/pending; Express repeat block 409 | Verified |
-| Review submission                          | `validations/review.validation.ts`       | `app/dashboard/customer/bookings/[id]/review/page.tsx` has field errors, pending button, and Sonner                              | Lint/build pass; valid/invalid/duplicate/API-error tests pending                                                                                                                                                                                  | Unverified    |
+| Review submission | `validations/review.validation.ts` | `app/dashboard/customer/bookings/[id]/review/page.tsx`: inline errors, disabled pending button, Sonner | After real paid/completed booking, Chrome invalid rating, intercepted 503 toast/pending, valid 201, duplicate 409; Express enforces completed customer-owned booking | Verified |
 | Admin user search | `validations/admin.validation.ts` | `app/dashboard/admin/page.tsx`: inline search errors and pagination | Chrome valid role search, overlong query error, page 1/2 navigation; admin read 200, customer 403, anonymous 401; block 200, blocked session 403, unblock 200 on generated customer | Verified |
-| Admin category create/edit | `validations/admin.validation.ts` | `components/admin/category-form.tsx`: inline errors, pending button, Sonner | Chrome invalid fields, duplicate create 409 toast, real edit 200; backend invalid edit 400, anonymous 401. Valid category creation and pending state still need a browser test | Unverified |
+| Admin category create/edit | `validations/admin.validation.ts` | `components/admin/category-form.tsx`: inline errors, disabled pending button, Sonner | Chrome invalid fields, duplicate create 409 toast, valid category create 201 with pending state and visible result, real edit 200; anonymous 401 and customer 403 for admin category routes | Verified |
 | Additional forms / edit dialogs discovered | Not inventoried                            | Not audited                                                                                                                        | Not run                                                                                                                                                                                                                                           | Pending audit |
 
 ## Session handoff — update at every stopping point
 
-**Active work and exact files:** Current uncommitted frontend files are `API_INTEGRATION.md`, `STRIPE_INTEGRATION.md`, and `PROGRESS.md`. Technician and admin application files are in commits `e6fb54c`, `bcac901`, `9c9051d`, and `cb9d47c`; session cookie correction is in `828e1d6`; Chrome test runner and dependency are in `3017edc`. Backend source edits are in three local-only commits and its worktree contains only the pre-existing unrelated changes listed below.
-**Completed in this session:** Chrome launched through Playwright Core despite the unavailable CUA host. Browser checks passed for mobile home/admin width, public Zod filters and empty results, live technician detail, registration/login field and API errors with disabled pending buttons, admin navigation/search/pagination/category edit, technician profile/service/availability field errors, success and API-error feedback, anonymous/expired dashboard redirects, and a controlled public API outage boundary. A prior opt-in run added then blocked an isolated test availability slot; the suite now requires `FIXITNOW_MUTATION_TESTS=1` for that durable operation. The test harness now keeps backend database/Stripe secrets out of the frontend process environment.
-**Uncommitted frontend edits:** Documentation `API_INTEGRATION.md`, `STRIPE_INTEGRATION.md`, and `PROGRESS.md` remains. The Playwright test/dependency slice was committed as `3017edc`. Local `main` is `3017edc`; local `origin/main` was `828e1d6` at the last check, while the actual GitHub branch has not yet been checked with `git ls-remote`. Current weighted progress is 49%; 14 meaningful goal commits exist, six more are required for the assignment minimum.
-**Backend modifications / migrations / uncommitted edits:** Local-only SHAs `8940ead` (Stripe return URLs), `45f1e7e` (owner-managed technician operations), `aef1ecc` (admin category edits). Never push backend. Backend `.env` contains the listener-specific local `STRIPE_WEBHOOK_SECRET`, as well as configured database/Stripe/admin variables; no values are recorded here. No migrations or resets. Preserve pre-existing deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`.
-**Verification commands and outcomes:** Frontend `npm run lint`, `tsc --noEmit`, `npm run build` pass; `node --check tests/e2e-local.mjs` passes after final test-only edit. Chrome `npm run test:e2e` with generated credential file passed all default cases after secret-environment separation; default runs save same-value profile/category edits but do not create new records. An earlier opt-in run passed real availability add/block. Backend `tsc --noEmit` and `npm run build` pass. Technician profile save/read 200; service create 201/edit/pause 200; availability add/block 200/repeat block 409; booking accept 200/repeat 409; cross-role reads 403. Admin login/read 200, invalid category edit 400, valid edit 200, duplicate create 409, customer admin read 403, block/unblock 200, blocked session 403, anonymous read 401, self-block 409. Real test Checkout 201 with correct frontend return URLs, duplicate 409, payment initially `PENDING`; actual Session expired, invalid webhook signature 400, locally signed expiration 200, replay 200, persisted `CANCELLED`. Generated test credentials and the expired Checkout URL remain under the system TEMP directory in `fixitnow-tech-5aafbb653691`; never print or commit them, and remove after follow-up tests.
-**Known blockers / missing access:** A paid Stripe Checkout and Stripe-delivered signed webhook have not been demonstrated. The current signing secret is for a local listener; the deployed endpoint secret remains unverified. Review, customer payment/booking browser flows, admin valid category creation, technician decline/start/complete, keyboard/reduced-motion, and hosted Vercel verification remain. CUA host is unavailable, but local headless Chrome works. Frontend Vercel deployment is deferred by user until local completion. At the end of the previous goal turn automatic approval review rejected a process-inspection action because the usage limit prevented review; that action was not executed. Approval later became available and current safe checks resumed.
-**Next precise action:** Commit the documentation checkpoint after staged secret/diff checks. Verify the actual frontend remote branch with `git ls-remote`; push only completed verified milestone commits if the configured branch is authorized. Then run a real paid Stripe test Checkout in headless Chrome with a live CLI listener bound to the correct local backend and verify the Stripe-delivered webhook, backend payment/booking records, duplicate safety, and frontend reconciliation. Continue remaining customer, technician, admin form and status flows, update matrix/points after each verified task, and deploy Vercel only after full local completion per user direction.
-**Potential risks:** The locally signed expiration event proves verification and idempotence only for that branch; it does not prove paid Checkout or listener delivery. The listener-specific secret may change with a new listener. Keep all secrets out of frontend processes, Git, docs, and logs. Do not alter unrelated backend work.
-
+**Active work and exact files:** Uncommitted frontend docs are `API_INTEGRATION.md`, `STRIPE_INTEGRATION.md`, and `PROGRESS.md`. Shared UI and Stripe/customer test scripts are now committed in `ab4ff21`, `ad7bb45`, and `ef28eea`. No new backend source edits this turn.
+**Completed in this session:** Real user-completed Stripe test Checkout reached the frontend success URL; official Stripe CLI delivered a signed completed event to fresh Express, persisting payment `COMPLETED` and booking `PAID`. Chrome confirmed both records. Actual Stripe event replay twice remained safe. An expired Session, invalid signature, signed expiration and replay all passed. Browser lifecycle covered booking create/cancel/decline and paid technician start/complete and review valid/invalid/API-error/duplicate. Booking race produced one 201 and one 409. Admin valid category create and error paths passed. Shared search field and breadcrumbs are reused; reduced-motion CSS added. Chrome verified keyboard focus, narrow layouts and both role breadcrumbs.
+**Git state:** Local `main` is `ef28eea` with 18 genuine goal commits; pushed `origin/main` is `c6ee33d`. Docs remain uncommitted. Two more genuine frontend commits are needed. Backend changes remain local-only.
+**Backend modifications / migrations / uncommitted edits:** Local-only SHAs `8940ead` (Stripe return URLs), `45f1e7e` (owner-managed technician operations), `aef1ecc` (admin category edits). Never push backend. Backend `.env` contains the local listener-specific `STRIPE_WEBHOOK_SECRET` and configured database/Stripe/admin variables; no values recorded here. No migrations or resets. Preserve pre-existing deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`.
+**Verification and results:** Frontend `npm run lint`, `tsc --noEmit`, production `npm run build` passed after shared UI edits. Chrome `tests/e2e-local.mjs` passed all default cases including public/auth/admin/technician forms, outage/empty, keyboard/reduced-motion/mobile and breadcrumbs. New integration scripts pass syntax checks and their guarded runtime cases passed earlier this turn. Backend type/build passed earlier. Paid and expired Stripe records and duplicate safety verified; generated payment pending count zero. Browser credentials and Checkout artifacts are in system TEMP `fixitnow-tech-5aafbb653691`, never commit or print values.
+**Blockers / limits:** Hosted Stripe webhook endpoint and its Dashboard signing secret have not been verified. Vercel deployment is intentionally deferred until full local completion per user direction. The current signing secret is for a local CLI listener and must not be assumed valid for hosted endpoint. CUA host unavailable; local Chrome works. Need finish M3 loading/API case and M8 full accessibility/role/payment release checks. User-owned video stays unchecked outside 100 points.
+**Next precise action:** Commit the documentation checkpoint, then push the completed M1 frontend milestone to configured `origin/main` after direct remote and staged-secret checks. Add missing loading/API evidence, run final local quality checks, and finish local milestone. Deploy frontend through authorized GitHub/Vercel route only after local completion and verify hosted backend webhook signing configuration and admin test access. Never push backend.
 ## Milestone Git history
 
 | Milestone | Frontend commit SHAs | Branch pushed | Validation evidence |
@@ -128,7 +126,7 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 - 2026-11-07: M0 source audit completed (8 points). Frontend and backend typechecks passed; frontend lint baseline failed in two installed preset files. Runtime integration and Stripe remain unverified.
 - Initial: generated planning scaffold only. No application code had been inspected or implemented.
 
-## Separate manual submission requirement — not part of 100-point development calculation
+## Separate manual submission requirement â€” not part of 100-point development calculation
 
 - [ ] **Video requirement (user-owned):** user records and submits the assignment video.
 

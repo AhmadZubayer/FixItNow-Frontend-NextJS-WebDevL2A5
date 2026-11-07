@@ -1,6 +1,6 @@
 # Stripe integration — audit the existing backend, do not rebuild
 
-**Source and local test audit 2026-11-07:** Stripe is implemented in the Express/Prisma 7 backend. The frontend uses Stripe only. A test-mode Checkout Session and signed expiration path were exercised; a paid Checkout and Stripe-delivered webhook remain unverified. No secret value is recorded here.
+**Source and local test audit 2026-11-08:** Stripe is implemented in the Express/Prisma 7 backend. The frontend uses Stripe only. A real test-mode Checkout was completed by the user, its Stripe-delivered signed webhook updated Prisma, and the frontend read the confirmed state. A signed expiration path was also exercised. No secret value is recorded here.
 
 ## M0 backend Stripe audit
 
@@ -20,7 +20,7 @@ The backend depends on `stripe` 23.0.0 (`package.json`). `src/config/index.ts` r
 
 `GET /api/payments/:id` and `GET /api/bookings/:id` are customer-owned reads for reconciliation. A local, unpushed backend edit points Checkout success/cancel URLs to frontend `/payment/success` and `/payment/cancel`, carrying non-secret payment/booking IDs (`stripe.provider.ts`). A real test-mode Checkout Session confirmed these URLs. Frontend return pages read the payment through authenticated backend reads; they do not set paid status. The existing plain-text `/api/payments/return/*` routes remain mounted but are no longer used by newly created sessions.
 
-The local backend `.env` has `PORT=8001` and nonempty `DATABASE_URL`, `STRIPE_SECRET_KEY`, admin seed variables, and now `STRIPE_WEBHOOK_SECRET`. The local secret came from an official Stripe CLI listener configured to forward to `http://localhost:8001/api/payments/webhook` using the backend test-mode account. It is listener-specific and was set exclusively in the ignored backend `.env`; it may need regeneration when the listener changes. `APP_URL` remains empty in the file and was supplied as a process-only local frontend URL during Checkout creation. A generated test Checkout was created for an accepted booking; repeat initiation was rejected with 409 and the payment read was `PENDING`. The Session was expired through Stripe's test API. Posting an invalid signature returned 400; a locally generated signature over an expiration event containing that actual Session returned 200, persisted `CANCELLED`, and returned 200 again on replay. This tested Express signature and idempotent expiration logic, but the event was posted by the local test process, not delivered by Stripe. The user authorized the backend's configured Prisma Postgres and Stripe account for integration testing, requested admin test credentials in backend `.env` only, and plans Vercel deployment after local completion.
+The local backend `.env` has `PORT=8001` and nonempty `DATABASE_URL`, `STRIPE_SECRET_KEY`, admin seed variables, and `STRIPE_WEBHOOK_SECRET`. The latter came from an official Stripe CLI listener forwarding to `http://localhost:8001/api/payments/webhook`; it is listener-specific. An older backend process on port 8001 had loaded before that value was set and rejected a locally signed probe with 500. The successful paid test used a fresh isolated CLI listener forwarding to the verified Express route on an isolated backend port; the matching secret was supplied only to that backend process environment, never the frontend process. The user completed the real Stripe-hosted test Checkout and was redirected to the frontend success page. The listener observed `checkout.session.completed`; the backend payment became `COMPLETED` and booking `PAID`. The real Stripe event was retrieved and replayed twice with a valid local signature; both requests returned 200 while persisted statuses remained unchanged. Chrome confirmed the frontend success page said the payment was server-confirmed, and payment/booking history showed `COMPLETED`/`PAID`. Separately, a generated Session was expired through Stripe's test API. Invalid webhook signature returned 400; a locally signed expiration event referencing that actual Session returned 200, persisted `CANCELLED`, and replay returned 200. The deployed endpoint signing secret remains unverified; before final release, verify its exact endpoint configuration and update the backend hosting environment only if needed. The user authorized the backend's configured Prisma Postgres and Stripe account for integration testing, requested admin test credentials in backend `.env` only, and plans Vercel deployment after local completion.
 
 ## Frontend integration
 
@@ -47,13 +47,13 @@ If the backend is deployed, register/verify the **real public HTTPS webhook URL*
 ## Validation and end-to-end acceptance
 
 - [x] Valid test Checkout Session created for a server-authorized accepted booking.
-- [ ] Stripe test payment completes via real Checkout, not a mock success page.
-- [ ] Express webhook validates the signature and writes a durable status transition to Prisma.
-- [ ] Duplicate/retried events cannot double-charge or double-apply side effects.
-- [ ] The frontend success page reads confirmed state; cancel/failure paths do not set paid state. Code inspection and backend expiration test passed; browser check pending.
-- [ ] Booking and payment history display real persisted records.
+- [x] Stripe test payment completes via real Checkout, not a mock success page.
+- [x] Express webhook validates the signature and writes a durable status transition to Prisma in the isolated local listener test.
+- [x] Duplicate/retried completed and expired event handling preserved the existing status in local replay tests.
+- [x] The frontend success page reads backend-confirmed state; the cancel page makes no paid claim, and expiration persisted `CANCELLED`.
+- [x] Booking and payment history display real persisted records in Chrome.
 - [ ] No secrets occur in frontend code, Git, documentation or logs.
-- [ ] Final Stripe configuration and test results are logged in `PROGRESS.md` **without secret values**.
+- [ ] Final hosted endpoint signing-secret match and release results are logged in `PROGRESS.md` **without secret values**. Local paid test evidence is recorded.
 
 **Do not** reimplement the checkout/webhook if the backend code already passes these tests. If test-mode environment or webhook configuration is absent, mark the gate blocked and document exactly what is needed from the user; do not fabricate a passing transaction.
 
