@@ -5,12 +5,12 @@
 **Method:** count only checked **weighted** `- [x] (N pts)` rows (not manual video or form evidence rows). Each weighted row has a fixed point weight; sum the weights of verified completed rows and divide by 100. No partial credit for unfinished rows. Recalculate after every verified task. Do not manually guess percent. If scope changes, revise `PLAN.md` and this ledger together without changing the 100-point total.
 
 **Current milestone:** M1 — design foundation
-**Current task:** complete shared shell/navigation against real routes, then auth and discovery dependencies
-**State:** M0 source audit complete; M1 partial. The landing page, header, pending button, skeleton, empty state, route error boundary, and Sonner provider exist. Header destinations and pending button must be exercised by working flows before the remaining M1 rows are checked.
+**Current task:** complete M3 public discovery and search form acceptance, then auth/navigation dependencies
+**State:** M0 source audit complete; M1 partial. Public services and technician pages now use live backend data, but booking interaction, browser visual checks, and full form acceptance are unfinished. The landing page is still static.
 **Last successful verification:** 2026-11-07 frontend `tsc --noEmit`, changed-app ESLint, and `next build` passed. Backend `tsc --noEmit` passed. Full frontend ESLint has two pre-existing preset errors.
-**Frontend last local commit:** `46702f9 feat:project step up complete`
+**Frontend last local commit:** `e7d6678 feat: add shared app shell and feedback states`
 **Frontend last pushed SHA / branch:** `origin/main` tracks local `main`; push state not independently verified
-**Meaningful frontend commits verified:** 2 existing commits, neither counted toward new feature work; 0 / minimum 20 for this goal
+**Meaningful frontend commits verified:** 2 new goal commits (`39b364d`, `e7d6678`) / minimum 20
 **Backend changes not pushed:** None by this agent; pre-existing backend tree has deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`
 **Last checkpoint:** 2026-11-07 M0 source audit
 
@@ -85,7 +85,7 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 |---|---|---|---|---|
 | Registration | Not created | Not audited | Not run | Unverified |
 | Login | Not created | Not audited | Not run | Unverified |
-| Service search / filters | Not created | Not audited | Not run | Unverified |
+| Service search / filters | `validations/search.validation.ts` | `app/services/page.tsx` validates URL inputs and renders field errors with `aria-invalid` and `aria-describedby` | Built-app HTTP 200 for live valid listing, empty text search, and invalid min/max price; unavailable API produced `ECONNREFUSED` on server but rendered client error boundary not yet visually checked; pending/navigation behavior not checked | Unverified |
 | Booking selection/request | Not created | Not audited | Not run | Unverified |
 | Technician profile / service/pricing edit | Not created | Not audited | Not run | Unverified |
 | Technician availability editor | Not created | Not audited | Not run | Unverified |
@@ -95,13 +95,13 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 
 ## Session handoff — update at every stopping point
 
-**Active work and exact files:** M0 documentation: `PROJECT_CONTEXT.md`, `REFERENCE_STYLE.md`, `ARCHITECTURE.md`, `API_INTEGRATION.md`, `STRIPE_INTEGRATION.md`, `DECISIONS.md`, `PROGRESS.md`; M1 UI: `app/page.tsx`, `app/layout.tsx`, `app/loading.tsx`, `app/error.tsx`, `components/site-header.tsx`, `components/pending-button.tsx`, `components/page-skeleton.tsx`, `components/empty-state.tsx`, `package.json`, `package-lock.json`.
-**Completed in this session:** Completed M0 audit and first M1 UI foundation. Added Sonner because the installed preset provided only a Base UI toast and Sonner was explicitly required.
-**Uncommitted frontend edits:** Pre-existing `AGENTS.md` edit and planning Markdown files, this session's audit docs and UI code; inspect current Git status before committing.
+**Active work and exact files:** Public discovery in `app/services/page.tsx`, `app/services/loading.tsx`, `app/technicians/[id]/page.tsx`, `app/technicians/[id]/loading.tsx`, `components/service-card.tsx`, `lib/public-api.ts`, `validations/search.validation.ts`; API and progress documentation.
+**Completed in this session:** Completed M0 audit and first M1 UI foundation. Added Sonner because the installed preset provided only a Base UI toast and Sonner was explicitly required. Built live public listing, filters, and technician detail against deployed backend data.
+**Uncommitted frontend edits:** M0 docs and first M1 UI were committed as `39b364d` and `e7d6678`. Public discovery and latest documentation are uncommitted; inspect Git status before committing.
 **Backend modifications / migrations / uncommitted edits:** None by this agent; pre-existing backend status: deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`. No migrations run.
-**Verification commands and outcomes:** 2026-11-07 `C:\nvm\v24.15.0\node.exe node_modules/typescript/bin/tsc --noEmit` passed in frontend and backend. Frontend `node_modules/eslint/bin/eslint.js .` failed with two `react-hooks/set-state-in-effect` errors in installed `components/ui/carousel.tsx` and `hooks/use-mobile.ts`. Changed application files lint passed. `node_modules/next/dist/bin/next build` passed and generated `/` and `/_not-found`. Initial `npm`/`npx` attempts were unavailable because the Node symlink is inaccessible in this shell; direct Node works with sandbox escalation. No live API or Stripe test.
+**Verification commands and outcomes:** 2026-11-07 frontend and backend TypeScript checks passed. Full frontend ESLint failed with two pre-existing `react-hooks/set-state-in-effect` errors in installed `components/ui/carousel.tsx` and `hooks/use-mobile.ts`; changed application files lint passed. `next build` passed with `/`, `/services`, and `/technicians/[id]`. Built-app `curl` checks: `/services` HTTP 200 with live data; unmatched `q` HTTP 200 with empty state; `minPrice=200&maxPrice=100` HTTP 200 with field error; technician detail HTTP 200 with live data. The initially observed Next prerender `Date.now()` warning from Axios was resolved by `await connection()`; repeated smoke test had no such warning. An unreachable API produced `ECONNREFUSED` and the route error payload, but visual client boundary remains unverified. Initial `npm`/`npx` attempts were unavailable because the Node symlink is inaccessible in this shell; direct Node works with sandbox escalation. No protected API or Stripe test.
 **Known blockers / missing access:** No hosted frontend target, live API base URL, test users, verified Stripe listener/deployed endpoint, or secure admin submission channel yet. No Node executable available without sandbox escalation. The reference has no forms/API client patterns.
-**Next precise action:** Commit M0 audit and the first M1 foundation separately, then implement actual auth and service routes so navigation and pending actions can be exercised.
+**Next precise action:** Commit the public discovery slice; implement auth/session and booking so pending actions and navigation are exercised; visually verify the error boundary and responsive layouts; resolve the full-lint gate without changing preset visual tokens.
 **Potential risks:** Checkout currently returns to backend plain text. No payment audit checkbox implies live verification. Do not expose secrets or overwrite backend user changes.
 
 ## Milestone Git history
@@ -112,6 +112,7 @@ For each row, verify **schema path + UI wiring and field errors + passing valid/
 
 ## Session log (append newest first)
 
+- 2026-11-07: Public service and technician source/live API integration built and smoke-tested. Search form remains unverified in the matrix because browser pending/error behavior is outstanding; no M3 points claimed yet.
 - 2026-11-07: First M1 foundation verified (2 points); frontend typecheck, changed-app lint, and production build passed. Sonner installed. Runtime integration and visual testing remain unverified.
 - 2026-11-07: M0 source audit completed (8 points). Frontend and backend typechecks passed; frontend lint baseline failed in two installed preset files. Runtime integration and Stripe remain unverified.
 - Initial: generated planning scaffold only. No application code had been inspected or implemented.
