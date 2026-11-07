@@ -1,6 +1,6 @@
 # Stripe integration — audit the existing backend, do not rebuild
 
-**Source audit 2026-11-07:** Stripe is implemented in the Express/Prisma 7 backend. The frontend must use Stripe only. The actual environment and a live transaction have not been verified. No secret value was read or recorded.
+**Source and local test audit 2026-11-07:** Stripe is implemented in the Express/Prisma 7 backend. The frontend uses Stripe only. A test-mode Checkout Session and signed expiration path were exercised; a paid Checkout and Stripe-delivered webhook remain unverified. No secret value is recorded here.
 
 ## M0 backend Stripe audit
 
@@ -18,9 +18,9 @@ The backend depends on `stripe` 23.0.0 (`package.json`). `src/config/index.ts` r
 
 `POST /api/payments/webhook` is mounted in `src/app.ts` **before** `express.json()`. The route applies `express.raw({ type: "application/json" })`, then `stripe.controller.ts` requires a `stripe-signature` header and Buffer body. `stripe.webhook.ts` verifies through `stripe.webhooks.constructEvent` using `STRIPE_WEBHOOK_SECRET`. It handles `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `refund.updated`, and `refund.failed`. `payment.service.ts` checks matching booking/payment/session/amount/currency, conditionally moves pending payment and accepted booking to completed/paid in one transaction, and returns the existing result on a matching duplicate completed event. Closed sessions conditionally update only pending records. Refund handling has explicit status guards and a provider idempotency key. These are code observations; duplicate delivery and signature verification still need runtime tests.
 
-`GET /api/payments/:id` and `GET /api/bookings/:id` are customer-owned reads for reconciliation. A local, unpushed backend edit now points Checkout success/cancel URLs to frontend `/payment/success` and `/payment/cancel`, carrying non-secret payment/booking IDs (`stripe.provider.ts`). Frontend return pages read the payment through authenticated backend reads; they do not set paid status. The edit typechecks but no Checkout was created after it, so runtime behavior is unverified. The existing plain-text `/api/payments/return/*` routes remain mounted but are no longer used by newly created sessions.
+`GET /api/payments/:id` and `GET /api/bookings/:id` are customer-owned reads for reconciliation. A local, unpushed backend edit points Checkout success/cancel URLs to frontend `/payment/success` and `/payment/cancel`, carrying non-secret payment/booking IDs (`stripe.provider.ts`). A real test-mode Checkout Session confirmed these URLs. Frontend return pages read the payment through authenticated backend reads; they do not set paid status. The existing plain-text `/api/payments/return/*` routes remain mounted but are no longer used by newly created sessions.
 
-The local backend `.env` has `PORT=8001` and nonempty `DATABASE_URL`, `STRIPE_SECRET_KEY`, and admin seed variable values. `APP_URL` and `STRIPE_WEBHOOK_SECRET` are empty; no value was read or recorded. The frontend local URL can be supplied as a process-only `APP_URL` override during tests. A real local webhook listener secret must be obtained before signed event delivery; the Stripe CLI was not found on the command path. The user authorized the backend's configured Prisma Postgres and Stripe account for integration testing, requested admin test credentials in backend `.env` only, and plans Vercel deployment after local completion.
+The local backend `.env` has `PORT=8001` and nonempty `DATABASE_URL`, `STRIPE_SECRET_KEY`, admin seed variables, and now `STRIPE_WEBHOOK_SECRET`. The local secret came from an official Stripe CLI listener configured to forward to `http://localhost:8001/api/payments/webhook` using the backend test-mode account. It is listener-specific and was set exclusively in the ignored backend `.env`; it may need regeneration when the listener changes. `APP_URL` remains empty in the file and was supplied as a process-only local frontend URL during Checkout creation. A generated test Checkout was created for an accepted booking; repeat initiation was rejected with 409 and the payment read was `PENDING`. The Session was expired through Stripe's test API. Posting an invalid signature returned 400; a locally generated signature over an expiration event containing that actual Session returned 200, persisted `CANCELLED`, and returned 200 again on replay. This tested Express signature and idempotent expiration logic, but the event was posted by the local test process, not delivered by Stripe. The user authorized the backend's configured Prisma Postgres and Stripe account for integration testing, requested admin test credentials in backend `.env` only, and plans Vercel deployment after local completion.
 
 ## Frontend integration
 
@@ -46,11 +46,11 @@ If the backend is deployed, register/verify the **real public HTTPS webhook URL*
 
 ## Validation and end-to-end acceptance
 
-- [ ] Valid test Checkout Session created for a server-authorized accepted booking.
+- [x] Valid test Checkout Session created for a server-authorized accepted booking.
 - [ ] Stripe test payment completes via real Checkout, not a mock success page.
 - [ ] Express webhook validates the signature and writes a durable status transition to Prisma.
 - [ ] Duplicate/retried events cannot double-charge or double-apply side effects.
-- [ ] The frontend success page reads confirmed state; cancel/failure paths do not set paid state.
+- [ ] The frontend success page reads confirmed state; cancel/failure paths do not set paid state. Code inspection and backend expiration test passed; browser check pending.
 - [ ] Booking and payment history display real persisted records.
 - [ ] No secrets occur in frontend code, Git, documentation or logs.
 - [ ] Final Stripe configuration and test results are logged in `PROGRESS.md` **without secret values**.
