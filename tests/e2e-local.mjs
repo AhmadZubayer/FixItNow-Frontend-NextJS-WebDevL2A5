@@ -299,6 +299,17 @@ try {
       await page.setViewportSize({ width: 1280, height: 800 });
     });
 
+    await check("payment history API error and retry", async () => {
+      await page.route("**/api/customer/payments", (route) => route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ message: "Test payment history outage" }) }));
+      await page.goto(`${base}/dashboard/customer/payments`);
+      await page.getByRole("alert").getByText("Could not load your payments. Try again later.", { exact: false }).waitFor();
+      await page.unroute("**/api/customer/payments");
+      const response = page.waitForResponse((value) => value.url().endsWith("/api/customer/payments") && value.status() === 200);
+      await page.getByRole("button", { name: "Retry" }).click();
+      await response;
+      await page.getByText("Could not load your payments. Try again later.", { exact: false }).waitFor({ state: "hidden" });
+    });
+
     if (process.env.FIXITNOW_MUTATION_TESTS === "1") await check("technician availability add and block", async () => {
       const dateInput = (offset) => new Date(Date.now() + offset).toLocaleString("sv-SE", { timeZone: "Asia/Dhaka", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).replace(" ", "T");
       const profileResponse = await page.request.get(`${base}/api/technician/profile`);
