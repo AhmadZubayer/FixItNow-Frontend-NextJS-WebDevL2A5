@@ -1,6 +1,6 @@
 # Mandatory Zod form-validation contract
 
-Status: **policy defined; actual Next.js and reference repositories not yet inspected**.
+Status: **implemented and audited locally on 2026-11-08**. The frontend has no `src/`, so all form schemas are in root `validations/`. The read-only reference has no form patterns; `PROGRESS.md` records each actual form and its valid, invalid, pending and API-error evidence.
 
 This document applies to **every FixItNow frontend form** implemented for the assignment, not only authentication. It is a development completion gate alongside `TESTING.md` and `PROGRESS.md`. Do not mark a form feature complete without a corresponding schema and successful invalid/valid form testing.
 

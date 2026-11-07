@@ -7,7 +7,7 @@
 | Frontend repository absolute path | `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\fixitnow-frontend` |
 | Express / Prisma 7 backend absolute path | `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\FixItNow-backend-server` |
 | Read-only reference frontend path | `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\reference-project` |
-| Frontend Git remote | `origin`: `https://github.com/AhmadZubayer/FixItNow-Frontend-NextJS-WebDevL2A5.git`; `main` pushed through `f79d935` on 2026-11-08 |
+| Frontend Git remote | `origin`: `https://github.com/AhmadZubayer/FixItNow-Frontend-NextJS-WebDevL2A5.git`; `main` pushed after verified local closeout on 2026-11-08; exact SHA is tracked in `PROGRESS.md` |
 | Permitted frontend branch | `main` tracks `origin/main`; no other branch authorization inferred |
 | Frontend package manager | npm (`package-lock.json`) |
 | Installed Next.js version | `16.4.5` |
