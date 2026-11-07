@@ -13,10 +13,10 @@
 | Installed Next.js version | `16.4.5` |
 | Installed shadcn preset | `base-mira`, `mist` base color, CSS variables in `app/globals.css` |
 | Payment gateway | **Stripe only**; user reports backend Stripe integration already configured. Verify without reimplementing. |
-| Frontend deploy target | `not yet specified` |
+| Frontend deploy target | Vercel via the frontend GitHub repository, after local project completion (user direction 2026-11-07) |
 | Backend API base URL(s) | `SERVER_URL`, `APP_URL`, `PORT` environment names observed; actual values and reachable URL unverified |
 | Auth/session transport | Express accepts `accessToken` cookie or Bearer token; login returns access and refresh JWTs in JSON |
-| Preview/test account provisioning | Document secure procedure; no passwords here |
+| Preview/test account provisioning | User requested admin test credentials remain only in the backend `.env` for now; never commit or print values |
 | Video submission (sixth assignment requirement) | **User will record and submit manually; outside Codex scope** |
 
 ## Operating mode

@@ -1,0 +1,56 @@
+"use client";
+
+import axios from "axios";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+import PendingButton from "@/components/pending-button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { paymentSchema } from "@/validations/payment.validation";
+
+type Booking = { id: string; status: string; priceAtBooking: string; service: { title: string } };
+
+export default function PayPage() {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    axios.get<Booking>(`/api/customer/bookings/${id}`).then((response) => {
+      if (active) setBooking(response.data);
+    }).catch((failure) => {
+      if (!active) return;
+      if (axios.isAxiosError(failure) && failure.response?.status === 401) router.replace("/auth/login");
+      else setError("We could not load this booking.");
+    });
+    return () => { active = false; };
+  }, [id, router]);
+
+  async function startCheckout() {
+    if (pending) return;
+    const result = paymentSchema.safeParse({ bookingId: id, provider: "STRIPE" });
+    if (!result.success) {
+      toast.error("This booking ID is invalid.");
+      return;
+    }
+
+    setPending(true);
+    try {
+      const response = await axios.post<{ checkoutUrl: string }>("/api/customer/payments", result.data);
+      const checkoutUrl = new URL(response.data.checkoutUrl);
+      if (checkoutUrl.protocol !== "https:" || checkoutUrl.hostname !== "checkout.stripe.com") throw new Error("Invalid checkout URL");
+      window.location.assign(checkoutUrl.toString());
+    } catch (failure) {
+      toast.error(axios.isAxiosError(failure) ? failure.response?.data?.message ?? "Could not start Stripe Checkout." : "Could not start Stripe Checkout.");
+      setPending(false);
+    }
+  }
+
+  return <main className="mx-auto w-full max-w-xl flex-1 space-y-5 px-4 py-8 sm:px-6"><Link href="/dashboard/customer" className="text-xs underline underline-offset-4">Back to bookings</Link><h1 className="text-2xl font-semibold tracking-tight">Pay for booking</h1>{error && <Alert variant="destructive"><AlertTitle>Booking unavailable</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}{!error && !booking && <p className="text-sm text-muted-foreground">Loading booking…</p>}{booking && <div className="space-y-4 rounded-lg border p-4"><div><p className="font-medium">{booking.service.title}</p><p className="mt-1 text-sm text-muted-foreground">Amount: ৳{booking.priceAtBooking}</p></div>{booking.status === "ACCEPTED" ? <PendingButton pending={pending} pendingText="Opening Stripe Checkout" onClick={startCheckout}>Continue to Stripe</PendingButton> : <p className="text-sm text-muted-foreground">This booking is {booking.status.toLowerCase().replaceAll("_", " ")} and is not ready for payment.</p>}</div>}<Button variant="ghost" render={<Link href="/dashboard/customer" />}>View bookings</Button></main>;
+}
