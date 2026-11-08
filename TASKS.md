@@ -13,7 +13,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 > Treat `/REQUIREMENTS.md` as authoritative for functionality. Use the reference images for visual layout, while applying the explicitly stated global styles. If a reference and a written requirement conflict, preserve the workflow and follow the written UI requirement. Verify the actual routes and project structure before editing.
 
 ## 1. Project review and workflow protection
-- [ ] Read `/REQUIREMENTS.md` and understand the current customer, technician, and admin journeys.
+- [x] Read `/REQUIREMENTS.md` and understand the current customer, technician, and admin journeys.
 - [ ] Review the frontend routes, components, authentication, API calls, backend endpoints, Prisma schema, and existing tests.
 - [ ] Inspect the supplied UI reference images and the existing backend README.
 - [ ] Identify differences between the current implementation and the required journeys and UI.
