@@ -87,12 +87,21 @@ try {
   await accountType.click();
   await page.getByRole("option", { name: "Technician" }).click();
   await accountType.getByText("Technician").waitFor();
+  await page.route(`**/api/customer/bookings/${completedBooking}`, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    await route.continue();
+  });
   await page.goto(`${base}/dashboard/customer/bookings/${completedBooking}/review`);
+  await page.getByRole("status", { name: "Loading booking" }).waitFor();
   const rating = page.getByRole("combobox", { name: "Rating" });
+  await rating.waitFor();
+  await page.unroute(`**/api/customer/bookings/${completedBooking}`);
   await rating.click();
   await page.getByRole("option", { name: "4 stars" }).click();
   await rating.getByText("4 stars").waitFor();
-  console.log("PASS booking slots, registration account type, and review rating controls");
+  await page.goto(`${base}/dashboard/customer/bookings/99999999-9999-4999-8999-999999999999/review`);
+  await page.getByText("Booking unavailable").waitFor();
+  console.log("PASS booking slots, controls, and review loading/error states");
 } finally {
   await browser?.close();
   if (frontend.exitCode === null) frontend.kill();

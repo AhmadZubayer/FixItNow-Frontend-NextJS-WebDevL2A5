@@ -7,13 +7,14 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import PendingButton from "@/components/pending-button";
+import BookingDetailSkeleton from "@/components/booking-detail-skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { paymentSchema } from "@/validations/payment.validation";
 
 type Booking = { id: string; status: string; priceAtBooking: string; service: { title: string } };
 
-export default function PayPage() {
+const PayPage = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -32,7 +33,7 @@ export default function PayPage() {
     return () => { active = false; };
   }, [id, router]);
 
-  async function startCheckout() {
+  const startCheckout = async () => {
     if (pending) return;
     const result = paymentSchema.safeParse({ bookingId: id, provider: "STRIPE" });
     if (!result.success) {
@@ -50,7 +51,9 @@ export default function PayPage() {
       toast.error(axios.isAxiosError(failure) ? failure.response?.data?.message ?? "Could not start Stripe Checkout." : "Could not start Stripe Checkout.");
       setPending(false);
     }
-  }
+  };
 
-  return <main className="mx-auto w-full max-w-xl flex-1 space-y-5 px-4 py-8 sm:px-6"><Link href="/dashboard/customer" className="text-xs underline underline-offset-4">Back to bookings</Link><h1 className="text-2xl font-semibold tracking-tight">Pay for booking</h1>{error && <Alert variant="destructive"><AlertTitle>Booking unavailable</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}{!error && !booking && <p className="text-sm text-muted-foreground">Loading booking…</p>}{booking && <div className="space-y-4 rounded-lg border p-4"><div><p className="font-medium">{booking.service.title}</p><p className="mt-1 text-sm text-muted-foreground">Amount: ৳{booking.priceAtBooking}</p></div>{booking.status === "ACCEPTED" ? <PendingButton pending={pending} pendingText="Opening Stripe Checkout" onClick={startCheckout}>Continue to Stripe</PendingButton> : <p className="text-sm text-muted-foreground">This booking is {booking.status.toLowerCase().replaceAll("_", " ")} and is not ready for payment.</p>}</div>}<Button variant="ghost" render={<Link href="/dashboard/customer" />}>View bookings</Button></main>;
-}
+  return <main className="mx-auto w-full max-w-xl flex-1 space-y-5 px-4 py-8 sm:px-6"><Link href="/dashboard/customer" className="text-xs underline underline-offset-4">Back to bookings</Link><h1 className="text-2xl font-semibold tracking-tight">Pay for booking</h1>{error && <Alert variant="destructive"><AlertTitle>Booking unavailable</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}{!error && !booking && <BookingDetailSkeleton />}{booking && <div className="space-y-4 rounded-lg border p-4"><div><p className="font-medium">{booking.service.title}</p><p className="mt-1 text-sm text-muted-foreground">Amount: ৳{booking.priceAtBooking}</p></div>{booking.status === "ACCEPTED" ? <PendingButton pending={pending} pendingText="Opening Stripe Checkout" onClick={startCheckout}>Continue to Stripe</PendingButton> : <p className="text-sm text-muted-foreground">This booking is {booking.status.toLowerCase().replaceAll("_", " ")} and is not ready for payment.</p>}</div>}<Button variant="ghost" render={<Link href="/dashboard/customer" />}>View bookings</Button></main>;
+};
+
+export default PayPage;

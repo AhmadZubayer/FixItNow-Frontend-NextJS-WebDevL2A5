@@ -1,4 +1,4 @@
-Completion Progress: [13]%
+Completion Progress: [14]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 11 / 85 |
-| Remaining tasks | 74 |
-| Overall state | S02-T05 pushed; S02-T06 next |
-| Current task | S02-T05 complete; S02-T06 next |
+| Completed tasks | 12 / 85 |
+| Remaining tasks | 73 |
+| Overall state | S02-T06 validated; frontend push pending |
+| Current task | S02-T06 loading, skeleton, error and empty states |
 | Last completed task | S02-T05 responsive layouts and efficient requests |
-| Next task | S02-T06 loading skeletons and error/empty states |
+| Next task | S03-T01 set every card fill to #EFEFEF |
 | Last successful GitHub push | Frontend main bcb3195 (S02-T05); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S02-T05 |
-| Task description | Ensure responsive layouts, efficient data fetching, and fast interactions on desktop and mobile |
-| State | Completed, validated, committed and pushed |
+| Task ID | S02-T06 |
+| Task description | Add sensible loading states, skeletons, and error/empty states |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/services/page.tsx, three browser tests, TASKS.md, PROGRESS.md |
-| Work already implemented | Independent categories, services, and technician requests now start together. Browser tests check 375 px page widths for services, technician profile, and admin technician management; mobile category filtering works. Existing filter transitions/debounce and responsive grids remain. |
-| Work still to do | S02-T05 delivered. Begin S02-T06 after this progress update is pushed. |
-| Tests / commands run | Frontend lint and production build; services, booking, and dashboard browser tests including mobile overflow assertions and mobile filter click. |
-| Results / errors | All checks passed at 375 px and desktop. Browser tests use mock backend; no network performance measurement against deployed services was made. |
-| Changes only on local machine | This S02-T05 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S02-T06 by auditing loading, skeleton, error and empty states. |
+| Files changed | components/booking-detail-skeleton.tsx, payment and review booking pages, booking browser test, TASKS.md, PROGRESS.md |
+| Work already implemented | Added compact shared booking detail skeleton to payment/review pages, replaced plain loading text, and aligned review failures with the shared Alert style. Existing root error boundary, route skeletons, dashboard error/empty states remain. |
+| Work still to do | Commit and push frontend task files, then begin S03-T01. |
+| Tests / commands run | Frontend lint and production build; browser booking test with delayed detail fetch and missing-booking error response. |
+| Results / errors | All checks passed. Browser saw the loading status skeleton and Booking unavailable alert. Browser test uses mock backend. |
+| Changes only on local machine | S02-T06 frontend source, browser test, and tracking updates pending commit/push. |
+| Commits awaiting push | S02-T06 frontend commit to create and push. |
+| **Exact next action** | Stage S02-T06 files, commit and push main, record hash, then begin S03-T01. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S02-T05 |
+| Task ID | S02-T06 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -64,6 +64,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T03 | Follow TypeScript/Next.js conventions | Audited typed server/client boundaries, route handlers, strict TS settings, alias imports, and shared UI reuse; prior lint/type/build remain green; 9 of 85 checked | `09417d4` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T04 | Use shadcn controls in application code | Converted native selects, checkbox, and buttons; no remaining native controls outside generated UI files; lint/type/build and browser checks passed; 10 of 85 checked | `0fea46d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T05 | Keep layouts responsive and requests efficient | Parallelized independent services data requests; services, profile and admin management passed 375 px overflow checks, plus mobile filter interaction; lint/build passed; 11 of 85 checked | `bcb3195` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
