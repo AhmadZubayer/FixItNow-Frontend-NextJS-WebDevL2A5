@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 5 / 85 |
 | Remaining tasks | 80 |
-| Overall state | S01-T05 validated; Git delivery pending |
-| Current task | S01-T05 delivery in progress |
-| Last completed task | S01-T04 — journey and UI gaps identified |
+| Overall state | S01-T05 pushed; S01-T06 next |
+| Current task | S01-T05 complete; S01-T06 next |
+| Last completed task | S01-T05 fix required workflow and API issues |
 | Next task | S01-T06 preserve role permissions, data relationships, and existing working features |
-| Last successful GitHub push | Frontend `main` `e0a7b2d` (S01-T04) |
+| Last successful GitHub push | Frontend main f5aeb78; backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S01-T05 |
 | Task description | Fix required frontend/backend/API/Prisma issues without changing the intended workflow |
-| State | Validated; commits and pushes pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend and backend implementation |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | Frontend: dashboard role/payment/technician views, proxy, services listing and filters, public API types, booking form, technician availability editor, three browser tests, TASKS.md and PROGRESS.md. Backend: admin payment history/shares, public query validation and data logic, profile availability status, four tests. |
 | Work already implemented | Services filtering and pagination, admin payment and technician views, dashboard role checks, booking calendar with booked/available status, technician day scheduler, and 85/15 accounting. No schema or migration changes. |
-| Work still to do | Commit and push backend first, then frontend. Future visual and global UI refinements have separate checklist items. Accounting shares are not Stripe transfers. No live database or payment provider was exercised. |
+| Work still to do | S01-T05 is delivered. Begin S01-T06 after this tracking update is pushed. Future visual and global UI refinements have separate checklist items. Accounting shares are not Stripe transfers. |
 | Tests / commands run | Frontend lint, frontend/backend builds and TypeScript checks, three browser tests (services, dashboard roles/payments, booking slots), four backend mocked tests, and git diff --check in both repos. |
 | Results / errors | All final checks passed. Browser tests use a local mock backend; backend data tests mock Prisma. No live database query or payment provider transfer was verified. The existing real-backend E2E script changes data and assumes credentials, so it was not used. |
-| Changes only on local machine | Frontend S01-T05 work; backend task commit 7ce0891 was pushed to origin/main on 2026-11-09. |
-| Commits awaiting push | Frontend S01-T05 commit not yet created. Backend task commit 7ce0891 pushed. Three pre-existing backend commits were also ahead of upstream and went with that push. |
-| **Exact next action** | Stage only S01-T05 frontend implementation, browser tests, TASKS.md and PROGRESS.md; commit and push main. Then record the frontend hash in PROGRESS.md and push a tracking update before S01-T06. |
+| Changes only on local machine | This tracking update only. S01-T05 task commits are pushed in both repositories. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Commit and push this progress record on frontend main, then begin S01-T06 by reviewing role permissions and data relationships against the implemented flows. |
 
 ## Verified task completion history
 
@@ -57,9 +57,11 @@ Add **one row per verified task** after implementation and validation; include a
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T03 | Inspect visual and README references | Viewed both supplied image assets and read backend README; recorded layout, controls, content, and documentation tone; 3 of 85 checked | `ad3b9a4` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T04 | Identify journey and UI differences | Compared actual pages, components, route handlers, backend queries and role flows with requirements and both references; actionable gaps documented below; 4 of 85 checked | `e0a7b2d` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
-| S01-T05 | Fix required workflow/API issues | Frontend lint/build/typecheck, backend build/typecheck, three mock-backed browser tests, four backend query/accounting tests, and diff checks passed; 5 of 85 checked | Pending frontend commit / `main` | `7ce0891` / `main` | Backend pushed; frontend pending | 2026-11-09 |
+| S01-T05 | Fix required workflow/API issues | Frontend lint/build/typecheck, backend build/typecheck, three mock-backed browser tests, four backend query/accounting tests, and diff checks passed; 5 of 85 checked | `f5aeb78` / `main` | `7ce0891` / `main` | Pushed to both origin/main branches | 2026-11-09 |
 
 ## Blockers, decisions, and risks
+
+S01-T05 delivery (2026-11-09): Backend `main` commit `7ce0891` and frontend `main` commit `f5aeb78` were pushed to their configured `origin/main` branches. The backend push also carried its three pre-existing ahead-of-upstream commits. The unrelated backend `deploy.txt` deletion and untracked `.vscode/`, `deploy_fix.md`, and `docs/APIDemo.md` remain outside the task. Final checks passed: frontend lint/build/typecheck; backend build/typecheck; browser tests for services, dashboard roles/admin views, and booking slots; four mocked backend tests; diff checks. Browser tests use a mock backend and backend data tests mock Prisma. No live database or payment-provider behavior was verified; existing real-backend E2E script writes data and assumes credentials, so it was not run. Customer booking remains one service per booking. The 85/15 values represent accounting allocations, not a provider transfer.
 
 S01-T02 review findings for later fix tasks: `/services` currently filters `q` in frontend memory after fetching and the backend service/technician query schemas have no search, sort, or pagination fields. Dashboard access is initially checked by cookie presence in `proxy.ts`; each dashboard also checks its role through `/api/session/me`, while backend `auth()` enforces roles and blocked accounts on protected endpoints. Admin currently has users, categories, and bookings routes but no dedicated platform payment history endpoint. No Prisma changes were made. Backend `main` began three commits ahead of upstream, with unrelated `deploy.txt` deletion and untracked `.vscode/`, `deploy_fix.md`, and `docs/APIDemo.md`; leave these untouched. For any blocker, record the failing command, impact, and safe next step.
 
