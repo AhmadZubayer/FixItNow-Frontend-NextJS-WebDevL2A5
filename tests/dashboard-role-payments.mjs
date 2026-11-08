@@ -52,6 +52,10 @@ const backend = createHttpServer((request, response) => {
     send(response, 403, { message: "Forbidden" });
   } else if (request.url === "/api/admin/users" && role === "ADMIN") {
     send(response, 200, { data: users });
+  } else if (request.url === "/api/admin/bookings" && role === "ADMIN") {
+    send(response, 200, { data: [] });
+  } else if (request.url === "/api/admin/categories" && role === "ADMIN") {
+    send(response, 200, { data: [{ id: "11111111-1111-4111-8111-111111111111", name: "Electrical", slug: "electrical", description: "Electrical work", isActive: true }] });
   } else if (request.url?.startsWith("/api/admin/users/") && request.method === "PATCH" && role === "ADMIN") {
     let body = "";
     request.on("data", (chunk) => { body += chunk; });
@@ -144,7 +148,15 @@ try {
   await page.getByRole("heading", { name: "Platform payment history" }).waitFor();
   await page.getByRole("cell", { name: "৳85.00" }).waitFor();
   await page.getByRole("cell", { name: "৳15.00" }).waitFor();
-  console.log("PASS dashboard roles, admin payments, and technician management");
+  await page.goto(`${base}/dashboard/admin`);
+  await page.getByRole("heading", { name: "Categories" }).waitFor();
+  await page.getByRole("button", { name: "Edit" }).click();
+  const active = page.getByRole("checkbox", { name: "Active" });
+  await active.waitFor();
+  assert.equal(await active.isChecked(), true);
+  await active.click();
+  assert.equal(await active.isChecked(), false);
+  console.log("PASS dashboard roles, admin views, and category checkbox");
 } finally {
   await browser?.close();
   if (frontend.exitCode === null) {

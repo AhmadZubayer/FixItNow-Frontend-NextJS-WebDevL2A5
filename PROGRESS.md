@@ -1,4 +1,4 @@
-Completion Progress: [11]%
+Completion Progress: [12]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 9 / 85 |
-| Remaining tasks | 76 |
-| Overall state | S02-T03 pushed; S02-T04 next |
-| Current task | S02-T03 complete; S02-T04 next |
+| Completed tasks | 10 / 85 |
+| Remaining tasks | 75 |
+| Overall state | S02-T04 validated; frontend push pending |
+| Current task | S02-T04 shadcn interactive controls |
 | Last completed task | S02-T03 TypeScript/Next.js conventions and reuse |
-| Next task | S02-T04 use shadcn/ui controls |
+| Next task | S02-T05 responsive layouts and efficient interactions |
 | Last successful GitHub push | Frontend main 09417d4 (S02-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S02-T03 |
-| Task description | Follow existing TypeScript/Next.js conventions and reuse shared components wherever practical |
-| State | Completed, validated, committed and pushed |
+| Task ID | S02-T04 |
+| Task description | Use shadcn/ui components in place of plain native controls wherever available |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | TASKS.md and PROGRESS.md tracking only |
-| Work already implemented | Inspected tsconfig alias and strict type settings, services server page, client filter component, and admin route handler. Touched code follows the typed server/client and route conventions and reuses shared components. |
-| Work still to do | Push this review task tracking update, then begin S02-T04 shadcn controls. |
-| Tests / commands run | Frontend lint, TypeScript noEmit, and production build passed at the end of S02-T02, with no source changes since. Read-only convention audit for this item. |
-| Results / errors | No convention or reuse regression found. No code edits needed. |
-| Changes only on local machine | This S02-T03 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S02-T04 by auditing native controls and choosing focused shadcn replacements. |
+| Files changed | Booking, registration, technician service, admin category, review, dashboard retry controls, two browser tests, TASKS.md and PROGRESS.md |
+| Work already implemented | Replaced native app controls with shadcn Button, Select, and Checkbox while keeping form labels, validation, and fieldset semantics. Converted touched component declarations to arrow functions. Native-control rg scan outside generated UI files returns no matches. |
+| Work still to do | Commit and push frontend task files, then begin S02-T05. |
+| Tests / commands run | Frontend tsc --noEmit, lint, build, git diff --check, native-control rg scan, booking browser test covering slot, register select and review rating, dashboard browser test covering roles, admin views and category checkbox. |
+| Results / errors | All checks passed. UI tests used mock backend; technician category Select was type/build checked but not browser exercised. |
+| Changes only on local machine | S02-T04 frontend code, tests, and tracking updates pending commit/push. |
+| Commits awaiting push | S02-T04 frontend commit to create and push. |
+| **Exact next action** | Stage only S02-T04 frontend files, commit and push main, record hash, then begin S02-T05. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S02-T03 |
+| Task ID | S02-T04 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -62,6 +62,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T01 | Use arrow definitions in modified code | Converted the technician dashboard component and two public API helpers; lint, TypeScript, build, two browser tests, and diff check passed; 7 of 85 checked | `6443522` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T02 | Keep touched controls readable | Reformatted booking and availability controls without behavior changes; frontend lint, TypeScript, build, and booking browser regression passed; 8 of 85 checked | `35861d3` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T03 | Follow TypeScript/Next.js conventions | Audited typed server/client boundaries, route handlers, strict TS settings, alias imports, and shared UI reuse; prior lint/type/build remain green; 9 of 85 checked | `09417d4` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S02-T04 | Use shadcn controls in application code | Converted native selects, checkbox, and buttons; no remaining native controls outside generated UI files; lint/type/build and browser checks passed; 10 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

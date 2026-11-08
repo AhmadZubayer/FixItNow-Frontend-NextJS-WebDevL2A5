@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import PendingButton from "@/components/pending-button";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -109,17 +110,18 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
             const fits = !!chosenService && (new Date(slot.endAt).getTime() - new Date(slot.startAt).getTime()) >= chosenService.durationMinutes * 60_000;
             const booked = slot.bookings.length > 0;
             const available = slot.isActive && !booked && fits;
-            return <button
+            return <Button
               key={slot.id}
+              variant="outline"
               type="button"
               disabled={!available}
               aria-pressed={values.availabilitySlotId === slot.id}
               onClick={() => { setValues((current) => ({ ...current, availabilitySlotId: slot.id })); setErrors({}); }}
-              className="rounded-md border px-3 py-2 text-left text-sm transition-colors enabled:hover:border-black enabled:focus-visible:outline-2 enabled:focus-visible:outline-offset-2 aria-pressed:border-black aria-pressed:bg-[#EFEFEF] disabled:cursor-not-allowed disabled:opacity-55"
+              className="h-auto min-w-0 flex-col items-start whitespace-normal px-3 py-2 text-left text-sm enabled:hover:border-black aria-pressed:border-black aria-pressed:bg-[#EFEFEF]"
             >
               <span className="block">{slotTime(slot.startAt)}–{slotTime(slot.endAt)}</span>
               <span className="text-xs text-muted-foreground">{booked ? "Booked" : fits ? "Available" : "Too short"}</span>
-            </button>;
+            </Button>;
           })}
         </div>
         {!visibleSlots.length && <p className="text-sm text-muted-foreground">Select a day to see time slots.</p>}

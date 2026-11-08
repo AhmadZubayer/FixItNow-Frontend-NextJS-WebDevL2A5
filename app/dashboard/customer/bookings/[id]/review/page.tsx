@@ -8,12 +8,13 @@ import { toast } from "sonner";
 
 import PendingButton from "@/components/pending-button";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { reviewSchema, type ReviewValues } from "@/validations/review.validation";
 
 type Booking = { id: string; status: string; service: { title: string } };
 
-export default function ReviewPage() {
+const ReviewPage = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -34,7 +35,7 @@ export default function ReviewPage() {
     return () => { active = false; };
   }, [id, router]);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
     const result = reviewSchema.safeParse({ ...values, comment: values.comment?.trim() || undefined });
@@ -54,7 +55,9 @@ export default function ReviewPage() {
     } finally {
       setPending(false);
     }
-  }
+  };
 
-  return <main className="mx-auto w-full max-w-xl flex-1 space-y-5 px-4 py-8 sm:px-6"><Link href="/dashboard/customer" className="text-xs underline underline-offset-4">Back to bookings</Link><h1 className="text-2xl font-semibold tracking-tight">Leave a review</h1>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}{!booking && !error && <p className="text-sm text-muted-foreground">Loading booking…</p>}{booking && booking.status !== "COMPLETED" && <p className="text-sm text-muted-foreground">Reviews are available after the job is completed.</p>}{booking?.status === "COMPLETED" && <form onSubmit={handleSubmit} className="space-y-4" noValidate><p className="font-medium">{booking.service.title}</p><div className="space-y-1"><Label htmlFor="rating">Rating</Label><select id="rating" value={values.rating} onChange={(event) => setValues({ ...values, rating: Number(event.target.value) })} aria-invalid={!!errors.rating} aria-describedby={errors.rating ? "rating-error" : undefined} className="flex h-7 w-full rounded-md border bg-background px-2 text-xs">{[5, 4, 3, 2, 1].map((rating) => <option key={rating} value={rating}>{rating} stars</option>)}</select>{errors.rating && <p id="rating-error" className="text-xs text-destructive">{errors.rating[0]}</p>}</div><div className="space-y-1"><Label htmlFor="comment">Comment (optional)</Label><Textarea id="comment" value={values.comment ?? ""} onChange={(event) => setValues({ ...values, comment: event.target.value })} aria-invalid={!!errors.comment} aria-describedby={errors.comment ? "comment-error" : undefined} />{errors.comment && <p id="comment-error" className="text-xs text-destructive">{errors.comment[0]}</p>}</div><PendingButton type="submit" pending={pending} pendingText="Submitting review">Submit review</PendingButton></form>}</main>;
-}
+  return <main className="mx-auto w-full max-w-xl flex-1 space-y-5 px-4 py-8 sm:px-6"><Link href="/dashboard/customer" className="text-xs underline underline-offset-4">Back to bookings</Link><h1 className="text-2xl font-semibold tracking-tight">Leave a review</h1>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}{!booking && !error && <p className="text-sm text-muted-foreground">Loading booking…</p>}{booking && booking.status !== "COMPLETED" && <p className="text-sm text-muted-foreground">Reviews are available after the job is completed.</p>}{booking?.status === "COMPLETED" && <form onSubmit={handleSubmit} className="space-y-4" noValidate><p className="font-medium">{booking.service.title}</p><div className="space-y-1"><Label htmlFor="rating">Rating</Label><Select value={String(values.rating)} onValueChange={(rating) => { if (rating) setValues({ ...values, rating: Number(rating) }); }}><SelectTrigger id="rating" className="w-full" aria-invalid={!!errors.rating} aria-describedby={errors.rating ? "rating-error" : undefined}><SelectValue>{(rating: string) => `${rating} stars`}</SelectValue></SelectTrigger><SelectContent>{[5, 4, 3, 2, 1].map((rating) => <SelectItem key={rating} value={String(rating)}>{rating} stars</SelectItem>)}</SelectContent></Select>{errors.rating && <p id="rating-error" className="text-xs text-destructive">{errors.rating[0]}</p>}</div><div className="space-y-1"><Label htmlFor="comment">Comment (optional)</Label><Textarea id="comment" value={values.comment ?? ""} onChange={(event) => setValues({ ...values, comment: event.target.value })} aria-invalid={!!errors.comment} aria-describedby={errors.comment ? "comment-error" : undefined} />{errors.comment && <p id="comment-error" className="text-xs text-destructive">{errors.comment[0]}</p>}</div><PendingButton type="submit" pending={pending} pendingText="Submitting review">Submit review</PendingButton></form>}</main>;
+};
+
+export default ReviewPage;

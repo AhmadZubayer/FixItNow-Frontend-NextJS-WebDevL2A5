@@ -21,6 +21,7 @@ const chosenService = "44444444-4444-4444-8444-444444444444";
 const otherService = "55555555-5555-4555-8555-555555555555";
 const openSlot = "66666666-6666-4666-8666-666666666666";
 const bookedSlot = "77777777-7777-4777-8777-777777777777";
+const completedBooking = "88888888-8888-4888-8888-888888888888";
 const startAt = new Date(Date.now() + 7 * 86400000).toISOString();
 const endAt = new Date(new Date(startAt).getTime() + 2 * 3600000).toISOString();
 const bookings = [];
@@ -43,6 +44,7 @@ const send = (response, status, data) => {
 const backend = createHttpServer((request, response) => {
   if (request.url === `/api/technicians/${profileId}`) return send(response, 200, { data: profile });
   if (request.url === "/api/auth/me") return send(response, 200, { data: { name: "Customer", role: "CUSTOMER" } });
+  if (request.url === `/api/bookings/${completedBooking}`) return send(response, 200, { data: { id: completedBooking, status: "COMPLETED", service: { title: "Chosen service" } } });
   if (request.url === "/api/bookings" && request.method === "POST") {
     let body = "";
     request.on("data", (part) => { body += part; });
@@ -77,7 +79,17 @@ try {
   await page.getByRole("button", { name: "Request booking" }).click();
   await page.waitForURL("**/dashboard/customer");
   assert.deepEqual(bookings, [{ serviceId: chosenService, availabilitySlotId: openSlot }]);
-  console.log("PASS selected service, visible booked slot, and one-slot booking request");
+  await page.goto(`${base}/auth/register`);
+  const accountType = page.getByRole("combobox", { name: "Account type" });
+  await accountType.click();
+  await page.getByRole("option", { name: "Technician" }).click();
+  await accountType.getByText("Technician").waitFor();
+  await page.goto(`${base}/dashboard/customer/bookings/${completedBooking}/review`);
+  const rating = page.getByRole("combobox", { name: "Rating" });
+  await rating.click();
+  await page.getByRole("option", { name: "4 stars" }).click();
+  await rating.getByText("4 stars").waitFor();
+  console.log("PASS booking slots, registration account type, and review rating controls");
 } finally {
   await browser?.close();
   if (frontend.exitCode === null) frontend.kill();
