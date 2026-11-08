@@ -1,54 +1,102 @@
+import Image from "next/image";
 import Link from "next/link";
 import { connection } from "next/server";
 
-import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/empty-state";
+import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import ServiceCard from "@/components/service-card";
-import SearchField from "@/components/search-field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { getCategories, getServices, getTechnicians } from "@/lib/public-api";
+import ServicesFilters from "@/components/services/filters";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { getCategories, getServices, getTechniciansPage } from "@/lib/public-api";
 import { searchSchema } from "@/validations/search.validation";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
-export default async function ServicesPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchParams> }) => {
   await connection();
   const raw = await searchParams;
-  const values = Object.fromEntries(Object.entries(raw).filter(([, value]) => value !== "" && value !== undefined));
-  const result = searchSchema.safeParse(values);
-  const categories = await getCategories();
+  const initial = Object.fromEntries(Object.entries(raw).filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[1] !== ""));
+  const result = searchSchema.safeParse(initial);
   const filters = result.success ? result.data : null;
-  const apiFilters = filters ? Object.fromEntries(
-    Object.entries(filters).filter(([key, value]) => key !== "q" && value !== undefined).map(([key, value]) => [key, String(value)]),
-  ) : undefined;
-  const [services, technicians] = filters ? await Promise.all([
-    getServices(apiFilters),
-    getTechnicians(Object.fromEntries(Object.entries(apiFilters ?? {}).filter(([key]) => ["categoryId", "location", "minRating"].includes(key)))),
-  ]) : [[], []];
-  const query = filters?.q?.toLowerCase();
-  const visibleServices = query ? services.filter((service) => [service.title, service.description, service.technicianProfile.user.name].some((part) => part.toLowerCase().includes(query))) : services;
-  const visibleTechnicians = query ? technicians.filter((technician) => [technician.user.name, technician.bio ?? "", ...technician.skills].some((part) => part.toLowerCase().includes(query))) : technicians;
-  const errors = result.success ? {} : result.error.flatten().fieldErrors;
+  const categories = await getCategories();
+  const serviceParams = filters ? Object.fromEntries(
+    Object.entries(filters).filter(([key, value]) => !["serviceId", "page"].includes(key) && value !== undefined).map(([key, value]) => [key, String(value)]),
+  ) : {};
+  const technicianParams = filters ? Object.fromEntries(
+    Object.entries(filters).filter(([, value]) => value !== undefined).map(([key, value]) => [key, String(value)]),
+  ) : {};
+  technicianParams.limit = "9";
+  technicianParams.page = String(filters?.page ?? 1);
+
+  const [services, technicianPage] = filters ? await Promise.all([
+    getServices(serviceParams),
+    getTechniciansPage(technicianParams),
+  ]) : [[], { technicians: [], meta: { page: 1, limit: 9, total: 0 } }];
+  const technicians = technicianPage.technicians;
+  const pageCount = Math.max(1, Math.ceil(technicianPage.meta.total / 9));
+  const page = technicianPage.meta.page;
+  const visiblePages = Array.from({ length: Math.min(5, pageCount) }, (_, index) =>
+    Math.min(Math.max(1, page - 2), Math.max(1, pageCount - 4)) + index);
+  const errors = result.success ? {} : Object.fromEntries(Object.entries(result.error.flatten().fieldErrors).map(([key, messages]) => [key, messages?.[0]]));
+
+  const hrefWith = (changes: Record<string, string>) => {
+    const params = new URLSearchParams(initial);
+    for (const [key, value] of Object.entries(changes)) {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    }
+    return `/services?${params.toString()}`;
+  };
 
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Browse services</h1>
-        <p className="text-sm text-muted-foreground">Find available professionals by category, location, rating, and price.</p>
+    <main className="mx-auto w-full max-w-7xl flex-1 space-y-6 bg-white px-4 py-8 sm:px-6">
+      <div className="flex flex-wrap items-center gap-3 text-sm">
+        <Link href="/" className="font-medium text-[#9AE600] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2">← Back</Link>
+        <PageBreadcrumbs items={[{ label: "Home", href: "/" }, { label: "Services & Technicians" }]} />
       </div>
-      <form action="/services" method="get" className="grid gap-3 rounded-lg border p-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Service filters">
-        <SearchField id="q" name="q" label="Search" defaultValue={typeof raw.q === "string" ? raw.q : ""} placeholder="Service or technician" error={errors.q?.[0]} />
-        <div className="space-y-1"><Label htmlFor="categoryId">Category</Label><select id="categoryId" name="categoryId" defaultValue={typeof raw.categoryId === "string" ? raw.categoryId : ""} aria-invalid={!!errors.categoryId} aria-describedby={errors.categoryId ? "category-error" : undefined} className="flex h-7 w-full rounded-md border bg-background px-2 text-xs"><option value="">All categories</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select>{errors.categoryId && <p id="category-error" className="text-xs text-destructive">{errors.categoryId[0]}</p>}</div>
-        <div className="space-y-1"><Label htmlFor="location">Location</Label><Input id="location" name="location" defaultValue={typeof raw.location === "string" ? raw.location : ""} placeholder="City or area" aria-invalid={!!errors.location} aria-describedby={errors.location ? "location-error" : undefined} />{errors.location && <p id="location-error" className="text-xs text-destructive">{errors.location[0]}</p>}</div>
-        <div className="space-y-1"><Label htmlFor="minRating">Minimum rating</Label><select id="minRating" name="minRating" defaultValue={typeof raw.minRating === "string" ? raw.minRating : ""} aria-invalid={!!errors.minRating} aria-describedby={errors.minRating ? "rating-error" : undefined} className="flex h-7 w-full rounded-md border bg-background px-2 text-xs"><option value="">Any rating</option>{[3, 4, 5].map((rating) => <option key={rating} value={rating}>{rating}+ stars</option>)}</select>{errors.minRating && <p id="rating-error" className="text-xs text-destructive">{errors.minRating[0]}</p>}</div>
-        <div className="space-y-1"><Label htmlFor="minPrice">Minimum price</Label><Input id="minPrice" name="minPrice" inputMode="decimal" defaultValue={typeof raw.minPrice === "string" ? raw.minPrice : ""} aria-invalid={!!errors.minPrice} aria-describedby={errors.minPrice ? "min-price-error" : undefined} />{errors.minPrice && <p id="min-price-error" className="text-xs text-destructive">{errors.minPrice[0]}</p>}</div>
-        <div className="space-y-1"><Label htmlFor="maxPrice">Maximum price</Label><Input id="maxPrice" name="maxPrice" inputMode="decimal" defaultValue={typeof raw.maxPrice === "string" ? raw.maxPrice : ""} aria-invalid={!!errors.maxPrice} aria-describedby={errors.maxPrice ? "max-price-error" : undefined} />{errors.maxPrice && <p id="max-price-error" className="text-xs text-destructive">{errors.maxPrice[0]}</p>}</div>
-        <div className="flex items-end gap-2 lg:col-span-2"><Button type="submit">Apply filters</Button><Button variant="ghost" render={<Link href="/services" />}>Clear</Button></div>
-      </form>
-      {!result.success && <p role="alert" className="text-sm text-destructive">Check the highlighted filters and try again.</p>}
-      <section className="space-y-3" aria-labelledby="service-results"><div className="flex items-baseline justify-between"><h2 id="service-results" className="text-lg font-semibold">Services</h2><span className="text-xs text-muted-foreground">{visibleServices.length} results</span></div>{visibleServices.length ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleServices.map((service) => <ServiceCard key={service.id} service={service} />)}</div> : <EmptyState title="No services found" description="Try a different search or filter." />}</section>
-      <section className="space-y-3" aria-labelledby="technician-results"><div className="flex items-baseline justify-between"><h2 id="technician-results" className="text-lg font-semibold">Technicians</h2><span className="text-xs text-muted-foreground">{visibleTechnicians.length} results</span></div>{visibleTechnicians.length ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{visibleTechnicians.map((technician) => <Link key={technician.id} href={`/technicians/${technician.id}`} className="rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-ring"><h3 className="font-medium">{technician.user.name}</h3><p className="mt-1 text-xs text-muted-foreground">{technician.location} · {technician.averageRating.toFixed(1)} rating</p><p className="mt-2 line-clamp-2 text-xs">{technician.bio}</p></Link>)}</div> : <EmptyState title="No technicians found" description="Try a different search or filter." />}</section>
+      <div className="grid gap-8 lg:grid-cols-[14rem_minmax(0,1fr)]">
+        <aside className="space-y-4 border-b pb-5 lg:border-r lg:border-b-0 lg:pr-6" aria-label="Service categories">
+          <h2 className="text-lg font-semibold">Services</h2>
+          <nav className="flex gap-1 overflow-x-auto lg:flex-col" aria-label="Filter by category">
+            <Link href={hrefWith({ categoryId: "", serviceId: "", page: "" })} aria-current={!filters?.categoryId ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap hover:bg-[#EFEFEF] ${!filters?.categoryId ? "bg-[#9AE600]/30 font-semibold" : ""}`}>All</Link>
+            {categories.map((category) => (
+              <Link key={category.id} href={hrefWith({ categoryId: category.id, serviceId: "", page: "" })} aria-current={filters?.categoryId === category.id ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap hover:bg-[#EFEFEF] ${filters?.categoryId === category.id ? "bg-[#9AE600]/30 font-semibold" : ""}`}>{category.name}</Link>
+            ))}
+          </nav>
+        </aside>
+        <div className="min-w-0 space-y-8">
+          <div className="space-y-4">
+            <div><h1 className="text-3xl font-semibold tracking-tight">Technicians</h1><p className="mt-1 text-sm text-muted-foreground">Browse services and find an available professional.</p></div>
+            <ServicesFilters key={new URLSearchParams(initial).toString()} categories={categories} initial={initial} errors={errors} />
+            {!result.success && <p role="alert" className="text-sm text-destructive">Check the highlighted filters and try again.</p>}
+          </div>
+          <section className="space-y-3" aria-labelledby="service-results">
+            <div className="flex items-baseline justify-between"><h2 id="service-results" className="text-lg font-semibold">Services</h2><span className="text-xs text-muted-foreground">{services.length} results</span></div>
+            {services.length ? <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{services.map((service) => <ServiceCard key={service.id} service={service} filterHref={hrefWith({ serviceId: filters?.serviceId === service.id ? "" : service.id, page: "" })} selected={filters?.serviceId === service.id} />)}</div> : <EmptyState title="No services found" description="Try a different search or filter." />}
+          </section>
+          <section className="space-y-3" aria-labelledby="technician-results">
+            <div className="flex items-baseline justify-between"><h2 id="technician-results" className="text-lg font-semibold">Technicians</h2><span className="text-xs text-muted-foreground">{technicianPage.meta.total} results</span></div>
+            {filters?.serviceId && <p className="text-sm text-muted-foreground">Showing technicians for the selected service. Select that service again to clear it.</p>}
+            {technicians.length ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{technicians.map((technician) => (
+              <Link key={technician.id} href={`/technicians/${technician.id}${filters?.serviceId ? `?serviceId=${encodeURIComponent(filters.serviceId)}` : ""}`} className="flex min-h-44 flex-col gap-3 rounded-xl border border-transparent bg-[#EFEFEF] p-4 transition-colors hover:border-black focus-visible:border-black focus-visible:outline-2 focus-visible:outline-offset-2">
+                <div className="flex items-start gap-3">
+                  {technician.profilePhoto ? <Image src={technician.profilePhoto} alt="" width={48} height={48} unoptimized className="size-12 rounded-full object-cover" /> : <div aria-hidden="true" className="flex size-12 items-center justify-center rounded-full bg-white font-semibold">{technician.user.name.charAt(0)}</div>}
+                  <div><h3 className="font-semibold">{technician.user.name}</h3><p className="text-xs text-muted-foreground">{technician.location}</p></div>
+                </div>
+                <p className="line-clamp-2 text-sm text-muted-foreground">{technician.bio || "Professional home services."}</p>
+                <div className="mt-auto flex items-center justify-between gap-2 text-sm"><span>★ {technician.averageRating.toFixed(1)} ({technician.reviewCount})</span><span className="font-semibold">{technician.services.length ? `From ৳${Math.min(...technician.services.map((service) => Number(service.price))).toFixed(0)}` : "View profile"}</span></div>
+              </Link>
+            ))}</div> : <EmptyState title="No technicians found" description="Try a different search or filter." />}
+            {technicianPage.meta.total > 0 && <Pagination className="pt-4"><PaginationContent>
+              {page > 1 && <PaginationItem><PaginationPrevious href={hrefWith({ page: String(page - 1) })} /></PaginationItem>}
+              {visiblePages.map((number) => <PaginationItem key={number}><PaginationLink href={hrefWith({ page: String(number) })} isActive={number === page}>{number}</PaginationLink></PaginationItem>)}
+              {page < pageCount && <PaginationItem><PaginationNext href={hrefWith({ page: String(page + 1) })} /></PaginationItem>}
+            </PaginationContent></Pagination>}
+          </section>
+        </div>
+      </div>
     </main>
   );
-}
+};
+
+export default ServicesPage;

@@ -35,10 +35,10 @@ export type Technician = {
     title: string;
     description?: string;
     price: string;
-    durationMinutes?: number;
+    durationMinutes: number;
     category: Category;
   }>;
-  availabilitySlots?: Array<{ id: string; startAt: string; endAt: string }>;
+  availabilitySlots?: Array<{ id: string; startAt: string; endAt: string; isActive: boolean; bookings: Array<{ status: string }> }>;
   reviews?: Array<{
     id: string;
     rating: number;
@@ -57,15 +57,20 @@ export async function getCategories() {
   return response.data.data;
 }
 
-export async function getServices(params?: Record<string, string>) {
+export const getServices = async (params?: Record<string, string>) => {
   const response = await backend.get<ApiResponse<Service[]>>("/api/services", { params });
   return response.data.data;
-}
+};
 
-export async function getTechnicians(params?: Record<string, string>) {
+export const getTechnicians = async (params?: Record<string, string>) => {
   const response = await backend.get<ApiResponse<Technician[]>>("/api/technicians", { params });
   return response.data.data;
-}
+};
+
+export const getTechniciansPage = async (params: Record<string, string>) => {
+  const response = await backend.get<ApiResponse<Technician[]> & { meta: { page: number; limit: number; total: number } }>("/api/technicians", { params });
+  return { technicians: response.data.data, meta: response.data.meta };
+};
 
 export async function getTechnician(id: string) {
   const response = await backend.get<ApiResponse<Technician>>(`/api/technicians/${id}`);
