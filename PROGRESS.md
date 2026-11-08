@@ -1,4 +1,4 @@
-Completion Progress: [1]%
+Completion Progress: [2]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,14 +8,14 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 1 / 85 |
-| Remaining tasks | 84 |
-| Overall state | S01-T01 verified; awaiting frontend push |
-| Current task | S01-T01 — documentation review, awaiting push |
-| Last completed task | S01-T01 — requirements and role journeys reviewed |
-| Next task | S01-T02 — review frontend routes, components, auth, API calls, backend endpoints, Prisma schema, and tests |
-| Last successful GitHub push | None recorded |
-| Last updated | Not yet started |
+| Completed tasks | 2 / 85 |
+| Remaining tasks | 83 |
+| Overall state | S01-T02 verified; awaiting frontend push |
+| Current task | S01-T02 — implementation inventory, awaiting push |
+| Last completed task | S01-T02 — frontend and backend implementation reviewed |
+| Next task | S01-T03 — inspect supplied UI references and backend README |
+| Last successful GitHub push | Frontend `main` `38c35de` (S01-T01) |
+| Last updated | 2026-11-08 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
 
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S01-T01 |
-| Task description | Read `REQUIREMENTS.md` and understand the current customer, technician, and admin journeys |
+| Task ID | S01-T02 |
+| Task description | Review frontend routes, components, authentication, API calls, backend endpoints, Prisma schema, and existing tests |
 | State | Awaiting push |
-| Repositories affected | Frontend documentation only |
+| Repositories affected | Frontend documentation; backend read-only review |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | `TASKS.md`, `progress.md` |
-| Work already implemented | Read all required instructions and task files; confirmed 85 checklist items. Customer: browse/filter services and technicians, choose an available slot, request a booking, pay after acceptance, track status and review completed work. Technician: set up profile/services and availability, accept/decline requests, start paid jobs, then complete them. Admin: oversee users, technicians, categories, statistics, and platform payment history. Preserve role-based access, status-specific actions, and the 85% technician / 15% platform payment split. |
-| Work still to do | Commit and push frontend S01-T01 tracking update, then start S01-T02. |
-| Tests / commands run | `git status --short --branch`, `git remote -v`, `git log -1`, package script inspection, checklist count |
-| Results / errors | Requirements review complete. Frontend clean at startup; backend has unrelated `deploy.txt` deletion and three untracked paths plus three local commits ahead of upstream. |
-| Changes only on local machine | `TASKS.md`, `progress.md` pending commit |
-| Commits awaiting push | Backend's three pre-existing commits are outside S01-T01; do not alter or claim them. |
-| **Exact next action** | Commit scoped S01-T01 tracking files and push frontend `main`; verify remote before proceeding to S01-T02. |
+| Files changed | `TASKS.md`, `PROGRESS.md` |
+| Work already implemented | Mapped 38 frontend page/route-handler files, shared UI and validation modules, session cookie proxy handlers, dashboard role checks, backend route groups and auth middleware, all 8 Prisma models and 4 migration files, and existing test scripts. |
+| Work still to do | Commit and push S01-T02 frontend tracking update, then inspect UI references and backend README for S01-T03. |
+| Tests / commands run | `rg --files` and `rg -n` route/API/auth/test inventories; read frontend `proxy.ts`, layout, services/profile/dashboard pages and session handlers; read backend `app.ts`, route modules, auth middleware, Prisma schema, migration list, and package scripts. |
+| Results / errors | Review completed; no runtime behavior claimed. Frontend has `lint`, `build`, `test:e2e`; backend has `build` but no test script. Some search commands initially used nonexistent paths or PowerShell wildcard paths; corrected and inspected the intended files. |
+| Changes only on local machine | `TASKS.md`, `PROGRESS.md` pending commit |
+| Commits awaiting push | Backend's three pre-existing commits are outside this task; do not alter or claim them. |
+| **Exact next action** | Verify checklist count and whitespace, commit and push S01-T02 frontend tracking files, then begin S01-T03. |
 
 ## Verified task completion history
 
@@ -53,11 +53,12 @@ Add **one row per verified task** after implementation and validation; include a
 
 | Task ID | Completed task | Validation evidence | Frontend commit / branch | Backend commit / branch | GitHub push | Date (local) |
 | --- | --- | --- | --- | --- | --- | --- |
-| S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | Pending / `main` | — | Pending | 2026-11-08 |
+| S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
+| S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | Pending / `main` | — | Pending | 2026-11-08 |
 
 ## Blockers, decisions, and risks
 
-None recorded. For any blocker, record the task ID, exact failing command or error, what was tried, its impact, and the simplest safe next step. Record Prisma migration commands and data-safety concerns here when applicable.
+S01-T02 review findings for later fix tasks: `/services` currently filters `q` in frontend memory after fetching and the backend service/technician query schemas have no search, sort, or pagination fields. Dashboard access is initially checked by cookie presence in `proxy.ts`; each dashboard also checks its role through `/api/session/me`, while backend `auth()` enforces roles and blocked accounts on protected endpoints. Admin currently has users, categories, and bookings routes but no dedicated platform payment history endpoint. No Prisma changes were made. Backend `main` began three commits ahead of upstream, with unrelated `deploy.txt` deletion and untracked `.vscode/`, `deploy_fix.md`, and `docs/APIDemo.md`; leave these untouched. For any blocker, record the failing command, impact, and safe next step.
 
 ## Session handoff log
 
