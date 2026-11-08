@@ -1,68 +1,99 @@
-# Codex instructions — FixItNow
+# FixItNow — Codex Agent Instructions
 
-## Mission and source of truth
+## Mission
+Implement every applicable unchecked item in the frontend `TASKS.md`, one task at a time, until the list is complete. Fix existing behavior and make the requested UI changes without changing the customer, technician, and admin journeys defined by `REQUIREMENTS.md`.
 
-Complete the agent-owned requirements in `GOAL.md` and `ASSIGNMENT.md`. The user confirms that the sixth mandatory requirement is a submission video they will handle personally; keep it as an explicitly unverified manual deliverable outside the coding-progress percentage. Follow `PLAN.md`, enforce `FORM_VALIDATION.md` for **every form**, and keep `PROGRESS.md` authoritative. First load `PROJECT_CONTEXT.md`, inspect the actual repositories, and complete `REFERENCE_STYLE.md`. Read the applicable existing instructions in each repository before editing.
+**Do not stop after writing a plan.** Inspect the actual code, implement the tasks, validate the changes, and keep working through the list. `progress.md` is the durable handoff record for future Codex sessions.
 
-Priority on conflict: security and correctness > mandatory assignment requirements > this project's explicit requirements > verified reference-project coding conventions > agent preferences. Log material conflicts in `DECISIONS.md`; escalate when a choice has real consequences.
+## Project locations (Windows)
 
-## Reference fidelity (mandatory)
+- **Frontend repository:** `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\fixitnow-frontend`
+- **Backend repository:** `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\FixItNow-backend-server`
+- **Authoritative functional requirements:** `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\fixitnow-frontend\REQUIREMENTS.md`
+- **Work checklist:** `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\fixitnow-frontend\TASKS.md`
+- **Persistent work log:** `D:\AhmadZubayer\Dev\level-2\Assignments\Assignment-5-NextJS\fixitnow-frontend\progress.md`
 
-- Treat the supplied reference project as the primary *coding-style* template. Before feature implementation, inspect several representative routes, forms, API calls, reusable components, layouts, state patterns, and filenames. Write exact reference file paths and findings in `REFERENCE_STYLE.md`.
-- Match its project layout, naming, imports, component style, data fetching patterns, form organization, error patterns, code brevity, and coding idioms, subject to Next.js correctness and security.
-- Prefer clear, simple, readable functions and small components to frameworks, abstraction layers, custom hooks, or generic architectures that the reference does not use.
-- **No comments in newly written application code** (including JSX/TS/TSX), unless a comment is legally or technically required. Project Markdown documentation may explain decisions.
-- Do not modify the reference project. Do not pretend it was audited if inaccessible.
+Keep `AGENTS.md`, `TASKS.md`, and `progress.md` in the **frontend repository root**. Use the backend repository when a task requires backend endpoints, business logic, authentication, Prisma, database migrations, or API changes. Do not assume the two repositories share a Git history or remote. If Codex is restricted to the frontend directory, request/add access to the backend workspace before attempting backend work.
 
-## UI and UX contract
+## Source-of-truth priority
 
-- Preserve the installed shadcn preset exactly: inspect `components.json`, existing CSS/theme, and components; do not replace or redesign tokens or bring in a second UI library. Use its existing primitives/variants consistently.
-- Professional, compact, visually consistent responsive layouts; avoid excessive gaps, oversized cards, gratuitous borders, decorative gradients, colored icons, and emojis in UI.
-- The assignment requests semantic status badges; implement clear legible status distinctions within the installed design system, without colorful decorative iconography. Preserve accessible text labels.
-- Build actual reused components for repeated needs (search, breadcrumbs, action/pending button, skeleton patterns, empty/error states, form fields, pagination) but do not create pointless one-off wrappers.
-- For data loading use appropriately shaped skeletons/route `loading.tsx`; for mutations, disable duplicate triggers and show local button pending state until success/failure is confirmed. Show shadcn-compatible Sonner toasts on confirmed success/failure, inline Zod field errors, and route-level error boundaries where appropriate.
-- Use subtle, purposeful animation with reduced-motion support. Avoid extra animation dependencies unless a demonstrated need arises.
-- Match the reference project's client/server conventions while honoring the installed Next.js App Router guidance; use client components only where interactive behavior requires them.
+1. `REQUIREMENTS.md` — business flows, roles, permissions, and expected user journeys.
+2. `TASKS.md` — requested fixes, UI behavior, styling, and completion checks.
+3. Reference screenshots/assets specified in `TASKS.md` — visual design.
+4. Existing application conventions — implementation details that do not conflict with the above.
 
-## Form validation contract — non-negotiable
+If instructions conflict, protect the required business journey first, document the conflict in `progress.md`, and apply the closest compliant implementation. Inspect real files rather than guessing route names, APIs, schema fields, or scripts.
 
-- **Every form must use Zod**. Read `FORM_VALIDATION.md` before implementing any form, including search/filter, booking, profile, availability, reviews, categories, and any edit dialog.
-- Store all new frontend form schemas and schema-specific helpers in one `validations/` directory: `src/validations/` if the frontend has `src/`, otherwise `<frontend-root>/validations/`. Do not put schemas inline in pages/components or introduce duplicate validation directories. Match reference naming style within that folder.
-- Prefer straightforward typed form code and the reference project's existing form patterns; only use React Hook Form / Zod resolver if installed or warranted. Show accessible field-level errors and cover numeric, date/time, role, and cross-field constraints as applicable.
-- Do not mark any form's feature complete or check its `PROGRESS.md` task until the schema, UI integration, verified backend rules, and valid/invalid/failure testing are recorded in the per-form verification table. Server-side checks remain mandatory for security.
+## Mandatory startup procedure — every new session
 
-## Backend coordination and integrity
+1. Open both project directories and inspect their current `git status`, active branches, and configured remotes. Never switch branches or change remotes silently.
+2. Read this `AGENTS.md`, all of `REQUIREMENTS.md`, `TASKS.md`, and `progress.md`; check any additional repository-specific instructions that apply.
+3. If `progress.md` says a commit or push is pending, reconcile that first (compare working tree, log, and remote) before choosing a new task. Never create duplicate commits blindly.
+4. Find the **first unfinished task** in `TASKS.md`, unless `progress.md` identifies a partially implemented task that must be resumed first.
+5. Read the relevant code and UI references. Determine whether frontend, backend, or both need changing.
+6. Confirm the instructions and tests available from the actual `package.json` files; do not assume a command exists.
+7. Update the "Current task" and "Resume checkpoint" fields in `progress.md` before starting changes.
 
-- The frontend is the primary deliverable. Use the exact paths in `PROJECT_CONTEXT.md` after verifying they are available. Inspect Express routes, validators, auth, Prisma 7 schema/migrations, status transitions, and payment integration before inventing endpoints.
-- API paths in `ASSIGNMENT.md` are suggestions, **not verified working endpoints**. Update `API_INTEGRATION.md` based on code and tested requests; record proposed changes separately from confirmed changes.
-- Implement the minimum necessary backend changes for required frontend behavior, with tests/verification. Do not weaken server-side role/ownership authorization, payment/webhook verification, validation, or booking concurrency checks.
-- **Stripe only.** The user reports Stripe is already configured in the backend. First inspect and reuse existing backend checkout, event handling and configuration; do not install another payment provider or redesign Stripe unnecessarily. Follow `STRIPE_INTEGRATION.md`. Never assume a success URL means payment succeeded; verify state using signed Stripe webhooks and the backend-authoritative payment record.
-- Do not reset databases, delete data, run production migrations, hardcode credentials, or expose secrets. Document any necessary backend commits/changes in progress handoff. Do not push backend to GitHub under this authorization.
+## Implementation rules
 
-## Milestone execution and checkpointing
+- Work **one unchecked checkbox task at a time**, or a minimal tightly coupled group where separating changes would break the app; still account for each checklist item independently.
+- Preserve authentication, authorization, role-specific dashboards, service/technician search and booking journeys specified in `REQUIREMENTS.md`.
+- Use **arrow functions** for newly written or modified function definitions; favor clear, simple TypeScript/JavaScript over unnecessary abstractions.
+- Use **shadcn/ui** components for available interactive controls, and preserve semantic HTML and accessibility.
+- Honor all task-specific design and UI requirements, including `#EFEFEF` cards/footer, `#9AE600` back-button text and active dashboard tab, breadcrumbs, navbar, screenshot references, responsive design, skeletons, and pagination.
+- Prefer focused edits and reusable shared components. Do not rewrite unrelated features.
+- Make backend/API/Prisma changes only when needed; inspect current schema and migration history before changing them. Never reset or delete production data, run destructive migrations, or overwrite secrets.
+- Keep environment values and secrets out of commits, logs, and README examples. Do not modify `.env` files or credentials unless the user specifically authorizes it.
+- For complex changes, put a short implementation plan in `PLAN.md` or a linked section of `progress.md`; planning is not task completion.
 
-- Work milestone by milestone from `PLAN.md`, in the order determined by actual dependencies; no placeholder data presented as finished integration.
-- At the **start** of every session read `PROGRESS.md`, check repository status/log and tests, reconcile claimed completed tasks with real code, then continue the next actionable item.
-- At the **end of each small verified task**, immediately update `PROGRESS.md`: check boxes, calculated percentage, files, tests/results, decisions, blockers, and next concrete action. Do this BEFORE starting another large item.
-- Before a session ends, a usage limit is hit, or the user says 'checkpoint', stop starting work and write a complete handoff to `PROGRESS.md`. You cannot assume visibility into the user's exact ChatGPT/Codex remaining usage; do not promise automatic stopping at 95% or automatic resumption after a quota reset.
-- A checkmark means implementation **and verification** are complete. Never fabricate test results or mark partial tasks done. Recompute percentage only from the explicit point values in `PROGRESS.md`.
-- If interrupted unexpectedly, next session must verify Git status and the last recorded task before continuing; don't blindly trust stale percentage.
+## Definition of done — for EACH checkbox
 
-## Git protocol
+A task is complete only when:
 
-- Meaningful frontend commits are required (assignment minimum: 20). Make small logical verified frontend commits with accurate messages; never split commits artificially just to hit a count. Track actual count with Git and report it in progress.
-- On each completed and verified milestone, push **only** the frontend repository to the configured allowed frontend remote/branch, after checking current branch, remote, staged changes, clean diff, no secrets, and successful validations. If authorization/remote/credentials are missing, record a blocker; never invent success.
-- Never run `git push --force`, destructive reset, or rewrite user history. Never stage backend files into frontend Git. **Never push backend changes** under this goal. If the backend is a Git repository and changes need durable checkpoints, local backend commits may be used only after inspecting the tree and preserving unrelated user work; record local SHAs in `PROGRESS.md`. The assignment’s required 20 meaningful commits must be in the frontend repository.
+1. The implementation meets the relevant acceptance criteria from `TASKS.md` and `REQUIREMENTS.md`.
+2. Relevant automated checks pass (for example lint, typecheck, tests, build); where a check cannot run, the exact reason and manual checks are recorded in `progress.md`.
+3. The user-visible behavior or UI is checked when practical; do not claim screenshot fidelity, API behavior, or end-to-end validation without actually verifying it.
+4. Only then change the associated checkbox in `TASKS.md` from `[ ]` to `[x]`.
+5. Update `progress.md`, recalculate its top-line completion percentage, and record the work and validation evidence.
+6. Commit the task's changes and **push to the already configured GitHub upstream** in every affected repository. Push the backend commit first if backend changes are required; push the frontend commit (including `TASKS.md` and `progress.md`) last.
+7. Record the branch, commit hash(es), and push status. Do **not** begin the next task until the push has succeeded or a genuine blocker has been documented and addressed.
 
-## Quality gates and final completion
+Do not mark a task complete just because code was written. If testing fails, repair the issue or leave the task unfinished and describe the blocker.
 
-- Follow `TESTING.md` using real repo commands; cover success, failure, unauthorized, empty, loading, and repeated-action cases for each feature. Run lint, typecheck, relevant tests and a production build at milestone gates where available.
-- Keep `API_INTEGRATION.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `FORM_VALIDATION.md` and `PROGRESS.md` accurate when affected, including the per-form validation evidence.
-- Follow the installed Next.js version. For Next.js 16+, use `proxy.ts` for routing/redirect checks instead of deprecated middleware, and enforce authorization again in the Express API.
-- Do not mark **development** 100% until verified existing-backend Stripe integration, working hosted frontend, secure provision of test-admin credentials through the authorized submission route, >=20 meaningful frontend commits, required API documentation, all role flows, and final verification are satisfied. Track the separate user-owned submission video, but do not include it in the 100-point development percentage or claim the complete submission was handed in.
+## Git and GitHub rules — mandatory after every completed task
 
-## Stripe configuration and release gate
+- **Never create a new Git remote, rewrite history, force-push, or change the current branch** unless expressly authorized. Use the configured remote and upstream of each repository.
+- Before editing, note pre-existing uncommitted or untracked changes. Never discard or commit someone else's unrelated work.
+- Stage **only files related to the current task**, plus the frontend `TASKS.md`/`progress.md` tracking updates. Avoid indiscriminate `git add .` or `git add -A`.
+- Make a clear, scoped commit per completed task in each changed repository (for example `fix(services): apply server-side sorting`). When a checklist item is review/documentation only, commit the checklist/progress update in the frontend repository.
+- Push using the existing branch's configured upstream (normally `git push`); verify success. Do not assume pushing the frontend also pushes the backend.
+- For cross-repository work, record both hashes in `progress.md`. Because pushes across separate repositories are not atomic, clearly record any partial push success and finish the pending push before proceeding.
+- If a push fails due to auth, network, permissions, rejected history, or missing upstream: **stop advancing tasks**; record the exact blocker and state in `progress.md`, keep work safe, and resume the push when possible. Do not claim the task has been fully delivered to GitHub.
+- Never expose tokens, SSH keys, `.env` contents, or credentials in commits or output.
 
-- At payment-audit time, discover the **real** webhook handler path, backend port, event types and environment variable names from code; never assume a route or environment variable. Record names and file paths, **not secret values**, in `STRIPE_INTEGRATION.md`.
-- The signing secret output by a local `stripe listen` session is for that listener; the deployed endpoint uses the Stripe Dashboard/Workbench endpoint's signing secret. If an endpoint is newly registered or rotated, configure its corresponding secret in the backend environment. Never put a `whsec_` secret, `sk_` key, or other server secret into the frontend, a `NEXT_PUBLIC_` variable, documentation, logs, commits or screenshots.
-- Before a payment milestone is verified, demonstrate actual Stripe test checkout, valid signature verification in Express (raw request body where required), correct backend status updates, and retry/duplicate-event safety; do not call webhook verification successful without evidence.
+## `progress.md` rules — session continuity
+
+- The **first line** must be `Completion Progress: [N]%`, where `N` is the current whole-number percentage, starting at `0`.
+- Calculate `N = round(100 × checked tasks ÷ total checkbox tasks)` using only `TASKS.md` checklist items; **initial total: 85**. If the user changes `TASKS.md`, recount and update the denominator. Never count headings, ordinary bullets, or fields in `progress.md` as tasks.
+- Keep `Completed tasks: X / Y` consistent with checked boxes; do not inflate progress based on partial implementation.
+- Before beginning a task, log its section/checklist position, task description, affected repo(s), and immediate next step.
+- After each meaningful change, update the checkpoint with files touched, decisions, validation, blockers, and pending work so another Codex session can continue with minimal re-discovery.
+- After every completed/pushed task, append a concise completion history entry with test result(s), commit hash(es), branches, and push status. Update the last completed/next task pointers.
+- Document schema/migration steps, environment assumptions, and unresolved issues explicitly.
+- Never delete historical completed-task entries simply to shorten the file; condense older entries without losing recovery facts.
+
+## Handoff when approaching a session or usage limit
+
+Before the session ends whenever possible:
+
+1. Save the current work in the working tree and update `progress.md` with an exact **resume checkpoint**: current task, implemented vs unfinished steps, changed files, commands run/results, open errors, and the next command/action.
+2. Update `TASKS.md` **only for genuinely verified tasks**, not partially completed ones. Recalculate the progress percentage.
+3. Ensure each completed task has been committed and pushed in the appropriate repo(s). If safe on a dedicated work branch, a clearly labelled **WIP checkpoint commit** may be pushed for unfinished work, but **never** mark it complete or call it validated. Do not push unverified WIP changes onto a shared/protected branch.
+4. Save and, when safe, commit/push the `progress.md` checkpoint itself. Record any work still local-only.
+5. On the next Codex session, **read `progress.md` first**, inspect both Git working trees, finish the current task, then continue with the next unchecked item. Do not redo verified work or skip failures.
+
+A usage limit does **not** cause Codex to restart itself automatically. The user must begin a new Codex session; these files provide the handoff.
+
+## Completion report
+
+At the end of each session, briefly report the last completed task, number completed out of the total, current percentage, Git pushes and branches, validation results, any blockers, and the exact next step. If all tasks are completed, perform the final integration checks and confirm both repositories are in the expected pushed state.
