@@ -131,7 +131,12 @@ try {
   assert.equal(await page.getByLabel("Price", { exact: true }).innerText(), "High to low");
 
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-services-current.png"), fullPage: true });
-  console.log("PASS services search, sorting, selection, and 9-card pagination");
+  await page.setViewportSize({ width: 375, height: 812 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Plumbing" }).click();
+  await page.waitForURL((url) => url.searchParams.get("categoryId") === plumbingId);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  console.log("PASS services filters, pagination, and mobile width");
 } finally {
   await browser?.close();
   if (frontend.exitCode === null) {

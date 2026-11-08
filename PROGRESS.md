@@ -1,4 +1,4 @@
-Completion Progress: [12]%
+Completion Progress: [13]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 10 / 85 |
-| Remaining tasks | 75 |
-| Overall state | S02-T04 pushed; S02-T05 next |
-| Current task | S02-T04 complete; S02-T05 next |
+| Completed tasks | 11 / 85 |
+| Remaining tasks | 74 |
+| Overall state | S02-T05 validated; frontend push pending |
+| Current task | S02-T05 responsive layouts and efficient interactions |
 | Last completed task | S02-T04 shadcn interactive controls |
-| Next task | S02-T05 responsive layouts and efficient interactions |
+| Next task | S02-T06 loading skeletons and error/empty states |
 | Last successful GitHub push | Frontend main 0fea46d (S02-T04); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S02-T04 |
-| Task description | Use shadcn/ui components in place of plain native controls wherever available |
-| State | Completed, validated, committed and pushed |
+| Task ID | S02-T05 |
+| Task description | Ensure responsive layouts, efficient data fetching, and fast interactions on desktop and mobile |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | Booking, registration, technician service, admin category, review, dashboard retry controls, two browser tests, TASKS.md and PROGRESS.md |
-| Work already implemented | Replaced native app controls with shadcn Button, Select, and Checkbox while keeping form labels, validation, and fieldset semantics. Converted touched component declarations to arrow functions. Native-control rg scan outside generated UI files returns no matches. |
-| Work still to do | S02-T04 delivered. Begin S02-T05 after this progress update is pushed. |
-| Tests / commands run | Frontend tsc --noEmit, lint, build, git diff --check, native-control rg scan, booking browser test covering slot, register select and review rating, dashboard browser test covering roles, admin views and category checkbox. |
-| Results / errors | All checks passed. UI tests used mock backend; technician category Select was type/build checked but not browser exercised. |
-| Changes only on local machine | This S02-T04 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S02-T05 by checking responsive widths and fetch behavior on current app pages. |
+| Files changed | app/services/page.tsx, three browser tests, TASKS.md, PROGRESS.md |
+| Work already implemented | Independent categories, services, and technician requests now start together. Browser tests check 375 px page widths for services, technician profile, and admin technician management; mobile category filtering works. Existing filter transitions/debounce and responsive grids remain. |
+| Work still to do | Commit and push frontend task files, then begin S02-T06. |
+| Tests / commands run | Frontend lint and production build; services, booking, and dashboard browser tests including mobile overflow assertions and mobile filter click. |
+| Results / errors | All checks passed at 375 px and desktop. Browser tests use mock backend; no network performance measurement against deployed services was made. |
+| Changes only on local machine | S02-T05 source, tests, and tracking updates pending commit/push. |
+| Commits awaiting push | S02-T05 frontend commit to create and push. |
+| **Exact next action** | Stage the six S02-T05 files, commit and push main, record hash, then begin S02-T06. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S02-T04 |
+| Task ID | S02-T05 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -63,6 +63,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T02 | Keep touched controls readable | Reformatted booking and availability controls without behavior changes; frontend lint, TypeScript, build, and booking browser regression passed; 8 of 85 checked | `35861d3` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T03 | Follow TypeScript/Next.js conventions | Audited typed server/client boundaries, route handlers, strict TS settings, alias imports, and shared UI reuse; prior lint/type/build remain green; 9 of 85 checked | `09417d4` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T04 | Use shadcn controls in application code | Converted native selects, checkbox, and buttons; no remaining native controls outside generated UI files; lint/type/build and browser checks passed; 10 of 85 checked | `0fea46d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S02-T05 | Keep layouts responsive and requests efficient | Parallelized independent services data requests; services, profile and admin management passed 375 px overflow checks, plus mobile filter interaction; lint/build passed; 11 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

@@ -132,6 +132,9 @@ try {
   const page = await context.newPage();
   await page.goto(`${base}/dashboard/admin/technicians`);
   await page.getByRole("heading", { name: "Technician management" }).waitFor();
+  await page.setViewportSize({ width: 375, height: 812 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.setViewportSize({ width: 1280, height: 800 });
   const rows = page.locator("tbody tr");
   await rows.first().waitFor();
   assert.equal(await rows.count(), 10);

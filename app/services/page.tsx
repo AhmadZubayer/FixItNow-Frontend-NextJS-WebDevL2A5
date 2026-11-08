@@ -18,7 +18,6 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
   const initial = Object.fromEntries(Object.entries(raw).filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[1] !== ""));
   const result = searchSchema.safeParse(initial);
   const filters = result.success ? result.data : null;
-  const categories = await getCategories();
   const serviceParams = filters ? Object.fromEntries(
     Object.entries(filters).filter(([key, value]) => !["serviceId", "page"].includes(key) && value !== undefined).map(([key, value]) => [key, String(value)]),
   ) : {};
@@ -28,10 +27,11 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
   technicianParams.limit = "9";
   technicianParams.page = String(filters?.page ?? 1);
 
-  const [services, technicianPage] = filters ? await Promise.all([
-    getServices(serviceParams),
-    getTechniciansPage(technicianParams),
-  ]) : [[], { technicians: [], meta: { page: 1, limit: 9, total: 0 } }];
+  const [categories, services, technicianPage] = await Promise.all([
+    getCategories(),
+    filters ? getServices(serviceParams) : Promise.resolve([]),
+    filters ? getTechniciansPage(technicianParams) : Promise.resolve({ technicians: [], meta: { page: 1, limit: 9, total: 0 } }),
+  ]);
   const technicians = technicianPage.technicians;
   const pageCount = Math.max(1, Math.ceil(technicianPage.meta.total / 9));
   const page = technicianPage.meta.page;

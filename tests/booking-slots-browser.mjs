@@ -69,6 +69,9 @@ try {
   const page = await context.newPage();
   await page.goto(`${base}/technicians/${profileId}?serviceId=${chosenService}`);
   await page.getByRole("heading", { name: "Request a booking" }).waitFor();
+  await page.setViewportSize({ width: 375, height: 812 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.getByRole("combobox", { name: "Service" }).getByText("Chosen service").waitFor();
   const booked = page.getByRole("button", { name: /Booked/ });
   await booked.waitFor();
