@@ -1,4 +1,4 @@
-Completion Progress: [8]%
+Completion Progress: [9]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 7 / 85 |
-| Remaining tasks | 78 |
-| Overall state | S02-T01 pushed; S02-T02 next |
-| Current task | S02-T01 complete; S02-T02 next |
+| Completed tasks | 8 / 85 |
+| Remaining tasks | 77 |
+| Overall state | S02-T02 validated; frontend push pending |
+| Current task | S02-T02 keep implementations simple and readable |
 | Last completed task | S02-T01 arrow functions for touched definitions |
-| Next task | S02-T02 keep implementations simple and readable |
+| Next task | S02-T03 follow TypeScript and Next.js conventions |
 | Last successful GitHub push | Frontend main 6443522 (S02-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S02-T01 |
-| Task description | Use arrow functions only for new or modified function definitions; refactor existing functions where needed for consistency |
-| State | Completed, validated, committed and pushed |
+| Task ID | S02-T02 |
+| Task description | Keep implementations simple, readable, and easy to maintain |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/dashboard/technician/page.tsx, lib/public-api.ts, TASKS.md, PROGRESS.md |
-| Work already implemented | Converted the previously edited technician dashboard component and two public API helpers to arrow definitions. Audited S01-T05 touched code: all new or modified definitions now use arrows. Untouched generated shadcn components remain as generated. |
-| Work still to do | S02-T01 delivered. Begin S02-T02 after this progress update is pushed. |
-| Tests / commands run | Frontend lint, tsc --noEmit, build, services browser test, dashboard roles/admin browser test, git diff --check, and rg audit of touched files. |
-| Results / errors | All checks passed. No behavior or API shape changed. |
-| Changes only on local machine | This S02-T01 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S02-T02 by reviewing touched code for unnecessary complexity. |
+| Files changed | components/booking-form.tsx, components/technician/availability-editor.tsx, TASKS.md, PROGRESS.md |
+| Work already implemented | Split dense booking status and availability form JSX into readable blocks, and expanded validation branches. Slot decisions, requests, and labels are unchanged. |
+| Work still to do | Commit and push the focused frontend changes, then begin S02-T03. |
+| Tests / commands run | Frontend lint, tsc --noEmit, build, and booking slots browser test. |
+| Results / errors | All checks passed; booking browser test still confirms selected service and disabled booked slot. |
+| Changes only on local machine | S02-T02 source formatting and tracking update pending commit/push. |
+| Commits awaiting push | S02-T02 frontend commit to create and push. |
+| **Exact next action** | Stage the four S02-T02 files, commit/push main, record hash, then begin S02-T03. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S02-T01 |
+| Task ID | S02-T02 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -60,6 +60,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S01-T05 | Fix required workflow/API issues | Frontend lint/build/typecheck, backend build/typecheck, three mock-backed browser tests, four backend query/accounting tests, and diff checks passed; 5 of 85 checked | `f5aeb78` / `main` | `7ce0891` / `main` | Pushed to both origin/main branches | 2026-11-09 |
 | S01-T06 | Preserve role and booking invariants | Reviewed route guards, service/slot ownership, and status rules; dashboard role, booking slot, and public query regression tests passed; 6 of 85 checked | `3fda346` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T01 | Use arrow definitions in modified code | Converted the technician dashboard component and two public API helpers; lint, TypeScript, build, two browser tests, and diff check passed; 7 of 85 checked | `6443522` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S02-T02 | Keep touched controls readable | Reformatted booking and availability controls without behavior changes; frontend lint, TypeScript, build, and booking browser regression passed; 8 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

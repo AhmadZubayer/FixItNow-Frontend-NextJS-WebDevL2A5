@@ -72,17 +72,29 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
     }
   };
 
-  if (!loaded) return <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Checking account" />;
-  if (role !== "CUSTOMER") return <p className="text-sm text-muted-foreground">{role ? "Only customers can request bookings." : <><Link href="/auth/login" className="underline underline-offset-4">Log in</Link> as a customer to book.</>}</p>;
-  if (!services.length || !slots.length) return <p className="text-sm text-muted-foreground">No bookable time is available right now.</p>;
+  if (!loaded) {
+    return <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Checking account" />;
+  }
+  if (role !== "CUSTOMER") {
+    return <p className="text-sm text-muted-foreground">
+      {role ? "Only customers can request bookings." : <><Link href="/auth/login" className="underline underline-offset-4">Log in</Link> as a customer to book.</>}
+    </p>;
+  }
+  if (!services.length || !slots.length) {
+    return <p className="text-sm text-muted-foreground">No bookable time is available right now.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl space-y-4" noValidate>
       <div className="space-y-1">
         <Label htmlFor="booking-service">Service</Label>
         <Select value={values.serviceId} onValueChange={(serviceId) => { if (serviceId) setValues({ serviceId, availabilitySlotId: "" }); setErrors({}); }}>
-          <SelectTrigger id="booking-service" className="w-full" aria-invalid={!!errors.serviceId}><SelectValue placeholder="Choose a service">{(value: string) => services.find((service) => service.id === value)?.title ?? "Choose a service"}</SelectValue></SelectTrigger>
-          <SelectContent>{services.map((service) => <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>)}</SelectContent>
+          <SelectTrigger id="booking-service" className="w-full" aria-invalid={!!errors.serviceId}>
+            <SelectValue placeholder="Choose a service">{(value: string) => services.find((service) => service.id === value)?.title ?? "Choose a service"}</SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {services.map((service) => <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>)}
+          </SelectContent>
         </Select>
         {errors.serviceId && <p className="text-xs text-destructive">{errors.serviceId[0]}</p>}
       </div>
@@ -97,7 +109,17 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
             const fits = !!chosenService && (new Date(slot.endAt).getTime() - new Date(slot.startAt).getTime()) >= chosenService.durationMinutes * 60_000;
             const booked = slot.bookings.length > 0;
             const available = slot.isActive && !booked && fits;
-            return <button key={slot.id} type="button" disabled={!available} aria-pressed={values.availabilitySlotId === slot.id} onClick={() => { setValues((current) => ({ ...current, availabilitySlotId: slot.id })); setErrors({}); }} className="rounded-md border px-3 py-2 text-left text-sm transition-colors enabled:hover:border-black enabled:focus-visible:outline-2 enabled:focus-visible:outline-offset-2 aria-pressed:border-black aria-pressed:bg-[#EFEFEF] disabled:cursor-not-allowed disabled:opacity-55"><span className="block">{slotTime(slot.startAt)}–{slotTime(slot.endAt)}</span><span className="text-xs text-muted-foreground">{booked ? "Booked" : fits ? "Available" : "Too short"}</span></button>;
+            return <button
+              key={slot.id}
+              type="button"
+              disabled={!available}
+              aria-pressed={values.availabilitySlotId === slot.id}
+              onClick={() => { setValues((current) => ({ ...current, availabilitySlotId: slot.id })); setErrors({}); }}
+              className="rounded-md border px-3 py-2 text-left text-sm transition-colors enabled:hover:border-black enabled:focus-visible:outline-2 enabled:focus-visible:outline-offset-2 aria-pressed:border-black aria-pressed:bg-[#EFEFEF] disabled:cursor-not-allowed disabled:opacity-55"
+            >
+              <span className="block">{slotTime(slot.startAt)}–{slotTime(slot.endAt)}</span>
+              <span className="text-xs text-muted-foreground">{booked ? "Booked" : fits ? "Available" : "Too short"}</span>
+            </button>;
           })}
         </div>
         {!visibleSlots.length && <p className="text-sm text-muted-foreground">Select a day to see time slots.</p>}

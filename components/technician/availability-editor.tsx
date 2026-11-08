@@ -38,7 +38,10 @@ const AvailabilityEditor = ({ slots, onSaved }: { slots: AvailabilitySlot[]; onS
     event.preventDefault();
     if (pending) return;
     const result = availabilitySchema.safeParse(values);
-    if (!result.success) { setErrors(result.error.flatten().fieldErrors); return; }
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      return;
+    }
     setErrors({});
     setPending(true);
     try {
@@ -67,11 +70,24 @@ const AvailabilityEditor = ({ slots, onSaved }: { slots: AvailabilitySlot[]; onS
   };
 
   return <div className="space-y-4">
-    <div className="space-y-2"><Label>Choose a day to add or review time slots</Label><Calendar mode="single" selected={date} onSelect={chooseDay} disabled={{ before: new Date() }} className="rounded-lg border" /></div>
+    <div className="space-y-2">
+      <Label>Choose a day to add or review time slots</Label>
+      <Calendar mode="single" selected={date} onSelect={chooseDay} disabled={{ before: new Date() }} className="rounded-lg border" />
+    </div>
     <form onSubmit={handleSubmit} className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]" noValidate>
-      <div className="space-y-1"><Label htmlFor="slot-start">Start (Bangladesh time)</Label><Input id="slot-start" type="datetime-local" value={values.startAt} onChange={(event) => setValues({ ...values, startAt: event.target.value })} aria-invalid={!!errors.startAt} aria-describedby={errors.startAt ? "slot-start-error" : undefined} />{errors.startAt && <p id="slot-start-error" className="text-xs text-destructive">{errors.startAt[0]}</p>}</div>
-      <div className="space-y-1"><Label htmlFor="slot-end">End (Bangladesh time)</Label><Input id="slot-end" type="datetime-local" value={values.endAt} onChange={(event) => setValues({ ...values, endAt: event.target.value })} aria-invalid={!!errors.endAt} aria-describedby={errors.endAt ? "slot-end-error" : undefined} />{errors.endAt && <p id="slot-end-error" className="text-xs text-destructive">{errors.endAt[0]}</p>}</div>
-      <div className="flex items-end"><PendingButton type="submit" pending={pending} pendingText="Adding time">Add time</PendingButton></div>
+      <div className="space-y-1">
+        <Label htmlFor="slot-start">Start (Bangladesh time)</Label>
+        <Input id="slot-start" type="datetime-local" value={values.startAt} onChange={(event) => setValues({ ...values, startAt: event.target.value })} aria-invalid={!!errors.startAt} aria-describedby={errors.startAt ? "slot-start-error" : undefined} />
+        {errors.startAt && <p id="slot-start-error" className="text-xs text-destructive">{errors.startAt[0]}</p>}
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="slot-end">End (Bangladesh time)</Label>
+        <Input id="slot-end" type="datetime-local" value={values.endAt} onChange={(event) => setValues({ ...values, endAt: event.target.value })} aria-invalid={!!errors.endAt} aria-describedby={errors.endAt ? "slot-end-error" : undefined} />
+        {errors.endAt && <p id="slot-end-error" className="text-xs text-destructive">{errors.endAt[0]}</p>}
+      </div>
+      <div className="flex items-end">
+        <PendingButton type="submit" pending={pending} pendingText="Adding time">Add time</PendingButton>
+      </div>
     </form>
     <div className="space-y-2">{visibleSlots.length ? visibleSlots.map((slot) => <div key={slot.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border px-3 py-2"><div className="text-xs">{slotDateTime(slot.startAt)} – {slotEndTime(slot.endAt)}</div><div className="flex items-center gap-2"><Badge variant={slot.bookings.length ? "outline" : slot.isActive ? "secondary" : "destructive"}>{slot.bookings.length ? "Booked" : slot.isActive ? "Open" : "Blocked"}</Badge>{slot.isActive && !slot.bookings.length && <PendingButton size="sm" variant="outline" pending={blockingId === slot.id} pendingText="Blocking" disabled={!!blockingId} onClick={() => block(slot.id)}>Block</PendingButton>}</div></div>) : <p className="text-sm text-muted-foreground">{date ? "No time slots on this day yet." : "No upcoming availability yet."}</p>}</div>
   </div>;
