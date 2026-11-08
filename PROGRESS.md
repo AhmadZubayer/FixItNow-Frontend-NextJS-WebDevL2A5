@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 6 / 85 |
 | Remaining tasks | 79 |
-| Overall state | S01-T06 validated; frontend push pending |
-| Current task | S01-T06 preserve role permissions and data relationships |
-| Last completed task | S01-T05 fix required workflow and API issues |
+| Overall state | S01-T06 pushed; S02-T01 next |
+| Current task | S01-T06 complete; S02-T01 next |
+| Last completed task | S01-T06 preserve role permissions and data relationships |
 | Next task | S02-T01 use arrow functions for new or modified function definitions |
-| Last successful GitHub push | Frontend main f5aeb78; backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 3fda346 (S01-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S01-T06 |
 | Task description | Preserve role permissions, data relationships, and existing working features throughout updates |
-| State | Validated; frontend tracking commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend tracking only; read-only review of backend |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | PROGRESS.md for S01-T06 checkpoint; TASKS.md after validation |
 | Work already implemented | Inspected dashboard proxy and backend route guards. Customer booking/payment routes require CUSTOMER; technician profile and job routes require TECHNICIAN; admin payment/user/category routes require ADMIN. Booking creation still links one service and one slot belonging to the same technician and claims the slot. Status transitions and cancellation rules remain explicit. |
-| Work still to do | Commit and push S01-T06 tracking changes, then begin S02-T01. Keep rechecking role and booking invariants during later tasks. |
+| Work still to do | S01-T06 delivered. Begin S02-T01 after this progress record is pushed. |
 | Tests / commands run | Read dashboard proxy, session request, backend role guards and booking/status code. Reran dashboard role/admin browser test, booking slot browser test, and public query data test; all passed. |
 | Results / errors | Customer, technician, and admin route guards remain role-specific. One-service/one-slot booking and same-technician slot relationship remain enforced. Focused regression tests passed. No code changes were needed for this review item. |
-| Changes only on local machine | TASKS.md and PROGRESS.md tracking update for S01-T06. |
-| Commits awaiting push | S01-T06 frontend tracking commit to create and push. |
-| **Exact next action** | Commit and push TASKS.md and PROGRESS.md on frontend main; record the commit hash in a follow-up progress update, then begin S02-T01. |
+| Changes only on local machine | This S01-T06 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S02-T01 by auditing modified and newly written function definitions for arrow syntax. |
 
 ## Verified task completion history
 
@@ -58,7 +58,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S01-T03 | Inspect visual and README references | Viewed both supplied image assets and read backend README; recorded layout, controls, content, and documentation tone; 3 of 85 checked | `ad3b9a4` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T04 | Identify journey and UI differences | Compared actual pages, components, route handlers, backend queries and role flows with requirements and both references; actionable gaps documented below; 4 of 85 checked | `e0a7b2d` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T05 | Fix required workflow/API issues | Frontend lint/build/typecheck, backend build/typecheck, three mock-backed browser tests, four backend query/accounting tests, and diff checks passed; 5 of 85 checked | `f5aeb78` / `main` | `7ce0891` / `main` | Pushed to both origin/main branches | 2026-11-09 |
-| S01-T06 | Preserve role and booking invariants | Reviewed route guards, service/slot ownership, and status rules; dashboard role, booking slot, and public query regression tests passed; 6 of 85 checked | Pending tracking commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S01-T06 | Preserve role and booking invariants | Reviewed route guards, service/slot ownership, and status rules; dashboard role, booking slot, and public query regression tests passed; 6 of 85 checked | `3fda346` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
