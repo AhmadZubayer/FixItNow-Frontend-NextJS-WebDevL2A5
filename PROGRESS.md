@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 9 / 85 |
 | Remaining tasks | 76 |
-| Overall state | S02-T03 validated; frontend push pending |
-| Current task | S02-T03 TypeScript/Next.js conventions and reuse |
-| Last completed task | S02-T02 simplify touched controls |
+| Overall state | S02-T03 pushed; S02-T04 next |
+| Current task | S02-T03 complete; S02-T04 next |
+| Last completed task | S02-T03 TypeScript/Next.js conventions and reuse |
 | Next task | S02-T04 use shadcn/ui controls |
-| Last successful GitHub push | Frontend main 35861d3 (S02-T02); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 09417d4 (S02-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,7 +35,7 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S02-T03 |
 | Task description | Follow existing TypeScript/Next.js conventions and reuse shared components wherever practical |
-| State | Review complete; tracking push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | TASKS.md and PROGRESS.md tracking only |
@@ -43,9 +43,9 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | Work still to do | Push this review task tracking update, then begin S02-T04 shadcn controls. |
 | Tests / commands run | Frontend lint, TypeScript noEmit, and production build passed at the end of S02-T02, with no source changes since. Read-only convention audit for this item. |
 | Results / errors | No convention or reuse regression found. No code edits needed. |
-| Changes only on local machine | S02-T03 tracking update pending commit/push. |
-| Commits awaiting push | S02-T03 frontend tracking commit to create and push. |
-| **Exact next action** | Commit and push TASKS.md and PROGRESS.md, record hash, then begin S02-T04. |
+| Changes only on local machine | This S02-T03 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S02-T04 by auditing native controls and choosing focused shadcn replacements. |
 
 ## Verified task completion history
 
@@ -61,7 +61,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S01-T06 | Preserve role and booking invariants | Reviewed route guards, service/slot ownership, and status rules; dashboard role, booking slot, and public query regression tests passed; 6 of 85 checked | `3fda346` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T01 | Use arrow definitions in modified code | Converted the technician dashboard component and two public API helpers; lint, TypeScript, build, two browser tests, and diff check passed; 7 of 85 checked | `6443522` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T02 | Keep touched controls readable | Reformatted booking and availability controls without behavior changes; frontend lint, TypeScript, build, and booking browser regression passed; 8 of 85 checked | `35861d3` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S02-T03 | Follow TypeScript/Next.js conventions | Audited typed server/client boundaries, route handlers, strict TS settings, alias imports, and shared UI reuse; prior lint/type/build remain green; 9 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S02-T03 | Follow TypeScript/Next.js conventions | Audited typed server/client boundaries, route handlers, strict TS settings, alias imports, and shared UI reuse; prior lint/type/build remain green; 9 of 85 checked | `09417d4` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
