@@ -52,10 +52,10 @@ export type Technician = {
 
 type ApiResponse<T> = { data: T };
 
-export async function getCategories() {
+export const getCategories = async () => {
   const response = await backend.get<ApiResponse<Category[]>>("/api/categories");
   return response.data.data;
-}
+};
 
 export const getServices = async (params?: Record<string, string>) => {
   const response = await backend.get<ApiResponse<Service[]>>("/api/services", { params });
@@ -72,7 +72,7 @@ export const getTechniciansPage = async (params: Record<string, string>) => {
   return { technicians: response.data.data, meta: response.data.meta };
 };
 
-export async function getTechnician(id: string) {
+export const getTechnician = async (id: string) => {
   const response = await backend.get<ApiResponse<Technician>>(`/api/technicians/${id}`);
   return response.data.data;
-}
+};

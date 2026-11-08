@@ -21,7 +21,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Preserve role permissions, data relationships, and existing working features throughout the updates.
 
 ## 2. Coding standards
-- [ ] Use **arrow functions only** for new or modified function definitions throughout the project; refactor existing functions where necessary for consistency.
+- [x] Use **arrow functions only** for new or modified function definitions throughout the project; refactor existing functions where necessary for consistency.
 - [ ] Keep implementations simple, readable, and easy to maintain; avoid unnecessarily complex code and abstractions.
 - [ ] Follow existing TypeScript/Next.js conventions and reuse shared components wherever practical.
 - [ ] Use **shadcn/ui components** in place of plain native controls wherever shadcn equivalents exist (especially dropdowns, inputs, selects, buttons, cards, tabs, and pagination). Keep underlying semantic HTML where required for accessibility and component structure.
