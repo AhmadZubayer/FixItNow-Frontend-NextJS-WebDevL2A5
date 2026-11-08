@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 7 / 85 |
 | Remaining tasks | 78 |
-| Overall state | S02-T01 validated; frontend push pending |
-| Current task | S02-T01 arrow functions for new or modified definitions |
-| Last completed task | S01-T06 preserve role permissions and data relationships |
+| Overall state | S02-T01 pushed; S02-T02 next |
+| Current task | S02-T01 complete; S02-T02 next |
+| Last completed task | S02-T01 arrow functions for touched definitions |
 | Next task | S02-T02 keep implementations simple and readable |
-| Last successful GitHub push | Frontend main 3fda346 (S01-T06); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 6443522 (S02-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S02-T01 |
 | Task description | Use arrow functions only for new or modified function definitions; refactor existing functions where needed for consistency |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | app/dashboard/technician/page.tsx, lib/public-api.ts, TASKS.md, PROGRESS.md |
 | Work already implemented | Converted the previously edited technician dashboard component and two public API helpers to arrow definitions. Audited S01-T05 touched code: all new or modified definitions now use arrows. Untouched generated shadcn components remain as generated. |
-| Work still to do | Commit and push frontend task changes. Apply arrow style to new or modified functions in all later tasks. |
+| Work still to do | S02-T01 delivered. Begin S02-T02 after this progress update is pushed. |
 | Tests / commands run | Frontend lint, tsc --noEmit, build, services browser test, dashboard roles/admin browser test, git diff --check, and rg audit of touched files. |
 | Results / errors | All checks passed. No behavior or API shape changed. |
-| Changes only on local machine | S02-T01 implementation and tracking update pending commit/push. |
-| Commits awaiting push | S02-T01 frontend commit to create and push. |
-| **Exact next action** | Stage the four S02-T01 files, commit and push main; record hash in progress log, then begin S02-T02. |
+| Changes only on local machine | This S02-T01 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S02-T02 by reviewing touched code for unnecessary complexity. |
 
 ## Verified task completion history
 
@@ -59,7 +59,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S01-T04 | Identify journey and UI differences | Compared actual pages, components, route handlers, backend queries and role flows with requirements and both references; actionable gaps documented below; 4 of 85 checked | `e0a7b2d` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T05 | Fix required workflow/API issues | Frontend lint/build/typecheck, backend build/typecheck, three mock-backed browser tests, four backend query/accounting tests, and diff checks passed; 5 of 85 checked | `f5aeb78` / `main` | `7ce0891` / `main` | Pushed to both origin/main branches | 2026-11-09 |
 | S01-T06 | Preserve role and booking invariants | Reviewed route guards, service/slot ownership, and status rules; dashboard role, booking slot, and public query regression tests passed; 6 of 85 checked | `3fda346` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S02-T01 | Use arrow definitions in modified code | Converted the technician dashboard component and two public API helpers; lint, TypeScript, build, two browser tests, and diff check passed; 7 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S02-T01 | Use arrow definitions in modified code | Converted the technician dashboard component and two public API helpers; lint, TypeScript, build, two browser tests, and diff check passed; 7 of 85 checked | `6443522` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
