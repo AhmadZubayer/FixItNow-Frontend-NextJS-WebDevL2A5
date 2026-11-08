@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 12 / 85 |
 | Remaining tasks | 73 |
-| Overall state | S02-T06 validated; frontend push pending |
-| Current task | S02-T06 loading, skeleton, error and empty states |
-| Last completed task | S02-T05 responsive layouts and efficient requests |
+| Overall state | S02-T06 pushed; S03-T01 next |
+| Current task | S02-T06 complete; S03-T01 next |
+| Last completed task | S02-T06 booking detail loading and error states |
 | Next task | S03-T01 set every card fill to #EFEFEF |
-| Last successful GitHub push | Frontend main bcb3195 (S02-T05); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main f231ab1 (S02-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S02-T06 |
 | Task description | Add sensible loading states, skeletons, and error/empty states |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | components/booking-detail-skeleton.tsx, payment and review booking pages, booking browser test, TASKS.md, PROGRESS.md |
 | Work already implemented | Added compact shared booking detail skeleton to payment/review pages, replaced plain loading text, and aligned review failures with the shared Alert style. Existing root error boundary, route skeletons, dashboard error/empty states remain. |
-| Work still to do | Commit and push frontend task files, then begin S03-T01. |
+| Work still to do | S02-T06 delivered. Begin S03-T01 after this progress update is pushed. |
 | Tests / commands run | Frontend lint and production build; browser booking test with delayed detail fetch and missing-booking error response. |
 | Results / errors | All checks passed. Browser saw the loading status skeleton and Booking unavailable alert. Browser test uses mock backend. |
-| Changes only on local machine | S02-T06 frontend source, browser test, and tracking updates pending commit/push. |
-| Commits awaiting push | S02-T06 frontend commit to create and push. |
-| **Exact next action** | Stage S02-T06 files, commit and push main, record hash, then begin S03-T01. |
+| Changes only on local machine | This S02-T06 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S03-T01 by inventorying card backgrounds across the app. |
 
 ## Verified task completion history
 
@@ -64,7 +64,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T03 | Follow TypeScript/Next.js conventions | Audited typed server/client boundaries, route handlers, strict TS settings, alias imports, and shared UI reuse; prior lint/type/build remain green; 9 of 85 checked | `09417d4` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T04 | Use shadcn controls in application code | Converted native selects, checkbox, and buttons; no remaining native controls outside generated UI files; lint/type/build and browser checks passed; 10 of 85 checked | `0fea46d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T05 | Keep layouts responsive and requests efficient | Parallelized independent services data requests; services, profile and admin management passed 375 px overflow checks, plus mobile filter interaction; lint/build passed; 11 of 85 checked | `bcb3195` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | `f231ab1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
