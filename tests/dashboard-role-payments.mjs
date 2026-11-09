@@ -36,7 +36,10 @@ const backend = createHttpServer((request, response) => {
   const token = request.headers.authorization?.replace("Bearer ", "");
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
 
-  if (request.url === "/api/auth/refresh-token" && request.method === "POST") {
+  if (request.url === "/api/auth/login" && request.method === "POST") {
+    request.resume();
+    send(response, 200, { data: { accessToken: "valid-customer", refreshToken: "valid-refresh" } });
+  } else if (request.url === "/api/auth/refresh-token" && request.method === "POST") {
     request.resume();
     send(response, 200, { data: { accessToken: "valid-admin" } });
   } else if (request.url === "/api/auth/me" && role) {
@@ -137,6 +140,10 @@ try {
     await dashboardLink.waitFor();
     assert.equal(await dashboardLink.getAttribute("href"), `/dashboard/${role}`);
     assert.equal(await dashboardLink.count(), 1);
+    await rolePage.setViewportSize({ width: 375, height: 812 });
+    assert.equal(await rolePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    assert.equal(await mainNavigation.getByRole("link", { name: "Services & Technicians" }).isVisible(), true);
+    assert.equal(await dashboardLink.isVisible(), true);
     const accountTrigger = rolePage.locator("header").getByRole("button", { name: "Test user" });
     await accountTrigger.click();
     const logoutItem = rolePage.getByRole("menuitem", { name: "Log out" });
@@ -144,10 +151,24 @@ try {
     if (role === "customer") {
       await logoutItem.click();
       await dashboardLink.waitFor({ state: "detached" });
+      await rolePage.locator("header").getByRole("link", { name: "Sign in" }).waitFor();
       assert.equal((await roleContext.cookies()).some((cookie) => cookie.name === "accessToken"), false);
     }
     await roleContext.close();
   }
+  const loginContext = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const loginPage = await loginContext.newPage();
+  await loginPage.goto(`${base}/auth/login`);
+  await loginPage.getByRole("link", { name: "Sign in" }).waitFor();
+  await loginPage.getByLabel("Email").fill("customer@example.test");
+  await loginPage.getByLabel("Password").fill("password123");
+  await loginPage.getByRole("button", { name: "Log in" }).click();
+  await loginPage.waitForURL("**/dashboard/customer");
+  await loginPage.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Dashboard" }).waitFor();
+  assert.equal(await loginPage.locator("header").getByRole("button", { name: "Test user" }).isVisible(), true);
+  assert.equal(await loginPage.locator("header").getByRole("link", { name: "Sign in" }).count(), 0);
+  assert.equal(await loginPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await loginContext.close();
   const context = await browser.newContext();
   await context.addCookies([{ name: "accessToken", value: "valid-admin", url: base }]);
   const page = await context.newPage();

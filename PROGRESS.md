@@ -1,4 +1,4 @@
-Completion Progress: [31]%
+Completion Progress: [32]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 26 / 85 |
-| Remaining tasks | 59 |
-| Overall state | S04-T07 pushed; S04-T08 next |
+| Completed tasks | 27 / 85 |
+| Remaining tasks | 58 |
+| Overall state | S04-T08 validated; push pending |
 | Current task | S04-T08 auth state, role route, mobile and logout updates |
-| Last completed task | S04-T07 signed-out Sign in button |
-| Next task | S04-T08 auth state, role route, mobile and logout updates |
+| Last completed task | S04-T08 auth state, role route, mobile and logout updates |
+| Next task | S05-T01 shadcn Card for auth forms |
 | Last successful GitHub push | Frontend main 01aba14 (S04-T07); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S04-T08 |
 | Task description | Ensure navbar auth state, role routing, mobile navigation and logout update without stale UI |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S04-T08 |
-| Work already implemented | S04-T07 Sign in label and route check pushed as 01aba14. |
-| Work still to do | Inspect login/logout updates and responsive navbar, address stale state, validate all roles and mobile interaction, then push. |
-| Tests / commands run | S04-T07 frontend lint/build and services browser test passed. |
-| Results / errors | S04-T07 pushed; real-backend E2E not run because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then inspect session changes around login, logout and responsive header. |
+| Files changed | components/session-actions.tsx, tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Visible header session is tied to current pathname; a prior route's user is hidden while the new route loads. |
+| Work still to do | Commit and push S04-T08, record its hash, then begin S05-T01. |
+| Tests / commands run | Frontend lint, build with TypeScript, dashboard role browser test, git diff --check. |
+| Results / errors | Browser checked customer/technician/admin nav at 375px, anonymous login to customer role, and logout restoring Sign in without cookie. All checks passed; real-backend E2E not run because it writes DB data. |
+| Changes only on local machine | S04-T08 source, test, checklist and progress update. |
+| Commits awaiting push | S04-T08 task commit. |
+| **Exact next action** | Stage only S04-T08 files, commit and push frontend main. |
 
 ## Verified task completion history
 

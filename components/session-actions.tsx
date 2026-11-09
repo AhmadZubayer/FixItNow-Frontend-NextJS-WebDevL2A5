@@ -14,18 +14,17 @@ type User = { name: string; role: "CUSTOMER" | "TECHNICIAN" | "ADMIN" };
 const SessionActions = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [session, setSession] = useState<{ pathname: string; user: User | null } | null>(null);
   const [pending, setPending] = useState(false);
+  const loaded = session?.pathname === pathname;
+  const user = loaded ? session.user : null;
 
   useEffect(() => {
     let active = true;
     axios.get<User>("/api/session/me").then((response) => {
-      if (active) setUser(response.data);
+      if (active) setSession({ pathname, user: response.data });
     }).catch(() => {
-      if (active) setUser(null);
-    }).finally(() => {
-      if (active) setLoaded(true);
+      if (active) setSession({ pathname, user: null });
     });
     return () => { active = false; };
   }, [pathname]);
@@ -35,7 +34,7 @@ const SessionActions = () => {
     setPending(true);
     try {
       await axios.post("/api/session/logout");
-      setUser(null);
+      setSession({ pathname, user: null });
       toast.success("You are logged out.");
       router.replace("/");
       router.refresh();

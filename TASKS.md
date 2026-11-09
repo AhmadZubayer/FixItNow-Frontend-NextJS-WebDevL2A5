@@ -48,7 +48,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
   - Admin → `/dashboard/admin`
 - [x] On the **right**, show the authenticated user's **full name**. Clicking it opens a shadcn dropdown containing a **Log out** action.
 - [x] When signed out, keep the existing **Sign in** button and behavior.
-- [ ] Ensure auth state, role routing, mobile navigation, and log-out behavior update correctly without stale UI.
+- [x] Ensure auth state, role routing, mobile navigation, and log-out behavior update correctly without stale UI.
 
 ## 5. Login and sign-up pages
 - [ ] Wrap the authentication forms in the default **shadcn Card** instead of displaying them directly on a plain white background.
