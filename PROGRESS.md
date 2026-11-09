@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 31 / 85 |
 | Remaining tasks | 54 |
-| Overall state | S05-T04 validated; push pending |
-| Current task | S05-T04 preserve auth validation and redirects |
+| Overall state | S05-T04 pushed; S05-T05 next |
+| Current task | S05-T05 responsive readable auth pages |
 | Last completed task | S05-T04 preserve auth validation and redirects |
 | Next task | S05-T05 responsive readable auth pages |
-| Last successful GitHub push | Frontend main 4f4ba38 (S05-T03); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main bb5d637 (S05-T04); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S05-T04 |
-| Task description | Preserve authentication, form validation, error messaging and redirects |
-| State | Validated; commit and push pending |
+| Task ID | S05-T05 |
+| Task description | Ensure login/register pages are responsive and forms readable over background |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Mock-backed browser coverage now exercises invalid login/register fields, server error messages, successful registration to login, and successful login to customer dashboard. |
-| Work still to do | Commit and push S05-T04, record hash, then begin S05-T05. |
-| Tests / commands run | Dashboard role browser test, frontend lint and git diff --check passed; S05-T03 build passed with identical application source. |
-| Results / errors | All checks passed; no live database affected. |
-| Changes only on local machine | S05-T04 browser test, checklist and progress update. |
-| Commits awaiting push | S05-T04 task commit. |
-| **Exact next action** | Stage only S05-T04 files, commit and push frontend main. |
+| Files changed | None yet for S05-T05 |
+| Work already implemented | S05-T04 mock auth validation/error/redirect test pushed as bb5d637. Auth pages have opaque #EFEFEF cards over the full-screen image. |
+| Work still to do | Check login/register at mobile and desktop widths for overflow and readable text/controls, fix if needed, then push. |
+| Tests / commands run | S05-T04 dashboard role browser test and lint passed; prior build covers unchanged source. |
+| Results / errors | S05-T04 pushed; no live database affected. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then inspect auth pages at mobile and desktop widths. |
 
 ## Verified task completion history
 
@@ -83,6 +83,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S05-T01 | Wrap auth forms in shadcn Cards | Both auth headings/forms inside Cards with #EFEFEF fill; browser, lint/build and diff checks passed; 28 of 85 checked | `6fbd55c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T02 | Add full-screen auth background | Both routes use public/register-bg.png with cover size; mobile screenshot showed readable card/breadcrumb; browser and lint/build passed; 29 of 85 checked | `4bc6666` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T03 | Add password eye toggles | Both forms use accessible show/hide buttons; browser verified input type and preserved value; lint/build passed; 30 of 85 checked | `4f4ba38` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S05-T04 | Preserve auth flows | Mock-backed browser verified field errors, backend error messages, registration to login and login to role dashboard; lint passed; 31 of 85 checked | `bb5d637` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
