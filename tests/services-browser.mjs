@@ -160,6 +160,7 @@ try {
   await page.waitForURL("**serviceId=44444444-4444-4444-8444-000000000001*");
   assert.equal(await technicianCards.count(), 1);
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("serviceId") === "44444444-4444-4444-8444-000000000001" && url.searchParams.get("q") === "Fan" && url.searchParams.get("priceSort") === "desc"));
+  assert.equal(await page.getByText("Showing technicians for the selected service.").count(), 1);
 
   await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Electrical" }).click();
   await page.waitForURL((url) => url.searchParams.get("categoryId") === categoryId && !url.searchParams.has("serviceId") && !url.searchParams.has("page"));
