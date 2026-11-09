@@ -191,15 +191,32 @@ try {
   assert.equal(anonymous.status, 307);
   assert.equal(new URL(anonymous.headers.get("location"), base).pathname, "/auth/login");
 
-  for (const role of ["admin", "customer", "technician"]) {
-    const own = await dashboard(`/dashboard/${role}`, `accessToken=valid-${role}`);
-    assert.equal(own.status, 200, `${role} should access its dashboard`);
-
-    const other = role === "admin" ? "customer" : "admin";
-    const wrong = await dashboard(`/dashboard/${other}`, `accessToken=valid-${role}`);
-    assert.equal(wrong.status, 307, `${role} should be redirected from ${other}`);
-    assert.equal(new URL(wrong.headers.get("location"), base).pathname, `/dashboard/${role}`);
+  const protectedDashboardPaths = {
+    customer: ["/dashboard/customer", "/dashboard/customer/payments"],
+    technician: ["/dashboard/technician", "/dashboard/technician/bookings"],
+    admin: ["/dashboard/admin", "/dashboard/admin/technicians", "/dashboard/admin/payments"],
+  };
+  for (const authenticatedRole of Object.keys(protectedDashboardPaths)) {
+    for (const [requestedRole, paths] of Object.entries(protectedDashboardPaths)) {
+      for (const path of paths) {
+        const response = await dashboard(path, `accessToken=valid-${authenticatedRole}`);
+        if (authenticatedRole === requestedRole) {
+          assert.equal(response.status, 200, `${authenticatedRole} should access ${path}`);
+        } else {
+          assert.equal(response.status, 307, `${authenticatedRole} should not access ${path}`);
+          assert.equal(
+            new URL(response.headers.get("location"), base).pathname,
+            `/dashboard/${authenticatedRole}`,
+            `${authenticatedRole} should return to its own dashboard`
+          );
+        }
+      }
+    }
   }
+
+  const unknownRole = await dashboard("/dashboard/customer", "accessToken=valid-unknown");
+  assert.equal(unknownRole.status, 307);
+  assert.equal(new URL(unknownRole.headers.get("location"), base).pathname, "/auth/login");
 
   const refreshed = await dashboard("/dashboard/admin/payments", "refreshToken=valid-refresh");
   assert.equal(refreshed.status, 200);
