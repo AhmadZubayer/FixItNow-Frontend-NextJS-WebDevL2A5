@@ -337,6 +337,12 @@ try {
   assert.ok(adminTabsTop < adminBreadcrumbsTop, "Admin tabs must appear above breadcrumbs");
   assert.ok(adminBreadcrumbsTop < adminCardTop, "Admin breadcrumbs must appear above main card");
   assert.equal(await adminMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await adminTabs.getByRole("tab", { name: "Technicians" }).click();
+  await page.waitForURL("**/dashboard/admin/technicians");
+  await page.getByRole("heading", { name: "Technician management" }).waitFor();
+  await page.getByRole("tablist").getByRole("tab", { name: "Platform payments" }).click();
+  await page.waitForURL("**/dashboard/admin/payments");
+  await page.getByRole("heading", { name: "Platform payment history" }).waitFor();
 
   // Verify consistent page structure on Customer dashboard
   const custContext = await browser.newContext();
@@ -358,6 +364,9 @@ try {
   assert.ok(custTabsTop < custBreadcrumbsTop, "Customer tabs must appear above breadcrumbs");
   assert.ok(custBreadcrumbsTop < custCardTop, "Customer breadcrumbs must appear above main card");
   assert.equal(await custMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await custTabs.getByRole("tab", { name: "Payments" }).click();
+  await custPage.waitForURL("**/dashboard/customer/payments");
+  await custPage.getByRole("heading", { name: "Payment history" }).waitFor();
   await custContext.close();
 
   // Verify consistent page structure on Technician dashboard
@@ -381,6 +390,9 @@ try {
   assert.ok(tTabsTop < tBreadcrumbsTop, "Technician tabs must appear above breadcrumbs");
   assert.ok(tBreadcrumbsTop < tCardTop, "Technician breadcrumbs must appear above main card");
   assert.equal(await techMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await techTabs.getByRole("tab", { name: "Booking requests" }).click();
+  await tPage.waitForURL("**/dashboard/technician/bookings");
+  await tPage.getByRole("heading", { name: "Booking requests" }).waitFor();
   await techCtx.close();
 
   const nestedDashboardRoutes = [

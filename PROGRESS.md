@@ -1,4 +1,4 @@
-Completion Progress: [74]%
+Completion Progress: [75]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 74% |
+| Completion Progress | 75% |
 | Last Working Agent | Codex |
-| Completed tasks | 63 / 85 |
-| Remaining tasks | 22 |
-| Overall state | S08-T07 verified; tracking update ready to commit and push |
-| Last completed task | S08-T07 Keep all tables, child cards, and related content inside the main card |
-| Current unfinished task | S08-T08 Ensure each tab renders its correct data and functions; changing tabs updates the content |
-| Next task for Codex | Exercise each role dashboard tab and confirm navigation changes to the correct working content |
-| Latest commit hashes | Frontend `main`: `86c443f`; Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main 86c443f (S08-T06); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 64 / 85 |
+| Remaining tasks | 21 |
+| Overall state | S08-T08 verified; tracking update ready to commit and push |
+| Last completed task | S08-T08 Ensure each tab renders its correct data and functions |
+| Current unfinished task | S08-T09 Enforce role-based dashboard access and preserve required workflows |
+| Next task for Codex | Recheck role authorization and dashboard workflows against the customer, technician, and admin requirements |
+| Latest commit hashes | Frontend `main`: `f45c2df`; Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main f45c2df (S08-T07); backend main 7ce0891 (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S08-T08 |
-| Task description | Ensure each tab renders its correct data and functions; changing tabs updates the content |
-| State | S08-T07 verified; commit and push pending |
+| Task ID | S08-T09 |
+| Task description | Enforce role-based page access and preserve dashboard workflows described in REQUIREMENTS.md |
+| State | S08-T08 verified; commit and push pending |
 | Last Working Agent | Codex |
-| Current unfinished task | S08-T08 |
+| Current unfinished task | S08-T09 |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `86c443f`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | `tests/dashboard-role-payments.mjs` (main-card containment assertions); `TASKS.md`, `PROGRESS.md` (S08-T07 tracking). |
-| Work already implemented | Dashboard page tables, child cards, sections, and forms are nested under the shared main shadcn Card. Browser test verifies containment on customer and technician dashboards and admin pages with populated tables. |
-| Work still to do | Commit and push S08-T07 verification; then verify each role tab's navigation and working content for S08-T08. |
-| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: containment for tables, child cards, sections, and forms across role dashboards and populated admin routes; prior role/style/order checks also pass). |
-| Results / errors | S08-T07 browser verification passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S08-T07 verification and tracking update pending commit. |
-| Commits awaiting push | S08-T07 task commit not yet created. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `f45c2df`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | `tests/dashboard-role-payments.mjs` (role tab-click navigation checks); `TASKS.md`, `PROGRESS.md` (S08-T08 tracking). |
+| Work already implemented | Each role's dashboard tabs route to the correct page; browser test clicks customer Payments, technician Booking requests, and admin Technicians and Platform payments, then confirms the destination URL and page heading. |
+| Work still to do | Commit and push S08-T08 verification; then review role protection and dashboard workflows for S08-T09. |
+| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: four tab clicks produced expected routes and page content, along with existing role, style, containment, and layout assertions). |
+| Results / errors | S08-T08 browser verification passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S08-T08 verification and tracking update pending commit. |
+| Commits awaiting push | S08-T08 task commit not yet created. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T07 before starting S08-T08. |
+| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T08 before starting S08-T09. |
 
 ## Verified task completion history
 
@@ -122,7 +122,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S08-T04 | Style selected dashboard tab in #9AE600 | Browser verified computed #9AE600 fill, black text/border, and 600 font weight on all three role dashboards; 60 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 | S08-T05 | Place breadcrumbs between dashboard tabs and main content card | Browser checked tab/breadcrumb/card order on primary dashboards and four nested customer, technician, and admin pages; 61 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 | S08-T06 | Render dashboard page content inside the main shadcn Card | Browser verified the page heading is visible inside the main card across primary and nested dashboard routes; 62 of 85 checked | `86c443f` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S08-T07 | Keep tables, child cards, and related dashboard content inside the main card | Browser verified containment of tables, child cards, sections, and forms on role dashboards and populated admin routes; 63 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T07 | Keep tables, child cards, and related dashboard content inside the main card | Browser verified containment of tables, child cards, sections, and forms on role dashboards and populated admin routes; 63 of 85 checked | `f45c2df` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S08-T08 | Verify dashboard tabs update route and role-specific content | Browser clicked customer Payments, technician Booking requests, and admin Technicians/Platform payments; each URL and heading matched; 64 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
