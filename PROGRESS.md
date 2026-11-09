@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 32 / 85 |
 | Remaining tasks | 53 |
-| Overall state | S05-T05 validated; push pending |
-| Current task | S05-T05 responsive readable auth pages |
+| Overall state | S05-T05 pushed; S05-T06 next |
+| Current task | S05-T06 auth page breadcrumbs |
 | Last completed task | S05-T05 responsive readable auth pages |
 | Next task | S05-T06 auth page breadcrumbs |
-| Last successful GitHub push | Frontend main bb5d637 (S05-T04); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main b307170 (S05-T05); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S05-T05 |
-| Task description | Ensure login/register pages are responsive and forms readable over background |
-| State | Validated; commit and push pending |
+| Task ID | S05-T06 |
+| Task description | Include breadcrumbs on login and registration pages |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Browser test verifies both auth cards and inputs at 375px and 1280px, no horizontal overflow; mobile and desktop registration screenshots inspected. |
-| Work still to do | Commit and push S05-T05, record hash, then start S05-T06. |
-| Tests / commands run | Services browser test and frontend lint passed; S05-T03 build passed with identical application source. |
-| Results / errors | Login and registration forms, card text and breadcrumb visibly readable over the image at both widths. |
-| Changes only on local machine | S05-T05 browser test, checklist and progress update. |
-| Commits awaiting push | S05-T05 task commit. |
-| **Exact next action** | Stage only S05-T05 files, commit and push frontend main. |
+| Files changed | None yet for S05-T06 |
+| Work already implemented | S05-T05 responsive auth checks and screenshots pushed as b307170. Root breadcrumb already maps /auth/login and /auth/register. |
+| Work still to do | Verify both breadcrumb paths, links and legibility on auth routes, then mark and push. |
+| Tests / commands run | S05-T05 services browser and lint passed; prior build covers unchanged source. |
+| Results / errors | S05-T05 pushed; no live database affected. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then add breadcrumb assertions for both auth pages. |
 
 ## Verified task completion history
 
@@ -84,6 +84,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S05-T02 | Add full-screen auth background | Both routes use public/register-bg.png with cover size; mobile screenshot showed readable card/breadcrumb; browser and lint/build passed; 29 of 85 checked | `4bc6666` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T03 | Add password eye toggles | Both forms use accessible show/hide buttons; browser verified input type and preserved value; lint/build passed; 30 of 85 checked | `4f4ba38` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T04 | Preserve auth flows | Mock-backed browser verified field errors, backend error messages, registration to login and login to role dashboard; lint passed; 31 of 85 checked | `bb5d637` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S05-T05 | Keep auth pages responsive | Browser verified 375px/1280px layout without overflow and screenshots showed readable forms; lint passed; 32 of 85 checked | `b307170` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
