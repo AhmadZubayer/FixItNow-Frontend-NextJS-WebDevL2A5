@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 28 / 85 |
 | Remaining tasks | 57 |
-| Overall state | S05-T01 validated; push pending |
-| Current task | S05-T01 shadcn Card for auth forms |
+| Overall state | S05-T01 pushed; S05-T02 next |
+| Current task | S05-T02 full-screen auth background image |
 | Last completed task | S05-T01 shadcn Card for auth forms |
 | Next task | S05-T02 full-screen auth background image |
-| Last successful GitHub push | Frontend main 86b438c (S04-T08); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 6fbd55c (S05-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S05-T01 |
-| Task description | Wrap login and sign-up forms in default shadcn Card |
-| State | Validated; commit and push pending |
+| Task ID | S05-T02 |
+| Task description | Use public/register-bg.png as full-screen background on login and sign-up |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/auth/login/page.tsx, app/auth/register/page.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Both auth forms and headings are inside default shadcn Cards. |
-| Work still to do | Commit and push S05-T01, record hash, then start S05-T02. |
-| Tests / commands run | Frontend lint and build with TypeScript; services browser test checks both form cards and #EFEFEF fill; diff check next. |
-| Results / errors | All final checks passed. First card assertion used an overly broad selector after client navigation; scoped to each heading and reran successfully. |
-| Changes only on local machine | S05-T01 pages, test, checklist and progress update. |
-| Commits awaiting push | S05-T01 task commit. |
-| **Exact next action** | Stage only S05-T01 files, commit and push frontend main. |
+| Files changed | None yet for S05-T02 |
+| Work already implemented | S05-T01 auth Cards pushed as 6fbd55c. |
+| Work still to do | Inspect existing image and root layout, apply full-screen background to both auth pages, verify both routes, then push. |
+| Tests / commands run | S05-T01 lint/build and services browser card assertions passed. |
+| Results / errors | S05-T01 pushed; no real-backend E2E because it writes DB data. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then inspect public/register-bg.png and auth page containment. |
 
 ## Verified task completion history
 
@@ -80,6 +80,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S04-T06 | Add full-name account dropdown | Shadcn dropdown exposes Log out; browser confirmed menu and session cookie clearing; lint/build passed; 25 of 85 checked | `0ba751a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T07 | Keep signed-out Sign in button | Link label aligned with checklist and browser followed it to /auth/login; lint/build passed; 26 of 85 checked | `01aba14` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T08 | Refresh auth and mobile navbar state | Route-specific session suppresses stale user; browser checked three roles at 375px, login redirect, logout cookie and Sign in restoration; lint/build passed; 27 of 85 checked | `86b438c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S05-T01 | Wrap auth forms in shadcn Cards | Both auth headings/forms inside Cards with #EFEFEF fill; browser, lint/build and diff checks passed; 28 of 85 checked | `6fbd55c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
