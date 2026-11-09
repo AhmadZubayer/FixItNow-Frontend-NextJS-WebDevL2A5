@@ -79,6 +79,16 @@ const backend = createHttpServer((request, response) => {
       user.activeStatus = JSON.parse(body).activeStatus;
       send(response, 200, { data: user });
     });
+  } else if ((request.url === "/api/customer/bookings" || request.url === "/api/bookings") && role === "CUSTOMER") {
+    send(response, 200, { data: [] });
+  } else if ((request.url === "/api/customer/payments" || request.url === "/api/payments") && role === "CUSTOMER") {
+    send(response, 200, { data: [] });
+  } else if (request.url === "/api/technician/profile" && role === "TECHNICIAN") {
+    send(response, 200, { data: { id: "tech-1", bio: "Bio", skills: [], experienceYears: 3, location: "Dhaka", profilePhoto: null, services: [], availabilitySlots: [] } });
+  } else if (request.url === "/api/technician/bookings" && role === "TECHNICIAN") {
+    send(response, 200, { data: [] });
+  } else if (request.url === "/api/categories") {
+    send(response, 200, { data: [] });
   } else if (request.url?.startsWith("/api/admin/users") && role) {
     send(response, 403, { message: "Forbidden" });
   } else {
@@ -244,7 +254,60 @@ try {
   assert.equal(await active.isChecked(), true);
   await active.click();
   assert.equal(await active.isChecked(), false);
-  console.log("PASS dashboard roles, admin views, and category checkbox");
+
+  // Verify consistent page structure on Admin dashboard
+  const adminTabs = page.getByRole("tablist");
+  await adminTabs.waitFor();
+  const activeAdminTab = adminTabs.getByRole("tab", { name: "Overview & Users" });
+  assert.ok(await activeAdminTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
+  const adminBreadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
+  const adminMainCard = page.locator("main div[data-slot='card']");
+  const adminTabsTop = await adminTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const adminBreadcrumbsTop = await adminBreadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const adminCardTop = await adminMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  assert.ok(adminTabsTop < adminBreadcrumbsTop, "Admin tabs must appear above breadcrumbs");
+  assert.ok(adminBreadcrumbsTop < adminCardTop, "Admin breadcrumbs must appear above main card");
+  assert.equal(await adminMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+
+  // Verify consistent page structure on Customer dashboard
+  const custContext = await browser.newContext();
+  await custContext.addCookies([{ name: "accessToken", value: "valid-customer", url: base }]);
+  const custPage = await custContext.newPage();
+  await custPage.goto(`${base}/dashboard/customer`);
+  const custTabs = custPage.getByRole("tablist");
+  await custTabs.waitFor();
+  const activeCustTab = custTabs.getByRole("tab", { name: "Bookings" });
+  assert.ok(await activeCustTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
+  const custBreadcrumbs = custPage.getByRole("navigation", { name: "breadcrumb" });
+  const custMainCard = custPage.locator("main div[data-slot='card']");
+  const custTabsTop = await custTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const custBreadcrumbsTop = await custBreadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const custCardTop = await custMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  assert.ok(custTabsTop < custBreadcrumbsTop, "Customer tabs must appear above breadcrumbs");
+  assert.ok(custBreadcrumbsTop < custCardTop, "Customer breadcrumbs must appear above main card");
+  assert.equal(await custMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await custContext.close();
+
+  // Verify consistent page structure on Technician dashboard
+  const techCtx = await browser.newContext();
+  await techCtx.addCookies([{ name: "accessToken", value: "valid-technician", url: base }]);
+  const tPage = await techCtx.newPage();
+  await tPage.goto(`${base}/dashboard/technician`);
+  const techTabs = tPage.getByRole("tablist");
+  await techTabs.waitFor();
+  const activeTechTab = techTabs.getByRole("tab", { name: "Overview & Services" });
+  assert.ok(await activeTechTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
+  const techBreadcrumbs = tPage.getByRole("navigation", { name: "breadcrumb" });
+  const techMainCard = tPage.locator("main div[data-slot='card']");
+  const tTabsTop = await techTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const tBreadcrumbsTop = await techBreadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const tCardTop = await techMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  assert.ok(tTabsTop < tBreadcrumbsTop, "Technician tabs must appear above breadcrumbs");
+  assert.ok(tBreadcrumbsTop < tCardTop, "Technician breadcrumbs must appear above main card");
+  assert.equal(await techMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await techCtx.close();
+
+  console.log("PASS dashboard roles, admin views, and consistent page structure");
 } finally {
   await browser?.close();
   if (frontend.exitCode === null) {

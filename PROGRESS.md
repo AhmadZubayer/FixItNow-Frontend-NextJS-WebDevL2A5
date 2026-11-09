@@ -1,4 +1,4 @@
-Completion Progress: [66]%
+Completion Progress: [67]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 56 / 85 |
-| Remaining tasks | 29 |
-| Overall state | S07-T07 validated; commit and push pending |
-| Current task | S07-T07 apply global card styling, back-button styling, responsiveness, and footer |
-| Last completed task | S07-T07 apply global card styling, back-button styling, responsiveness, and footer |
-| Next task | S08-T01 update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure |
-| Last successful GitHub push | Frontend main d0ab72a (S07-T07); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 57 / 85 |
+| Remaining tasks | 28 |
+| Overall state | S08-T01 validated; ready to commit and push |
+| Current task | S08-T01 update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure |
+| Last completed task | S08-T01 update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure |
+| Next task | S08-T02 directly under the shared navbar, render shadcn Tabs for dashboard navigation |
+| Last successful GitHub push | Frontend main 7be73b9 (S08-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S08-T01 |
 | Task description | Update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure |
-| State | Ready to start |
+| State | Completed and validated |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/dashboard/customer/page.tsx, app/dashboard/technician/page.tsx, app/dashboard/admin/page.tsx, components/dashboard-tabs.tsx, PROGRESS.md |
-| Work already implemented | S07-T07 pushed (`d0ab72a`). Section 7 complete (7/7 tasks). Ready to implement unified dashboard page structure with shared tab bar, breadcrumbs placement, and main content card. |
-| Work still to do | Inspect current dashboard pages, design shared structure with shadcn Tabs, breadcrumbs, and main card wrapper. |
-| Tests / commands run | `node tests/booking-slots-browser.mjs`, `npm run lint`. |
-| Results / errors | S07-T07 passed. |
-| Changes only on local machine | S08-T01 preparation. |
-| Commits awaiting push | None. |
-| **Exact next action** | Inspect dashboard routes and implement unified dashboard page structure. |
+| Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` |
+| Files changed | app/dashboard/layout.tsx, app/dashboard/customer/page.tsx, app/dashboard/customer/payments/page.tsx, app/dashboard/customer/bookings/[id]/pay/page.tsx, app/dashboard/customer/bookings/[id]/review/page.tsx, app/dashboard/technician/page.tsx, app/dashboard/technician/bookings/page.tsx, app/dashboard/admin/page.tsx, app/dashboard/admin/technicians/page.tsx, app/dashboard/admin/payments/page.tsx, components/route-breadcrumbs.tsx, tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Created app/dashboard/layout.tsx with tabs under navbar, breadcrumbs between tabs and card, and main content card; updated child pages to sit cleanly inside main card; updated route-breadcrumbs to avoid duplicate crumbs; verified with browser test across customer, technician, and admin roles. |
+| Work still to do | Commit and push S08-T01. |
+| Tests / commands run | `npm run lint`, `npm run build`, `node tests/dashboard-role-payments.mjs`, `node tests/booking-slots-browser.mjs`, `node tests/services-browser.mjs`. |
+| Results / errors | All lint checks, build, and browser tests passed. |
+| Changes only on local machine | S08-T01 ready to commit and push. |
+| Commits awaiting push | 1 commit pending push. |
+| **Exact next action** | Commit and push S08-T01, then begin S08-T02. |
 
 ## Verified task completion history
 
@@ -108,7 +108,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S07-T04 | Implement reference interactions and data | Browser verified interactive service selection, real-time price updates, active slot selection, and booking submission; 53 of 85 checked | `c9d27d1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T05 | Preserve required customer-to-technician actions and permissions | Automated browser test verified visitor login prompt, role restrictions, and active customer booking submission; 54 of 85 checked | `62502b7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T06 | Handle loading, missing/invalid technician IDs, and API errors gracefully | Automated browser test verified tailored loading skeleton, 404 missing ID, 400 invalid ID, and 500 error boundary; 55 of 85 checked | `70405fc` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S07-T07 | Apply global card styling, back-button styling, responsiveness, and footer | Automated browser test verified #EFEFEF cards, #9AE600 transparent BackLink, 375px responsiveness, and shared footer; 56 of 85 checked | `d0ab72a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T07 | Apply global card styling, back-button styling, responsiveness, and footer | Automated browser test verified #EFEFEF cards, #9AE600 transparent BackLink, 375px responsiveness, and shared footer; 56 of 85 checked | `d353bf7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S08-T01 | Update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure | Automated browser test verified dynamic role tabs directly under navbar, breadcrumbs between tabs and card, and main shadcn Card wrapper across customer, technician, and admin dashboards; 57 of 85 checked | `7be73b9` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

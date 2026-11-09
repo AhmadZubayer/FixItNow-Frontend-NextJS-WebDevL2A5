@@ -49,7 +49,7 @@ const AdminPaymentsPage = () => {
   }, [retry]);
 
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Platform payment history</h1>
         <p className="mt-1 text-sm text-muted-foreground">Completed payments show the 85% technician share and 15% platform share. Other payment states show no realized earnings.</p>
@@ -81,7 +81,7 @@ const AdminPaymentsPage = () => {
           </Table>
         </div>
       ) : <EmptyState title="No payments yet" description="Platform payments will appear here when customers start checkout." />}
-    </main>
+    </div>
   );
 };
 

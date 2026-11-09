@@ -6,7 +6,7 @@ import PageBreadcrumbs from "@/components/page-breadcrumbs";
 
 type Crumb = { label: string; href?: string };
 
-const routeCrumbs = (pathname: string): Crumb[] => {
+export const routeCrumbs = (pathname: string): Crumb[] => {
   if (pathname === "/") return [{ label: "Home" }];
 
   const parts = pathname.split("/").filter(Boolean);
@@ -43,7 +43,12 @@ const routeCrumbs = (pathname: string): Crumb[] => {
 
 const RouteBreadcrumbs = () => {
   const pathname = usePathname();
-  return <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6"><PageBreadcrumbs items={routeCrumbs(pathname)} /></div>;
+  if (pathname.startsWith("/dashboard")) return null;
+  return (
+    <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6">
+      <PageBreadcrumbs items={routeCrumbs(pathname)} />
+    </div>
+  );
 };
 
 export default RouteBreadcrumbs;

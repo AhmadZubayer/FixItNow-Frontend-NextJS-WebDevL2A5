@@ -80,7 +80,7 @@ const AdminTechniciansPage = () => {
   const visible = matching.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6">
+    <div className="space-y-6">
       <div><h1 className="text-2xl font-semibold tracking-tight">Technician management</h1><p className="mt-1 text-sm text-muted-foreground">Search technician accounts and manage access.</p></div>
       <form onSubmit={search} className="flex max-w-lg items-end gap-2" noValidate>
         <div className="min-w-0 flex-1"><SearchField id="admin-technician-search" label="Search technicians" value={queryInput} onChange={(event) => setQueryInput(event.target.value)} placeholder="Name or email" error={queryError} /></div>
@@ -101,7 +101,7 @@ const AdminTechniciansPage = () => {
           <div className="flex items-center gap-2 text-sm"><Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</Button><span>Page {page} of {pageCount}</span><Button variant="outline" size="sm" disabled={page >= pageCount} onClick={() => setPage(page + 1)}>Next</Button></div>
         </>
       ) : <EmptyState title="No technicians found" description="Try another name or email." />}
-    </main>
+    </div>
   );
 };
 
