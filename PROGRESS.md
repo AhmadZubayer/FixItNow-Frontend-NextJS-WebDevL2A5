@@ -1,4 +1,4 @@
-Completion Progress: [41]%
+Completion Progress: [42]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 35 / 85 |
-| Remaining tasks | 50 |
-| Overall state | S06-T02 pushed; S06-T03 next |
+| Completed tasks | 36 / 85 |
+| Remaining tasks | 49 |
+| Overall state | S06-T03 validated; push pending |
 | Current task | S06-T03 white page and #EFEFEF cards |
-| Last completed task | S06-T02 services back link and breadcrumbs |
-| Next task | S06-T03 white page and #EFEFEF cards |
+| Last completed task | S06-T03 white page and #EFEFEF cards |
+| Next task | S06-T04 black hover borders on service/technician cards |
 | Last successful GitHub push | Frontend main 3c445b0 (S06-T02); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S06-T03 |
 | Task description | Distinguish white services page from #EFEFEF service/technician cards |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S06-T03 |
-| Work already implemented | S06-T02 Back/breadcrumb click verification pushed as 3c445b0. Browser previously checked white main and #EFEFEF service/technician card fills. |
-| Work still to do | Review computed colors and screenshot after recent layout edits, mark and push if still correct. |
-| Tests / commands run | S06-T02 services browser and lint passed; S06-T01 build covers unchanged source. |
-| Results / errors | S06-T02 pushed; no live database affected. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then confirm page/card colors in browser screenshot and assertions. |
+| Files changed | TASKS.md, PROGRESS.md |
+| Work already implemented | Current browser test asserts white main and #EFEFEF service/technician card fills; refreshed screenshot reviewed. |
+| Work still to do | Commit and push S06-T03 tracking update, then begin hover borders task. |
+| Tests / commands run | Services browser passed with current source; S06-T01 lint/build passed with same application code. |
+| Results / errors | Computed colors and screenshot show distinct page and card surfaces. |
+| Changes only on local machine | S06-T03 checklist and progress update. |
+| Commits awaiting push | S06-T03 tracking commit. |
+| **Exact next action** | Stage TASKS.md and PROGRESS.md, commit and push frontend main. |
 
 ## Verified task completion history
 
