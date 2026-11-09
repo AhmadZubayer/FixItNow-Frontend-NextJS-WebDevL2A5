@@ -23,7 +23,9 @@ const otherService = "55555555-5555-4555-8555-555555555555";
 const openSlot = "66666666-6666-4666-8666-666666666666";
 const bookedSlot = "77777777-7777-4777-8777-777777777777";
 const completedBooking = "88888888-8888-4888-8888-888888888888";
-const startAt = new Date(Date.now() + 7 * 86400000).toISOString();
+const appointmentDay = new Date(Date.now() + 7 * 86400000);
+appointmentDay.setUTCHours(3, 0, 0, 0);
+const startAt = appointmentDay.toISOString();
 const endAt = new Date(new Date(startAt).getTime() + 2 * 3600000).toISOString();
 const bookings = [];
 const profile = {

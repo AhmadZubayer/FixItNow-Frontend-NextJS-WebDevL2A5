@@ -10,7 +10,7 @@ import PendingButton from "@/components/pending-button";
 import BackLink from "@/components/back-link";
 import BookingDetailSkeleton from "@/components/booking-detail-skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { paymentSchema } from "@/validations/payment.validation";
 
 type Booking = { id: string; status: string; priceAtBooking: string; service: { title: string } };
@@ -54,7 +54,7 @@ const PayPage = () => {
     }
   };
 
-  return <div className="max-w-xl space-y-5"><BackLink href="/dashboard/customer" label="Back to bookings" /><h1 className="text-2xl font-semibold tracking-tight">Pay for booking</h1>{error && <Alert variant="destructive"><AlertTitle>Booking unavailable</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}{!error && !booking && <BookingDetailSkeleton />}{booking && <div className="space-y-4 rounded-lg border bg-card text-card-foreground p-4"><div><p className="font-medium">{booking.service.title}</p><p className="mt-1 text-sm text-muted-foreground">Amount: ৳{booking.priceAtBooking}</p></div>{booking.status === "ACCEPTED" ? <PendingButton pending={pending} pendingText="Opening Stripe Checkout" onClick={startCheckout}>Continue to Stripe</PendingButton> : <p className="text-sm text-muted-foreground">This booking is {booking.status.toLowerCase().replaceAll("_", " ")} and is not ready for payment.</p>}</div>}<Button variant="ghost" render={<Link href="/dashboard/customer" />}>View bookings</Button></div>;
+  return <div className="max-w-xl space-y-5"><BackLink href="/dashboard/customer" label="Back to bookings" /><h1 className="text-2xl font-semibold tracking-tight">Pay for booking</h1>{error && <Alert variant="destructive"><AlertTitle>Booking unavailable</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}{!error && !booking && <BookingDetailSkeleton />}{booking && <div className="space-y-4 rounded-lg border bg-card text-card-foreground p-4"><div><p className="font-medium">{booking.service.title}</p><p className="mt-1 text-sm text-muted-foreground">Amount: ৳{booking.priceAtBooking}</p></div>{booking.status === "ACCEPTED" ? <PendingButton pending={pending} pendingText="Opening Stripe Checkout" onClick={startCheckout}>Continue to Stripe</PendingButton> : <p className="text-sm text-muted-foreground">This booking is {booking.status.toLowerCase().replaceAll("_", " ")} and is not ready for payment.</p>}</div>}<Link href="/dashboard/customer" className={buttonVariants({ variant: "ghost" })}>View bookings</Link></div>;
 };
 
 export default PayPage;

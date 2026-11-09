@@ -238,3 +238,11 @@ Append a short entry whenever a session ends or a usage limit approaches:
 3. Continue the **current in-progress** task if one exists; otherwise select the first unchecked task.
 4. Validate each task, update its checkbox and the percentage, commit scoped changes, and push to the already configured GitHub repositories **after every task**.
 5. Before the next usage limit, leave an exact checkpoint here. A new Codex session must be started by the user; the agent cannot automatically resume itself after a usage cap.
+
+## UI reference follow-up (2026-11-09)
+
+- Current task: implement the requested services, landing, auth background, and dashboard UI adjustments in the frontend.
+- Resume checkpoint: remove marked listing sections while preserving existing search and API contracts, update dashboard surfaces and titles, rebuild the landing page with vector graphics, then validate.
+- Implemented and verified. The services listing shows technician results only, the landing page uses original vector artwork, and dashboard cards are white on a light-gray background. Authentication artwork is scoped to the auth layout.
+- Checks passed: frontend lint, route type generation and TypeScript, default production build, and the services, dashboard/payments, and booking-slot browser suites. The in-app browser also confirmed the landing layout, mobile width, and technician signup selection.
+- Frontend only. Original checklist remains 85 / 85 (100%). No database or backend changes were needed for this follow-up.

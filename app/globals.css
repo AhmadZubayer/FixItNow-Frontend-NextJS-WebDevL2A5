@@ -136,14 +136,14 @@
   }
 }
 
-body:has(main[data-auth-page]) {
+.auth-background {
   background-image: url("/register-bg.png");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
 }
 
-body:has(main[data-auth-page]) [data-slot="breadcrumb"] {
+.auth-background [data-slot="breadcrumb"] {
   width: fit-content;
   border-radius: var(--radius);
   background: rgb(239 239 239 / 92%);

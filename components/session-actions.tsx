@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type User = { name: string; role: "CUSTOMER" | "TECHNICIAN" | "ADMIN" };
@@ -46,12 +46,18 @@ const SessionActions = () => {
   };
 
   return <>
-    <nav aria-label="Main navigation" className="col-span-2 row-start-2 flex items-center justify-center gap-1 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-2">
-      <Button variant="ghost" render={<Link href="/services" />}>Services &amp; Technicians</Button>
-      {loaded && user && <Button variant="ghost" render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}>Dashboard</Button>}
+    <nav aria-label="Main navigation" className="col-span-2 row-start-2 flex flex-wrap items-center justify-center gap-x-1 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-x-3">
+      {pathname === "/" ? <>
+        <Link href="/" aria-current="page" className="border-b-2 border-[#145b28] px-1 py-2 text-xs font-bold text-[#145b28]">Home</Link>
+        <Link href="#browse-services" className={buttonVariants({ variant: "ghost" })}>Services</Link>
+        <Link href="#top-technicians" className={buttonVariants({ variant: "ghost" })}>Technicians</Link>
+        <Link href="#how-it-works" className={buttonVariants({ variant: "ghost" })}>How It Works</Link>
+        <Link href="/auth/register?role=technician" className={buttonVariants({ variant: "ghost" })}>Become a Technician</Link>
+      </> : <Link href="/services" className={buttonVariants({ variant: "ghost" })}>Services &amp; Technicians</Link>}
+      {loaded && user && <Link href={`/dashboard/${user.role.toLowerCase()}`} className={buttonVariants({ variant: "ghost" })}>Dashboard</Link>}
     </nav>
     <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3">
-      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <><Button variant="ghost" render={<Link href="/auth/login" />}>Sign in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></> : <DropdownMenu>
+      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <div className="flex gap-2"><Link href="/auth/login" className={buttonVariants({ variant: pathname === "/" ? "outline" : "ghost" })}>Sign in</Link><Link href="/auth/register" className={buttonVariants()}>Sign up</Link></div> : <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" className="max-w-36 sm:max-w-48" />}>
           <span className="truncate">{user.name}</span>
         </DropdownMenuTrigger>

@@ -3,7 +3,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -14,9 +14,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { registerSchema, type RegisterValues } from "@/validations/auth.validation";
 
-const RegisterForm = () => {
+const RegisterForm = ({ role }: { role: RegisterValues["role"] }) => {
   const router = useRouter();
-  const [values, setValues] = useState<RegisterValues>({ name: "", email: "", password: "", role: "CUSTOMER" });
+  const [values, setValues] = useState<RegisterValues>({ name: "", email: "", password: "", role });
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [pending, setPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -55,4 +55,9 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+const RegisterFormForRoute = () => {
+  const role = useSearchParams().get("role") === "technician" ? "TECHNICIAN" : "CUSTOMER";
+  return <RegisterForm key={role} role={role} />;
+};
+
+export default RegisterFormForRoute;

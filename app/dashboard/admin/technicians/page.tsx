@@ -81,7 +81,7 @@ const AdminTechniciansPage = () => {
 
   return (
     <div className="space-y-6">
-      <div><h1 className="text-2xl font-semibold tracking-tight">Technician management</h1><p className="mt-1 text-sm text-muted-foreground">Search technician accounts and manage access.</p></div>
+      <div><h1 className="text-2xl font-semibold tracking-tight">Technician management</h1></div>
       <form onSubmit={search} className="flex max-w-lg items-end gap-2" noValidate>
         <div className="min-w-0 flex-1"><SearchField id="admin-technician-search" label="Search technicians" value={queryInput} onChange={(event) => setQueryInput(event.target.value)} placeholder="Name or email" error={queryError} /></div>
         <Button type="submit" variant="outline">Search</Button>

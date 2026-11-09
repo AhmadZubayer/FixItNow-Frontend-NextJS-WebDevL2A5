@@ -43,7 +43,7 @@ export const routeCrumbs = (pathname: string): Crumb[] => {
 
 const RouteBreadcrumbs = () => {
   const pathname = usePathname();
-  if (pathname.startsWith("/dashboard")) return null;
+  if (pathname === "/" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth/")) return null;
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6">
       <PageBreadcrumbs items={routeCrumbs(pathname)} />

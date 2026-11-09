@@ -70,7 +70,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const activeValue = currentTab?.href ?? pathname;
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col bg-muted [--card:#fff]">
       {/* 1. Directly under shared navbar: Tabs for dashboard navigation */}
       {tabs.length > 0 && (
         <div className="border-b bg-background/60 backdrop-blur-xs">
@@ -84,10 +84,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       <TabsTrigger
                         key={tab.href}
                         value={tab.href}
+                        nativeButton={false}
                         onClick={() => router.push(tab.href)}
                         style={
                           isActive
-                            ? { backgroundColor: "#9AE600", color: "#000000", borderColor: "#000000" }
+                            ? { backgroundColor: "#9AE600", color: "#000000" }
                             : undefined
                         }
                         className={cn(

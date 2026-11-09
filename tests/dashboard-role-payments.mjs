@@ -55,7 +55,7 @@ const assertSelectedTabStyle = async (tab) => {
   assert.deepEqual(style, {
     backgroundColor: "rgb(154, 230, 0)",
     color: "rgb(0, 0, 0)",
-    borderColor: "rgb(0, 0, 0)",
+    borderColor: "rgba(0, 0, 0, 0)",
     fontWeight: "600",
   });
 };
@@ -110,8 +110,8 @@ const assertDashboardShell = async (page, path) => {
   const mainCard = page.locator("main > div[data-slot='card']");
   assert.equal(
     await mainCard.evaluate((element) => getComputedStyle(element).backgroundColor),
-    "rgb(239, 239, 239)",
-    `${path}: main card must use #EFEFEF`
+    "rgb(255, 255, 255)",
+    `${path}: main card must be white`
   );
   const footer = page.locator("footer");
   assert.equal(await footer.count(), 1, `${path}: shared footer must appear once`);
@@ -409,7 +409,7 @@ try {
   assert.match(await platformOverview.getByText("Platform revenue").locator("..").innerText(), /15\.00/);
   assert.equal(await platformOverview.getByText("Paid job value").count(), 0);
   const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
-  assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
   await page.getByRole("button", { name: "Edit" }).click();
   const active = page.getByRole("checkbox", { name: "Active" });
   await active.waitFor();
@@ -430,7 +430,7 @@ try {
   const adminCardTop = await adminMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   assert.ok(adminTabsTop < adminBreadcrumbsTop, "Admin tabs must appear above breadcrumbs");
   assert.ok(adminBreadcrumbsTop < adminCardTop, "Admin breadcrumbs must appear above main card");
-  assert.equal(await adminMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await adminMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
   await adminTabs.getByRole("tab", { name: "Technicians" }).click();
   await page.waitForURL("**/dashboard/admin/technicians");
   await page.getByRole("heading", { name: "Technician management" }).waitFor();
@@ -458,7 +458,7 @@ try {
   const custCardTop = await custMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   assert.ok(custTabsTop < custBreadcrumbsTop, "Customer tabs must appear above breadcrumbs");
   assert.ok(custBreadcrumbsTop < custCardTop, "Customer breadcrumbs must appear above main card");
-  assert.equal(await custMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await custMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
   await custTabs.getByRole("tab", { name: "Payments" }).click();
   await custPage.waitForURL("**/dashboard/customer/payments");
   await custPage.getByRole("heading", { name: "Payment history" }).waitFor();
@@ -485,7 +485,7 @@ try {
   const tCardTop = await techMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   assert.ok(tTabsTop < tBreadcrumbsTop, "Technician tabs must appear above breadcrumbs");
   assert.ok(tBreadcrumbsTop < tCardTop, "Technician breadcrumbs must appear above main card");
-  assert.equal(await techMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await techMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
   await techTabs.getByRole("tab", { name: "Booking requests" }).click();
   await tPage.waitForURL("**/dashboard/technician/bookings");
   await tPage.getByRole("heading", { name: "Booking requests" }).waitFor();
@@ -519,7 +519,7 @@ try {
   assert.equal(await paymentPage.getByText("Fan Repair").count(), 1);
   assert.equal(await paymentPage.getByRole("link", { name: "Back to bookings" }).evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
   assert.equal(await paymentPage.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
-  assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
   await paymentPage.setViewportSize({ width: 375, height: 812 });
   assert.equal(await paymentPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
 

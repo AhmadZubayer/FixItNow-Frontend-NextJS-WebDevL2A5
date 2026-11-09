@@ -127,16 +127,13 @@ try {
   const pageBackground = await page.locator("main").evaluate((element) => getComputedStyle(element).backgroundColor);
   assert.equal(pageBackground, "rgb(255, 255, 255)");
   assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
-  assert.equal(await page.locator('[data-slot="card"]').first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
-  const firstServiceCard = page.locator("section[aria-labelledby='service-results'] [data-slot='card']").first();
-  assert((await firstServiceCard.boundingBox()).height >= 200);
-  assert.equal(await firstServiceCard.getByText("Show technicians").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
-  await firstServiceCard.hover();
-  await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='service-results'] [data-slot='card']")).borderTopColor === "rgb(0, 0, 0)");
-  assert.equal(await firstServiceCard.evaluate((element) => getComputedStyle(element).borderTopColor), "rgb(0, 0, 0)");
+  assert.equal(await page.locator("#service-results, #service-location, #min-price, #max-price, #minimum-rating").count(), 0);
   await technicianCards.first().hover();
   await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).borderTopColor === "rgb(0, 0, 0)");
   assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).borderTopColor), "rgb(0, 0, 0)");
+  await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).backgroundColor === "rgb(154, 230, 0)");
+  await page.mouse.move(0, 0);
+  await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).backgroundColor === "rgb(239, 239, 239)");
   assert.equal(await technicianCards.count(), 9);
   await page.getByRole("button", { name: "Go to next page" }).click();
   await page.waitForURL("**/services?page=2");
@@ -165,7 +162,6 @@ try {
   await page.waitForURL("**q=Fan*");
   assert.equal(await technicianCards.count(), 9);
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("q") === "Fan" && url.searchParams.get("page") === "1"));
-  assert(observed.some((url) => url.pathname === "/api/services" && url.searchParams.get("q") === "Fan"));
 
   await page.getByLabel("Price", { exact: true }).click();
   await page.getByRole("option", { name: "High to low" }).click();
@@ -177,8 +173,10 @@ try {
   await page.waitForURL("**ratingSort=desc*");
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("ratingSort") === "desc"));
 
-  await page.getByRole("link", { name: /Fan Repair 1/ }).first().click();
-  await page.waitForURL("**serviceId=44444444-4444-4444-8444-000000000001*");
+  const selectedService = new URL(page.url());
+  selectedService.searchParams.set("serviceId", "44444444-4444-4444-8444-000000000001");
+  await page.goto(selectedService.href);
+  await technicianCards.first().waitFor();
   assert.equal(await technicianCards.count(), 1);
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("serviceId") === "44444444-4444-4444-8444-000000000001" && url.searchParams.get("q") === "Fan" && url.searchParams.get("priceSort") === "desc"));
   assert.equal(await page.getByText("Showing technicians for the selected service.").count(), 1);
@@ -187,21 +185,17 @@ try {
   await page.waitForURL((url) => url.searchParams.get("categoryId") === categoryId && !url.searchParams.has("serviceId") && !url.searchParams.has("page"));
   assert.equal(await technicianCards.count(), 9);
 
-  await page.getByLabel("Location").fill("Dhaka");
-  await page.waitForURL((url) => url.searchParams.get("location") === "Dhaka");
-  await page.getByLabel("Minimum price").fill("150");
-  await page.waitForURL((url) => url.searchParams.get("minPrice") === "150");
+  const advancedSearch = new URL(page.url());
+  advancedSearch.searchParams.set("location", "Dhaka");
+  advancedSearch.searchParams.set("minPrice", "150");
+  advancedSearch.searchParams.set("minRating", "4");
+  await page.goto(advancedSearch.href);
+  await technicianCards.first().waitFor();
   assert.equal(await technicianCards.count(), 5);
   assert(observed.some((url) => url.pathname === "/api/technicians" &&
     url.searchParams.get("q") === "Fan" && url.searchParams.get("categoryId") === categoryId &&
     url.searchParams.get("location") === "Dhaka" && url.searchParams.get("minPrice") === "150" &&
-    url.searchParams.get("priceSort") === "desc" && url.searchParams.get("page") === "1" && url.searchParams.get("limit") === "9"));
-  assert.equal(await page.getByLabel("Price", { exact: true }).innerText(), "High to low");
-
-  await page.getByLabel("Minimum rating").click();
-  await page.getByRole("option", { name: "4+ stars" }).click();
-  await page.waitForURL((url) => url.searchParams.get("minRating") === "4");
-  assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("minRating") === "4"));
+    url.searchParams.get("minRating") === "4" && url.searchParams.get("priceSort") === "desc"));
 
   await page.getByRole("button", { name: "Clear filters" }).click();
   await page.waitForURL((url) => !url.searchParams.has("q") && !url.searchParams.has("minPrice") && !url.searchParams.has("minRating"));
@@ -210,7 +204,6 @@ try {
   await page.getByLabel("Search services or technicians").fill("NonExistentXYZ");
   await page.getByLabel("Search services or technicians").press("Enter");
   await page.waitForURL("**q=NonExistentXYZ*");
-  assert.equal(await page.getByText("No services found").count(), 1);
   assert.equal(await page.getByText("No technicians found").count(), 1);
 
   await page.getByRole("button", { name: "Clear filters" }).click();
@@ -269,14 +262,15 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   assert.equal(await loginPassword.isVisible(), true);
   await page.setViewportSize({ width: 375, height: 812 });
-  assert.match(await page.evaluate(() => getComputedStyle(document.body).backgroundImage), /register-bg\.png/);
-  assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
+  assert.match(await page.evaluate(() => getComputedStyle(document.querySelector(".auth-background")).backgroundImage), /register-bg\.png/);
+  assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector(".auth-background")).backgroundSize), "cover");
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-login-current.png"), fullPage: true });
   await page.goto(`${base}/auth/register`);
   const registerBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   assert.equal(await registerBreadcrumb.getByRole("link", { name: "Home" }).getAttribute("href"), "/");
   assert.equal(await registerBreadcrumb.getByText("Create account").count(), 1);
   const registerCard = page.getByRole("heading", { name: "Create an account" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
+  await registerCard.locator("form").waitFor();
   assert.equal(await registerCard.locator("form").count(), 1);
   assert.equal(await registerCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   const registerPassword = registerCard.getByLabel("Password", { exact: true });
@@ -293,8 +287,8 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   assert.equal(await registerPassword.isVisible(), true);
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-register-desktop-current.png"), fullPage: true });
-  assert.match(await page.evaluate(() => getComputedStyle(document.body).backgroundImage), /register-bg\.png/);
-  assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
+  assert.match(await page.evaluate(() => getComputedStyle(document.querySelector(".auth-background")).backgroundImage), /register-bg\.png/);
+  assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector(".auth-background")).backgroundSize), "cover");
   assert.equal((await page.request.get(`${base}/register-bg.png`)).status(), 200);
   console.log("PASS services filters, pagination, and mobile width");
 } finally {

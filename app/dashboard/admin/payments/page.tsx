@@ -52,7 +52,6 @@ const AdminPaymentsPage = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Platform payment history</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Completed payments show the 85% technician share and 15% platform share. Other payment states show no realized earnings.</p>
       </div>
       {loading ? <PageSkeleton /> : error ? (
         <div role="alert" className="space-y-2 text-sm text-destructive">
