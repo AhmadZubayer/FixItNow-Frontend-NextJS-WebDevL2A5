@@ -1,4 +1,4 @@
-Completion Progress: [15]%
+Completion Progress: [16]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 13 / 85 |
-| Remaining tasks | 72 |
-| Overall state | S03-T01 pushed; S03-T02 next |
-| Current task | S03-T01 complete; S03-T02 next |
+| Completed tasks | 14 / 85 |
+| Remaining tasks | 71 |
+| Overall state | S03-T02 validated; frontend push pending |
+| Current task | S03-T02 shared footer on every page |
 | Last completed task | S03-T01 every card background #EFEFEF |
-| Next task | S03-T02 shared footer on every page |
+| Next task | S03-T03 breadcrumbs on every page |
 | Last successful GitHub push | Frontend main 6fc467e (S03-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S03-T01 |
-| Task description | Set fill/background of every card, including dashboard and nested cards, to #EFEFEF with readable contrast |
-| State | Completed, validated, committed and pushed |
+| Task ID | S03-T02 |
+| Task description | Add a simple shared footer with #EFEFEF background on every page |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/globals.css; manual card wrappers on home, dashboards, technician profile, payment/status and skeletons; three browser tests; TASKS.md; PROGRESS.md |
-| Work already implemented | Card token is #EFEFEF in light and dark themes with dark card text. Manual card wrappers use bg-card and card foreground; home card hover changes border instead of fill. Calendars and controls retain their own styling. |
-| Work still to do | S03-T01 delivered. Begin S03-T02 after this progress update is pushed. |
-| Tests / commands run | Frontend lint/build; three browser tests with computed rgb(239, 239, 239) card assertions; inspected services screenshot; git diff --check. |
-| Results / errors | All checks passed. Services screenshot shows light gray cards against white page. No dark theme UI session was rendered; dark token values were checked in CSS. |
-| Changes only on local machine | This S03-T01 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S03-T02 by adding a shared footer at the root layout. |
+| Files changed | components/site-footer.tsx, app/layout.tsx, three browser tests, TASKS.md, PROGRESS.md |
+| Work already implemented | Added a semantic shared footer with Home/Services links and #EFEFEF fill to the only root layout, after page content. |
+| Work still to do | Commit and push frontend footer task files, then begin breadcrumb coverage. |
+| Tests / commands run | Frontend lint and build; services, booking, and admin browser tests verifying footer presence on public, auth and dashboard pages and computed rgb(239, 239, 239) on services. |
+| Results / errors | All checks passed. Root layout is the sole layout, so footer covers every route unless a route bypasses the app root. |
+| Changes only on local machine | S03-T02 source, browser tests and tracking updates pending commit/push. |
+| Commits awaiting push | S03-T02 frontend commit to create and push. |
+| **Exact next action** | Stage S03-T02 frontend files, commit/push main, record hash, then begin S03-T03. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S03-T01 |
+| Task ID | S03-T02 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -66,6 +66,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T05 | Keep layouts responsive and requests efficient | Parallelized independent services data requests; services, profile and admin management passed 375 px overflow checks, plus mobile filter interaction; lint/build passed; 11 of 85 checked | `bcb3195` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | `f231ab1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T01 | Set every card fill to #EFEFEF | Updated shared card token and manual card wrappers; computed color assertions on services, profile and dashboard cards, screenshot inspection, lint and build passed; 13 of 85 checked | `6fc467e` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S03-T02 | Add shared footer | Root layout renders semantic #EFEFEF footer; browser tests checked public, auth and dashboard routes; lint/build passed; 14 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

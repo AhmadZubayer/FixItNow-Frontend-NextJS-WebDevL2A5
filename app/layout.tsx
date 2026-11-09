@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
 import { Toaster } from "sonner";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   description: "Find and book trusted home service professionals.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+const RootLayout = ({ children }: LayoutProps<"/">) => {
   return (
     <html
       lang="en"
@@ -31,8 +32,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <SiteHeader />
         {children}
+        <SiteFooter />
         <Toaster richColors={false} position="bottom-right" />
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

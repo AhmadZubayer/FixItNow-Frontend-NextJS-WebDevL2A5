@@ -92,6 +92,8 @@ try {
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${base}/services`);
+  assert.equal(await page.locator("footer").count(), 1);
+  assert.equal(await page.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   const technicianCards = page.locator("section[aria-labelledby='technician-results'] a[href^='/technicians/']");
   await technicianCards.first().waitFor();
   assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");

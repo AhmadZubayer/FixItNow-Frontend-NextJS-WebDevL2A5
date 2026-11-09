@@ -85,6 +85,7 @@ try {
   await page.waitForURL("**/dashboard/customer");
   assert.deepEqual(bookings, [{ serviceId: chosenService, availabilitySlotId: openSlot }]);
   await page.goto(`${base}/auth/register`);
+  assert.equal(await page.locator("footer").count(), 1);
   const accountType = page.getByRole("combobox", { name: "Account type" });
   await accountType.click();
   await page.getByRole("option", { name: "Technician" }).click();
