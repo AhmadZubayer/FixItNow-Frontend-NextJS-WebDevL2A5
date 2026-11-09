@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 15 / 85 |
 | Remaining tasks | 70 |
-| Overall state | S03-T03 validated; frontend push pending |
-| Current task | S03-T03 breadcrumbs on every page |
-| Last completed task | S03-T02 shared footer |
+| Overall state | S03-T03 pushed; S03-T04 next |
+| Current task | S03-T03 complete; S03-T04 next |
+| Last completed task | S03-T03 breadcrumbs on every page |
 | Next task | S03-T04 back button color and behavior |
-| Last successful GitHub push | Frontend main 332cd72 (S03-T02); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 4635dbe (S03-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S03-T03 |
 | Task description | Display breadcrumbs on every page with functional ancestor links |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | components/route-breadcrumbs.tsx, app/layout.tsx, five pages with duplicate local breadcrumbs, three browser tests, TASKS.md, PROGRESS.md |
 | Work already implemented | Root layout renders route-derived breadcrumbs in Suspense; dynamic and static routes have functional ancestor links. Removed five local breadcrumb instances to leave one semantic navigation per page. Mapping covers current routes and future service detail path. |
-| Work still to do | Commit and push frontend task files, then begin S03-T04. |
+| Work still to do | S03-T03 delivered. Begin S03-T04 after this progress update is pushed. |
 | Tests / commands run | Frontend tsc, lint and production build; three browser tests checking breadcrumb count and links on services, auth, profile, review and admin routes. |
 | Results / errors | All final checks passed. Initial build identified usePathname outside Suspense on a prerendered dynamic page; root Suspense boundary fixed it and the build was rerun successfully. |
-| Changes only on local machine | S03-T03 source, tests and tracking updates pending commit/push. |
-| Commits awaiting push | S03-T03 frontend commit to create and push. |
-| **Exact next action** | Stage S03-T03 frontend files, commit/push main, record hash, then begin S03-T04. |
+| Changes only on local machine | This S03-T03 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S03-T04 by inventorying back navigation controls and their destinations. |
 
 ## Verified task completion history
 
@@ -67,7 +67,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | `f231ab1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T01 | Set every card fill to #EFEFEF | Updated shared card token and manual card wrappers; computed color assertions on services, profile and dashboard cards, screenshot inspection, lint and build passed; 13 of 85 checked | `6fc467e` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T02 | Add shared footer | Root layout renders semantic #EFEFEF footer; browser tests checked public, auth and dashboard routes; lint/build passed; 14 of 85 checked | `332cd72` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S03-T03 | Show breadcrumbs on all pages | Added root route-aware breadcrumb and removed duplicate locals; build, lint/type and browser link checks passed; 15 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S03-T03 | Show breadcrumbs on all pages | Added root route-aware breadcrumb and removed duplicate locals; build, lint/type and browser link checks passed; 15 of 85 checked | `4635dbe` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
