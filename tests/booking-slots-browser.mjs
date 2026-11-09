@@ -14,7 +14,8 @@ const availablePort = () => new Promise((resolve, reject) => {
 });
 
 const backendPort = await availablePort();
-const frontendPort = await availablePort();
+let frontendPort = await availablePort();
+while (frontendPort === backendPort) frontendPort = await availablePort();
 const base = `http://127.0.0.1:${frontendPort}`;
 const profileId = "33333333-3333-4333-8333-333333333333";
 const chosenService = "44444444-4444-4444-8444-444444444444";
@@ -45,6 +46,7 @@ const backend = createHttpServer((request, response) => {
   if (request.url === `/api/technicians/${profileId}`) return send(response, 200, { data: profile });
   if (request.url === "/api/auth/me") return send(response, 200, { data: { name: "Customer", role: "CUSTOMER" } });
   if (request.url === `/api/bookings/${completedBooking}`) return send(response, 200, { data: { id: completedBooking, status: "COMPLETED", service: { title: "Chosen service" } } });
+  if (request.url === "/api/bookings" && request.method === "GET") return send(response, 200, { data: [] });
   if (request.url === "/api/bookings" && request.method === "POST") {
     let body = "";
     request.on("data", (part) => { body += part; });
