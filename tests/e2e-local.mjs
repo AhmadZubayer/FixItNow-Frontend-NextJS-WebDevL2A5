@@ -95,7 +95,7 @@ try {
       });
     });
     await page.goto(base);
-    await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Services" }).click();
+    await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Services & Technicians" }).click();
     await page.getByRole("status", { name: "Loading content" }).waitFor({ timeout: 5000 });
     await page.getByRole("heading", { name: "Browse services" }).waitFor();
     await page.unroute("**/services?*");

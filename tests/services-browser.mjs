@@ -96,6 +96,11 @@ try {
   assert.equal((await logo.innerText()).trim(), "FixItNow");
   assert.equal(await logo.getAttribute("href"), "/");
   assert((await logo.boundingBox()).x < (await page.getByRole("navigation", { name: "Main navigation" }).boundingBox()).x);
+  const mainNavigation = page.getByRole("navigation", { name: "Main navigation" });
+  assert.equal(await mainNavigation.getByRole("link", { name: "Services & Technicians" }).getAttribute("href"), "/services");
+  const headerBounds = await page.locator("header").boundingBox();
+  const navigationBounds = await mainNavigation.boundingBox();
+  assert(Math.abs(navigationBounds.x + navigationBounds.width / 2 - (headerBounds.x + headerBounds.width / 2)) < 2);
   const back = page.getByRole("link", { name: "Back", exact: true });
   assert.equal(await back.getAttribute("href"), "/");
   assert.equal(await back.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");

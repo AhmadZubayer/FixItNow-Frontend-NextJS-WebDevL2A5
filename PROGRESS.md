@@ -1,4 +1,4 @@
-Completion Progress: [26]%
+Completion Progress: [27]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 22 / 85 |
-| Remaining tasks | 63 |
-| Overall state | S04-T03 pushed; S04-T04 next |
-| Current task | S04-T03 complete; S04-T04 next |
+| Completed tasks | 23 / 85 |
+| Remaining tasks | 62 |
+| Overall state | S04-T04 validated; frontend push pending |
+| Current task | S04-T04 centered Services & Technicians link |
 | Last completed task | S04-T03 unchanged left logo |
-| Next task | S04-T04 centered Services & Technicians link |
+| Next task | S04-T05 authenticated center Dashboard link |
 | Last successful GitHub push | Frontend main 46536f1 (S04-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S04-T03 |
-| Task description | Keep the existing logo unchanged on the left |
-| State | Completed, validated, committed and pushed |
+| Task ID | S04-T04 |
+| Task description | Show Services & Technicians in navbar center linking to /services |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Kept existing FixItNow text logo and home href. Browser confirms it remains left of main navigation. No source edit was necessary. |
-| Work still to do | S04-T03 delivered. Begin S04-T04 after this progress update is pushed. |
-| Tests / commands run | Services browser test verified exact FixItNow text, home href and left position; passed. Prior S04-T02 lint/build remain valid since no source change. |
-| Results / errors | Logo unchanged and left-aligned. |
-| Changes only on local machine | This S04-T03 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then place Services & Technicians in the navbar center for S04-T04. |
+| Files changed | components/site-header.tsx, tests/services-browser.mjs, tests/e2e-local.mjs selector, TASKS.md, PROGRESS.md |
+| Work already implemented | Header has left logo, centered Services & Technicians link to /services, and right account controls. Mobile center nav moves to its own row. |
+| Work still to do | Commit/push frontend task files; next move role Dashboard link into center nav. |
+| Tests / commands run | Frontend lint/build, services browser link/href/center geometry and mobile width checks, screenshot inspection. Existing real-backend E2E selector updated but E2E not run because it writes DB data. |
+| Results / errors | All run checks passed; screenshot shows centered link and readable left/right controls. |
+| Changes only on local machine | S04-T04 source, test and tracking updates pending commit/push. |
+| Commits awaiting push | S04-T04 frontend commit to create and push. |
+| **Exact next action** | Stage S04-T04 frontend files, commit/push main, record hash, then begin S04-T05. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S04-T03 |
+| Task ID | S04-T04 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -75,6 +75,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S04-T01 | Make navbar sticky | Root SiteHeader uses sticky top/z-index; browser scroll assertion, lint and build passed; 20 of 85 checked | `08a1c29` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T02 | Give navbar translucent glass treatment | Header uses 85% opacity and backdrop blur; computed browser styles and lint/build passed; 21 of 85 checked | `548d5ba` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T03 | Preserve left logo | Browser verified unchanged FixItNow text, home href and left position; 22 of 85 checked | `46536f1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S04-T04 | Center Services & Technicians link | Reflowed header to three zones and mobile second row; browser center/href checks, screenshot, lint/build passed; 23 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
