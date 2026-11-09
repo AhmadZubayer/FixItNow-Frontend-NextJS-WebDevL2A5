@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 21 / 85 |
 | Remaining tasks | 64 |
-| Overall state | S04-T02 validated; frontend push pending |
-| Current task | S04-T02 translucent acrylic navbar |
-| Last completed task | S04-T01 sticky global navbar |
+| Overall state | S04-T02 pushed; S04-T03 next |
+| Current task | S04-T02 complete; S04-T03 next |
+| Last completed task | S04-T02 translucent acrylic navbar |
 | Next task | S04-T03 preserve existing left logo |
-| Last successful GitHub push | Frontend main 08a1c29 (S04-T01); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 548d5ba (S04-T02); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S04-T02 |
 | Task description | Give sticky navbar subtle translucent glass appearance without reducing readability |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | components/site-header.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
 | Work already implemented | Sticky header uses 85% background opacity, backdrop blur and saturation with shadow/border to retain readable text. |
-| Work still to do | Commit and push frontend task files, then review left logo preservation. |
+| Work still to do | S04-T02 delivered. Begin S04-T03 after this progress update is pushed. |
 | Tests / commands run | Frontend lint/build; services browser scroll test asserted 0.85 computed background alpha and active backdrop blur. |
 | Results / errors | Final checks passed. First browser assertion assumed rgba; Chrome returned oklab with equivalent alpha, so assertion was corrected and rerun. |
-| Changes only on local machine | S04-T02 style, browser test and tracking updates pending commit/push. |
-| Commits awaiting push | S04-T02 frontend commit to create and push. |
-| **Exact next action** | Stage S04-T02 frontend files, commit/push main, record hash, then begin S04-T03. |
+| Changes only on local machine | This S04-T02 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then verify the existing logo remains on the left for S04-T03. |
 
 ## Verified task completion history
 
@@ -73,7 +73,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T06 | Align spacing and keyboard focus | Aligned header with content/footer; added skip link, focus target and anchor outline; keyboard/mobile test, screenshot, lint/build passed; 18 of 85 checked | `3cafc17` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T07 | Reuse shared layout and styling | Audited shared footer, breadcrumb, back link, skeleton/empty components and card token; no source change needed; 19 of 85 checked | `59db30a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T01 | Make navbar sticky | Root SiteHeader uses sticky top/z-index; browser scroll assertion, lint and build passed; 20 of 85 checked | `08a1c29` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S04-T02 | Give navbar translucent glass treatment | Header uses 85% opacity and backdrop blur; computed browser styles and lint/build passed; 21 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S04-T02 | Give navbar translucent glass treatment | Header uses 85% opacity and backdrop blur; computed browser styles and lint/build passed; 21 of 85 checked | `548d5ba` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
