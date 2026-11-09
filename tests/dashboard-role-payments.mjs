@@ -37,8 +37,19 @@ const backend = createHttpServer((request, response) => {
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
 
   if (request.url === "/api/auth/login" && request.method === "POST") {
-    request.resume();
-    send(response, 200, { data: { accessToken: "valid-customer", refreshToken: "valid-refresh" } });
+    let body = "";
+    request.on("data", (chunk) => { body += chunk; });
+    request.on("end", () => {
+      if (JSON.parse(body).email === "bad@example.test") return send(response, 401, { message: "Invalid credentials" });
+      send(response, 200, { data: { accessToken: "valid-customer", refreshToken: "valid-refresh" } });
+    });
+  } else if (request.url === "/api/auth/register" && request.method === "POST") {
+    let body = "";
+    request.on("data", (chunk) => { body += chunk; });
+    request.on("end", () => {
+      if (JSON.parse(body).email === "taken@example.test") return send(response, 409, { message: "Email already registered" });
+      send(response, 201, { data: { id: "registered-customer" } });
+    });
   } else if (request.url === "/api/auth/refresh-token" && request.method === "POST") {
     request.resume();
     send(response, 200, { data: { accessToken: "valid-admin" } });
@@ -160,8 +171,16 @@ try {
   const loginPage = await loginContext.newPage();
   await loginPage.goto(`${base}/auth/login`);
   await loginPage.getByRole("link", { name: "Sign in" }).waitFor();
+  await loginPage.getByRole("button", { name: "Log in" }).click();
+  await loginPage.getByText("Enter a valid email address").waitFor();
+  await loginPage.getByText("Password is required").waitFor();
+  await loginPage.getByLabel("Email").fill("bad@example.test");
+  await loginPage.getByLabel("Password", { exact: true }).fill("wrong-password");
+  await loginPage.getByRole("button", { name: "Log in" }).click();
+  await loginPage.getByText("Invalid credentials").waitFor();
+  assert.match(loginPage.url(), /\/auth\/login$/);
   await loginPage.getByLabel("Email").fill("customer@example.test");
-  await loginPage.getByLabel("Password").fill("password123");
+  await loginPage.getByLabel("Password", { exact: true }).fill("password123");
   await loginPage.getByRole("button", { name: "Log in" }).click();
   await loginPage.waitForURL("**/dashboard/customer");
   await loginPage.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Dashboard" }).waitFor();
@@ -169,6 +188,23 @@ try {
   assert.equal(await loginPage.locator("header").getByRole("link", { name: "Sign in" }).count(), 0);
   assert.equal(await loginPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await loginContext.close();
+  const registerContext = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const registerPage = await registerContext.newPage();
+  await registerPage.goto(`${base}/auth/register`);
+  await registerPage.getByRole("button", { name: "Create account" }).click();
+  await registerPage.getByText("Name must contain at least 2 characters").waitFor();
+  await registerPage.getByText("Password must contain at least 8 characters").waitFor();
+  await registerPage.getByLabel("Name").fill("New Customer");
+  await registerPage.getByLabel("Email").fill("taken@example.test");
+  await registerPage.getByLabel("Password", { exact: true }).fill("password123");
+  await registerPage.getByRole("button", { name: "Create account" }).click();
+  await registerPage.getByText("Email already registered").waitFor();
+  assert.match(registerPage.url(), /\/auth\/register$/);
+  await registerPage.getByLabel("Email").fill("new@example.test");
+  await registerPage.getByRole("button", { name: "Create account" }).click();
+  await registerPage.waitForURL("**/auth/login");
+  assert.equal(await registerPage.getByRole("button", { name: "Log in" }).count(), 1);
+  await registerContext.close();
   const context = await browser.newContext();
   await context.addCookies([{ name: "accessToken", value: "valid-admin", url: base }]);
   const page = await context.newPage();

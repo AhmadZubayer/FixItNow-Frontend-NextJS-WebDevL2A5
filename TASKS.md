@@ -54,7 +54,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Wrap the authentication forms in the default **shadcn Card** instead of displaying them directly on a plain white background.
 - [x] Use `public/register-bg.png` as a **full-screen background** on **both login and sign-up pages** (use the existing public asset rather than a machine-specific path in runtime code).
 - [x] Add an **eye icon** toggle to each password input to show/hide the password while preserving accessibility and form behavior.
-- [ ] Keep existing authentication, form validation, error messaging, and redirects working.
+- [x] Keep existing authentication, form validation, error messaging, and redirects working.
 - [ ] Ensure both pages are responsive and the form remains readable against the background image.
 - [ ] Include breadcrumbs on these pages as required globally.
 

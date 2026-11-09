@@ -1,4 +1,4 @@
-Completion Progress: [35]%
+Completion Progress: [36]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 30 / 85 |
-| Remaining tasks | 55 |
-| Overall state | S05-T03 pushed; S05-T04 next |
+| Completed tasks | 31 / 85 |
+| Remaining tasks | 54 |
+| Overall state | S05-T04 validated; push pending |
 | Current task | S05-T04 preserve auth validation and redirects |
-| Last completed task | S05-T03 password eye toggles |
-| Next task | S05-T04 preserve auth validation and redirects |
+| Last completed task | S05-T04 preserve auth validation and redirects |
+| Next task | S05-T05 responsive readable auth pages |
 | Last successful GitHub push | Frontend main 4f4ba38 (S05-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S05-T04 |
 | Task description | Preserve authentication, form validation, error messaging and redirects |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S05-T04 |
-| Work already implemented | S05-T03 password toggles and controlled-value checks pushed as 4f4ba38. |
-| Work still to do | Verify login/register validation, errors and redirects against mock backend; fix any regression, then mark and push. |
-| Tests / commands run | S05-T03 lint/build and services browser show/hide assertions passed. |
-| Results / errors | S05-T03 pushed; real-backend E2E not run because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, inspect auth tests and run focused login/register checks. |
+| Files changed | tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Mock-backed browser coverage now exercises invalid login/register fields, server error messages, successful registration to login, and successful login to customer dashboard. |
+| Work still to do | Commit and push S05-T04, record hash, then begin S05-T05. |
+| Tests / commands run | Dashboard role browser test, frontend lint and git diff --check passed; S05-T03 build passed with identical application source. |
+| Results / errors | All checks passed; no live database affected. |
+| Changes only on local machine | S05-T04 browser test, checklist and progress update. |
+| Commits awaiting push | S05-T04 task commit. |
+| **Exact next action** | Stage only S05-T04 files, commit and push frontend main. |
 
 ## Verified task completion history
 
