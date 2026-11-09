@@ -1,4 +1,4 @@
-Completion Progress: [92]%
+Completion Progress: [93]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 92% |
+| Completion Progress | 93% |
 | Last Working Agent | Codex |
-| Completed tasks | 78 / 85 |
-| Remaining tasks | 7 |
-| Overall state | S11-T02 navbar behavior passed for signed-out and all roles; tracking update pending push |
-| Last completed task | S11-T02 Verify navbar behavior for signed-in and signed-out users across all three roles |
-| Current unfinished task | S11-T03 Verify login/sign-up layout, password visibility toggle, and auth redirects |
-| Next task for Codex | Run browser assertions for login/register layouts, password visibility controls, validation, and role redirects |
-| Latest commit hashes | Frontend `main`: `e2832ee` (S11-T01); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `e2832ee` (S11-T01 role journeys); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 79 / 85 |
+| Remaining tasks | 6 |
+| Overall state | S11-T03 auth layouts and redirects passed; tracking update pending push |
+| Last completed task | S11-T03 Verify login/sign-up layout, password visibility toggle, and auth redirects |
+| Current unfinished task | S11-T04 Verify `/services` search, sorting, filtering, hover, and 9-per-page pagination |
+| Next task for Codex | Verify the services browser test covers every requested interaction and rerun it against the current build |
+| Latest commit hashes | Frontend `main`: `eb7a447` (S11-T02 tracking); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `eb7a447` (S11-T02 navbar verification); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S11-T03 |
-| Task description | Verify login/sign-up layout, password visibility toggle, and auth redirects |
-| State | S11-T02 navbar review and browser test passed; checklist/progress commit pending push |
+| Task ID | S11-T04 |
+| Task description | Verify `/services` search, sorting, filtering, hover, and 9-per-page pagination |
+| State | S11-T03 auth page and redirect browser checks passed; checklist/progress commit pending push |
 | Last Working Agent | Codex |
-| Current unfinished task | S11-T03 |
+| Current unfinished task | S11-T04 |
 | Repositories affected | Frontend only; backend unchanged |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `e2832ee`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `eb7a447`); backend `main` → `origin/main` (commit `7ce0891`) |
 | Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S10-T03 and S10-T04: README and checklist/progress verification only. |
 | Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
-| Work still to do | Verify login and registration layouts, validation feedback, password toggles, and redirects into the correct role dashboard. |
-| Tests / commands run | Reviewed `SiteHeader` and `SessionActions`; dashboard browser test passed signed-out links, customer/technician/admin dashboard links, role account menus, logout, and the post-logout signed-out state. |
+| Work still to do | Verify all requested services search, sort, filtering, hover, and pagination behaviors. |
+| Tests / commands run | `node tests/dashboard-role-payments.mjs` and `node tests/services-browser.mjs` passed; they cover login/register layout, password visibility, form errors, login redirect, registration success, and responsive auth screens. |
 | Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
-| Changes only on local machine | S11-T02 checklist/progress update pending commit. |
-| Commits awaiting push | S11-T02 tracking commit pending. |
+| Changes only on local machine | S11-T03 checklist/progress update pending commit. |
+| Commits awaiting push | S11-T03 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Run `tests/dashboard-role-payments.mjs` and `tests/services-browser.mjs` to verify auth layouts, validation, password toggles, login destination, and registration redirect. |
+| **Exact next action** | Read `tests/services-browser.mjs` assertions for Enter search, sort fetching, combined filters, hover styling, and page size, then rerun it. |
 
 ## Verified task completion history
 
@@ -137,7 +137,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S10-T04 | Include the technician profile route in the README overview | Confirmed `/technicians/[id]` is listed and resolves to the dynamic page with profile, reviews, services, and booking form; 75 of 85 checked | `4d69a55` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S10-T05 | Ensure README matches implementation and package scripts | Verified all documented commands, environment names, 16 routes, project claims, and credential-free config against source; 76 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 | S11-T01 | Check customer, technician, and admin journeys against the requirements | Reviewed the customer booking/payment/review, technician setup/availability/job, and admin oversight flows; marketplace, booking-slots, and dashboard role/payment browser tests passed; 77 of 85 checked | `e2832ee` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
-| S11-T02 | Verify navbar for signed-in, signed-out, and all roles | Source review and browser assertions confirmed anonymous controls and role-specific dashboard/account menus for customer, technician, and admin; 78 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S11-T02 | Verify navbar for signed-in, signed-out, and all roles | Source review and browser assertions confirmed anonymous controls and role-specific dashboard/account menus for customer, technician, and admin; 78 of 85 checked | `eb7a447` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S11-T03 | Verify auth layout, password visibility, and redirects | Dashboard and services browser tests passed login/register layouts, toggle behavior, validation feedback, customer login redirect, and registration redirect; 79 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
