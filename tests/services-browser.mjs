@@ -94,6 +94,8 @@ try {
   await page.goto(`${base}/services`);
   const technicianCards = page.locator("section[aria-labelledby='technician-results'] a[href^='/technicians/']");
   await technicianCards.first().waitFor();
+  assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await page.locator('[data-slot="card"]').first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await technicianCards.count(), 9);
   await page.getByRole("button", { name: "Go to next page" }).click();
   await page.waitForURL("**/services?page=2");

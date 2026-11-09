@@ -153,6 +153,8 @@ try {
   await page.getByRole("cell", { name: "৳15.00" }).waitFor();
   await page.goto(`${base}/dashboard/admin`);
   await page.getByRole("heading", { name: "Categories" }).waitFor();
+  const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
+  assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.getByRole("button", { name: "Edit" }).click();
   const active = page.getByRole("checkbox", { name: "Active" });
   await active.waitFor();

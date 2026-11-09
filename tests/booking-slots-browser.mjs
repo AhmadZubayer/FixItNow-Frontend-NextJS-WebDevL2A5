@@ -69,6 +69,8 @@ try {
   const page = await context.newPage();
   await page.goto(`${base}/technicians/${profileId}?serviceId=${chosenService}`);
   await page.getByRole("heading", { name: "Request a booking" }).waitFor();
+  const serviceCard = page.getByRole("heading", { name: "Services and prices" }).locator("..").locator("div.rounded-lg.border").first();
+  assert.equal(await serviceCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.setViewportSize({ width: 1280, height: 800 });

@@ -35,7 +35,7 @@ export default async function Home() {
       </section>
       <section className="space-y-4" aria-labelledby="featured-technicians">
         <h2 id="featured-technicians" className="text-xl font-semibold tracking-tight">Top rated technicians</h2>
-        {featuredTechnicians.length ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{featuredTechnicians.map((technician) => <Link key={technician.id} href={`/technicians/${technician.id}`} className="rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-ring"><h3 className="font-medium">{technician.user.name}</h3><p className="mt-1 text-xs text-muted-foreground">{technician.location} · {technician.averageRating.toFixed(1)} rating from {technician.reviewCount} reviews</p></Link>)}</div> : <EmptyState title="No technicians yet" description="Technician profiles will appear here when available." />}
+        {featuredTechnicians.length ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{featuredTechnicians.map((technician) => <Link key={technician.id} href={`/technicians/${technician.id}`} className="rounded-lg border bg-card text-card-foreground p-4 transition-colors hover:border-black focus-visible:outline-2 focus-visible:outline-ring"><h3 className="font-medium">{technician.user.name}</h3><p className="mt-1 text-xs text-muted-foreground">{technician.location} · {technician.averageRating.toFixed(1)} rating from {technician.reviewCount} reviews</p></Link>)}</div> : <EmptyState title="No technicians yet" description="Technician profiles will appear here when available." />}
       </section>
     </main>
   );

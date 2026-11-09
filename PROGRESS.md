@@ -1,4 +1,4 @@
-Completion Progress: [14]%
+Completion Progress: [15]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 12 / 85 |
-| Remaining tasks | 73 |
-| Overall state | S02-T06 pushed; S03-T01 next |
-| Current task | S02-T06 complete; S03-T01 next |
+| Completed tasks | 13 / 85 |
+| Remaining tasks | 72 |
+| Overall state | S03-T01 validated; frontend push pending |
+| Current task | S03-T01 every card background #EFEFEF |
 | Last completed task | S02-T06 booking detail loading and error states |
-| Next task | S03-T01 set every card fill to #EFEFEF |
+| Next task | S03-T02 shared footer on every page |
 | Last successful GitHub push | Frontend main f231ab1 (S02-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S02-T06 |
-| Task description | Add sensible loading states, skeletons, and error/empty states |
-| State | Completed, validated, committed and pushed |
+| Task ID | S03-T01 |
+| Task description | Set fill/background of every card, including dashboard and nested cards, to #EFEFEF with readable contrast |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | components/booking-detail-skeleton.tsx, payment and review booking pages, booking browser test, TASKS.md, PROGRESS.md |
-| Work already implemented | Added compact shared booking detail skeleton to payment/review pages, replaced plain loading text, and aligned review failures with the shared Alert style. Existing root error boundary, route skeletons, dashboard error/empty states remain. |
-| Work still to do | S02-T06 delivered. Begin S03-T01 after this progress update is pushed. |
-| Tests / commands run | Frontend lint and production build; browser booking test with delayed detail fetch and missing-booking error response. |
-| Results / errors | All checks passed. Browser saw the loading status skeleton and Booking unavailable alert. Browser test uses mock backend. |
-| Changes only on local machine | This S02-T06 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S03-T01 by inventorying card backgrounds across the app. |
+| Files changed | app/globals.css; manual card wrappers on home, dashboards, technician profile, payment/status and skeletons; three browser tests; TASKS.md; PROGRESS.md |
+| Work already implemented | Card token is #EFEFEF in light and dark themes with dark card text. Manual card wrappers use bg-card and card foreground; home card hover changes border instead of fill. Calendars and controls retain their own styling. |
+| Work still to do | Commit and push frontend card changes, then begin shared footer task. |
+| Tests / commands run | Frontend lint/build; three browser tests with computed rgb(239, 239, 239) card assertions; inspected services screenshot; git diff --check. |
+| Results / errors | All checks passed. Services screenshot shows light gray cards against white page. No dark theme UI session was rendered; dark token values were checked in CSS. |
+| Changes only on local machine | S03-T01 frontend source, tests and tracking updates pending commit/push. |
+| Commits awaiting push | S03-T01 frontend commit to create and push. |
+| **Exact next action** | Stage S03-T01 frontend files, commit/push main, record hash, then begin S03-T02. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S02-T06 |
+| Task ID | S03-T01 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -65,6 +65,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T04 | Use shadcn controls in application code | Converted native selects, checkbox, and buttons; no remaining native controls outside generated UI files; lint/type/build and browser checks passed; 10 of 85 checked | `0fea46d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T05 | Keep layouts responsive and requests efficient | Parallelized independent services data requests; services, profile and admin management passed 375 px overflow checks, plus mobile filter interaction; lint/build passed; 11 of 85 checked | `bcb3195` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | `f231ab1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S03-T01 | Set every card fill to #EFEFEF | Updated shared card token and manual card wrappers; computed color assertions on services, profile and dashboard cards, screenshot inspection, lint and build passed; 13 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
