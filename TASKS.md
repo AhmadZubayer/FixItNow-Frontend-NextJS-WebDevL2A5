@@ -40,7 +40,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 ## 4. Navigation bar
 - [x] Make the global navbar **sticky**.
 - [x] Give the navbar a translucent **acrylic/glass** appearance (subtle blur and transparency) without compromising readability.
-- [ ] Keep the existing logo unchanged on the **left**.
+- [x] Keep the existing logo unchanged on the **left**.
 - [ ] In the **center**, show `Services & Technicians` linking to `/services`.
 - [ ] In the **center**, show `Dashboard` **only when authenticated**; link it to the correct role-based route:
   - Customer → `/dashboard/customer`

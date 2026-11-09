@@ -92,6 +92,10 @@ try {
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${base}/services`);
+  const logo = page.locator('header a[href="/"]').first();
+  assert.equal((await logo.innerText()).trim(), "FixItNow");
+  assert.equal(await logo.getAttribute("href"), "/");
+  assert((await logo.boundingBox()).x < (await page.getByRole("navigation", { name: "Main navigation" }).boundingBox()).x);
   const back = page.getByRole("link", { name: "Back", exact: true });
   assert.equal(await back.getAttribute("href"), "/");
   assert.equal(await back.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
