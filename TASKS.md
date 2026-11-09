@@ -79,7 +79,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Use the default **shadcn Pagination** components.
 - [x] Display **no more than 9 technician cards per page**.
 - [x] Implement functional page navigation backed by the correct paginated data and total-page information.
-- [ ] Place pagination **under the technician cards**, with the shared footer appearing below the page content.
+- [x] Place pagination **under the technician cards**, with the shared footer appearing below the page content.
 
 ## 7. Technician profile — `/technicians/[id]`
 - [ ] Verify the actual technician detail route, and use `/technicians/[id]` as the intended page.

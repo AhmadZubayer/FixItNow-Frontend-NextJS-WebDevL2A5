@@ -144,6 +144,12 @@ try {
   await page.getByRole("button", { name: "Go to previous page" }).click();
   await page.waitForURL((url) => !url.searchParams.has("page") || url.searchParams.get("page") === "1");
   assert.equal(await technicianCards.count(), 9);
+  const cardBottom = await technicianCards.last().evaluate((element) => element.getBoundingClientRect().bottom + window.scrollY);
+  const paginationTop = await page.locator('[data-slot="pagination"]').evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const paginationBottom = await page.locator('[data-slot="pagination"]').evaluate((element) => element.getBoundingClientRect().bottom + window.scrollY);
+  const footerTop = await page.locator("footer").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  assert(paginationTop >= cardBottom, "Pagination must be placed below technician cards");
+  assert(footerTop >= paginationBottom, "Footer must be placed below page content");
   await page.locator('[data-slot="pagination-link"]').getByText("2", { exact: true }).click();
   await page.waitForURL("**/services?page=2");
 
