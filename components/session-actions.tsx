@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type User = { name: string; role: "CUSTOMER" | "TECHNICIAN" | "ADMIN" };
 
@@ -51,7 +52,14 @@ const SessionActions = () => {
       {loaded && user && <Button variant="ghost" render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}>Dashboard</Button>}
     </nav>
     <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3">
-      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <><Button variant="ghost" render={<Link href="/auth/login" />}>Log in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></> : <Button variant="outline" onClick={logout} disabled={pending}>{pending ? "Logging out" : "Log out"}</Button>}
+      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <><Button variant="ghost" render={<Link href="/auth/login" />}>Log in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></> : <DropdownMenu>
+        <DropdownMenuTrigger render={<Button variant="outline" className="max-w-36 sm:max-w-48" />}>
+          <span className="truncate">{user.name}</span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={logout} disabled={pending}>{pending ? "Logging out" : "Log out"}</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>}
     </div>
   </>;
 };

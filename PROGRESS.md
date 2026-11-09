@@ -1,4 +1,4 @@
-Completion Progress: [28]%
+Completion Progress: [29]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 24 / 85 |
-| Remaining tasks | 61 |
-| Overall state | S04-T05 pushed; S04-T06 next |
+| Completed tasks | 25 / 85 |
+| Remaining tasks | 60 |
+| Overall state | S04-T06 validated; push pending |
 | Current task | S04-T06 authenticated name dropdown |
-| Last completed task | S04-T05 authenticated center Dashboard link |
-| Next task | S04-T06 authenticated name dropdown |
+| Last completed task | S04-T06 authenticated name dropdown |
+| Next task | S04-T07 signed-out Sign in button |
 | Last successful GitHub push | Frontend main 66c9009 (S04-T05); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S04-T06 |
 | Task description | Show authenticated full name on right with a shadcn dropdown containing Log out |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S04-T06 |
-| Work already implemented | S04-T05 session state, role route and centered navigation are pushed as 66c9009. |
-| Work still to do | Inspect existing dropdown component and account UI, implement full name trigger with logout item, validate, then commit and push. |
-| Tests / commands run | S04-T05 frontend lint, build, services browser, dashboard role browser and git diff --check all passed. |
-| Results / errors | S04-T05 pushed; real-backend E2E not run because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push progress tracking commit, then inspect dropdown UI for S04-T06. |
+| Files changed | components/session-actions.tsx, tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Signed-in account name is a shadcn dropdown trigger with a Log out menu item that reuses the existing logout action. |
+| Work still to do | Commit and push S04-T06, record its hash, then begin S04-T07. |
+| Tests / commands run | Frontend lint and build (including TypeScript); dashboard role browser test; git diff check next. |
+| Results / errors | Browser verified name trigger, open menu and Logout clears cookie and removes Dashboard link. No real-backend E2E because it writes DB data. |
+| Changes only on local machine | S04-T06 source, test, checklist and progress update. |
+| Commits awaiting push | S04-T06 task commit. |
+| **Exact next action** | Stage only S04-T06 files, commit and push frontend main. |
 
 ## Verified task completion history
 

@@ -137,6 +137,15 @@ try {
     await dashboardLink.waitFor();
     assert.equal(await dashboardLink.getAttribute("href"), `/dashboard/${role}`);
     assert.equal(await dashboardLink.count(), 1);
+    const accountTrigger = rolePage.locator("header").getByRole("button", { name: "Test user" });
+    await accountTrigger.click();
+    const logoutItem = rolePage.getByRole("menuitem", { name: "Log out" });
+    await logoutItem.waitFor();
+    if (role === "customer") {
+      await logoutItem.click();
+      await dashboardLink.waitFor({ state: "detached" });
+      assert.equal((await roleContext.cookies()).some((cookie) => cookie.name === "accessToken"), false);
+    }
     await roleContext.close();
   }
   const context = await browser.newContext();

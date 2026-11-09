@@ -46,7 +46,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
   - Customer → `/dashboard/customer`
   - Technician → `/dashboard/technician`
   - Admin → `/dashboard/admin`
-- [ ] On the **right**, show the authenticated user's **full name**. Clicking it opens a shadcn dropdown containing a **Log out** action.
+- [x] On the **right**, show the authenticated user's **full name**. Clicking it opens a shadcn dropdown containing a **Log out** action.
 - [ ] When signed out, keep the existing **Sign in** button and behavior.
 - [ ] Ensure auth state, role routing, mobile navigation, and log-out behavior update correctly without stale UI.
 
