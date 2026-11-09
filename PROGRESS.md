@@ -1,4 +1,4 @@
-Completion Progress: [72]%
+Completion Progress: [73]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 72% |
+| Completion Progress | 73% |
 | Last Working Agent | Codex |
-| Completed tasks | 61 / 85 |
-| Remaining tasks | 24 |
-| Overall state | S08-T05 verified; tracking update ready to commit and push |
-| Last completed task | S08-T05 Place breadcrumbs between the tab bar and main content card |
-| Current unfinished task | S08-T06 Render each selected tab's content inside the main shadcn Card below breadcrumbs |
-| Next task for Codex | Verify main-card containment across dashboard route content |
-| Latest commit hashes | Frontend `main`: `89a8ffa`; Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main 89a8ffa (S08-T04); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 62 / 85 |
+| Remaining tasks | 23 |
+| Overall state | S08-T06 verified; tracking update ready to commit and push |
+| Last completed task | S08-T06 Render selected tab content inside the main shadcn Card |
+| Current unfinished task | S08-T07 Keep all tables, child cards, and related content inside the main card |
+| Next task for Codex | Verify tables and nested card content stay within the dashboard's main card |
+| Latest commit hashes | Frontend `main`: `b13b974`; Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main b13b974 (S08-T05); backend main 7ce0891 (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S08-T06 |
-| Task description | Render the selected tab's content inside a main shadcn Card below the breadcrumbs |
-| State | S08-T05 verified; commit and push pending |
+| Task ID | S08-T07 |
+| Task description | Keep all tables, child cards, and related content inside the main card |
+| State | Verifying that each dashboard route's page heading is rendered inside the main shadcn Card |
 | Last Working Agent | Codex |
-| Current unfinished task | S08-T06 |
+| Current unfinished task | S08-T07 |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `89a8ffa`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | `tests/dashboard-role-payments.mjs` (nested route ordering assertions); `TASKS.md`, `PROGRESS.md` (S08-T05 tracking). |
-| Work already implemented | Shared dashboard layout renders role tabs, then breadcrumbs, then the main content card. Browser test verifies the order on all three primary dashboards and customer payments, technician bookings, admin technicians, and admin payments. |
-| Work still to do | Commit and push the S08-T05 verification and tracking update. |
-| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: tab/breadcrumb/card order on primary and nested dashboard routes, plus prior role and style assertions). |
-| Results / errors | S08-T05 browser verification passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S08-T05 verification and tracking update pending commit. |
-| Commits awaiting push | S08-T05 task commit not yet created. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `b13b974`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | `tests/dashboard-role-payments.mjs` (main-card heading containment assertions); `TASKS.md`, `PROGRESS.md` (S08-T06 tracking). |
+| Work already implemented | Shared dashboard layout wraps each route's page content in a main shadcn Card below breadcrumbs. Browser test verifies the route's level-one heading is visible inside that card for customer, technician, and admin primary and nested dashboard routes. |
+| Work still to do | Commit and push S08-T06 test and tracking update; then inspect nested tables and child cards for S08-T07. |
+| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: page heading containment on primary and nested dashboard routes, plus all earlier role, style, and ordering assertions). |
+| Results / errors | S08-T06 browser verification passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S08-T06 verification and tracking update pending commit. |
+| Commits awaiting push | S08-T06 task commit not yet created. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T05 before starting S08-T06. |
+| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T06 before starting S08-T07. |
 
 ## Verified task completion history
 
@@ -121,6 +121,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S08-T03 | Show role-appropriate dashboard tab labels dynamically | Browser test asserted exact tab labels for customer, technician, and admin; existing role-route authorization assertions passed; 59 of 85 checked | `399b699` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T04 | Style selected dashboard tab in #9AE600 | Browser verified computed #9AE600 fill, black text/border, and 600 font weight on all three role dashboards; 60 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 | S08-T05 | Place breadcrumbs between dashboard tabs and main content card | Browser checked tab/breadcrumb/card order on primary dashboards and four nested customer, technician, and admin pages; 61 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T06 | Render dashboard page content inside the main shadcn Card | Browser verified the page heading is visible inside the main card across primary and nested dashboard routes; 62 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

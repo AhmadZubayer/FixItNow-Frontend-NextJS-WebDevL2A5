@@ -50,11 +50,19 @@ const assertSelectedTabStyle = async (tab) => {
   });
 };
 
+const assertDashboardMainCardContainsHeading = async (page, path) => {
+  const mainCard = page.locator("main > div[data-slot='card']");
+  const pageHeading = mainCard.getByRole("heading", { level: 1 }).first();
+  await pageHeading.waitFor();
+  assert.ok(await pageHeading.isVisible(), `${path}: page heading must render inside the main card`);
+};
+
 const assertDashboardBreadcrumbOrder = async (page, path) => {
   const tabs = page.getByRole("tablist");
   const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
   const mainCard = page.locator("main > div[data-slot='card']");
   await Promise.all([tabs.waitFor(), breadcrumbs.waitFor(), mainCard.waitFor()]);
+  await assertDashboardMainCardContainsHeading(page, path);
 
   const [tabsTop, breadcrumbsTop, cardTop] = await Promise.all([
     tabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY),
@@ -279,6 +287,7 @@ try {
   await page.goto(`${base}/dashboard/admin`);
   assert.equal(await page.locator("footer").count(), 1);
   await page.getByRole("heading", { name: "Categories" }).waitFor();
+  await assertDashboardMainCardContainsHeading(page, "/dashboard/admin");
   const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
   assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.getByRole("button", { name: "Edit" }).click();
@@ -308,6 +317,7 @@ try {
   await custContext.addCookies([{ name: "accessToken", value: "valid-customer", url: base }]);
   const custPage = await custContext.newPage();
   await custPage.goto(`${base}/dashboard/customer`);
+  await assertDashboardMainCardContainsHeading(custPage, "/dashboard/customer");
   const custTabs = custPage.getByRole("tablist");
   await custTabs.waitFor();
   assert.deepEqual(await custTabs.getByRole("tab").allTextContents(), ["Bookings", "Payments"]);
@@ -328,6 +338,7 @@ try {
   await techCtx.addCookies([{ name: "accessToken", value: "valid-technician", url: base }]);
   const tPage = await techCtx.newPage();
   await tPage.goto(`${base}/dashboard/technician`);
+  await assertDashboardMainCardContainsHeading(tPage, "/dashboard/technician");
   const techTabs = tPage.getByRole("tablist");
   await techTabs.waitFor();
   assert.deepEqual(await techTabs.getByRole("tab").allTextContents(), ["Overview & Services", "Booking requests"]);
