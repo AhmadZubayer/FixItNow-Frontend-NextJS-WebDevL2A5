@@ -176,6 +176,13 @@ try {
   await signInLink.click();
   await page.waitForURL("**/auth/login");
   assert.equal(await page.getByRole("button", { name: "Log in" }).count(), 1);
+  const loginCard = page.getByRole("heading", { name: "Log in" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
+  assert.equal(await loginCard.locator("form").count(), 1);
+  assert.equal(await loginCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await page.goto(`${base}/auth/register`);
+  const registerCard = page.getByRole("heading", { name: "Create an account" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
+  assert.equal(await registerCard.locator("form").count(), 1);
+  assert.equal(await registerCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   console.log("PASS services filters, pagination, and mobile width");
 } finally {
   await browser?.close();

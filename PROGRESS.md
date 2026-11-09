@@ -1,4 +1,4 @@
-Completion Progress: [32]%
+Completion Progress: [33]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 27 / 85 |
-| Remaining tasks | 58 |
-| Overall state | S04-T08 pushed; S05-T01 next |
+| Completed tasks | 28 / 85 |
+| Remaining tasks | 57 |
+| Overall state | S05-T01 validated; push pending |
 | Current task | S05-T01 shadcn Card for auth forms |
-| Last completed task | S04-T08 auth state, role route, mobile and logout updates |
-| Next task | S05-T01 shadcn Card for auth forms |
+| Last completed task | S05-T01 shadcn Card for auth forms |
+| Next task | S05-T02 full-screen auth background image |
 | Last successful GitHub push | Frontend main 86b438c (S04-T08); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S05-T01 |
 | Task description | Wrap login and sign-up forms in default shadcn Card |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S05-T01 |
-| Work already implemented | S04-T08 route-specific session state and mobile/auth browser coverage pushed as 86b438c. |
-| Work still to do | Inspect auth page structure and Card component, wrap both forms, verify visual and automated checks, then push. |
-| Tests / commands run | S04-T08 frontend lint/build and dashboard role browser test passed. |
-| Results / errors | S04-T08 pushed; real-backend E2E not run because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then inspect auth pages and Card component for S05-T01. |
+| Files changed | app/auth/login/page.tsx, app/auth/register/page.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Both auth forms and headings are inside default shadcn Cards. |
+| Work still to do | Commit and push S05-T01, record hash, then start S05-T02. |
+| Tests / commands run | Frontend lint and build with TypeScript; services browser test checks both form cards and #EFEFEF fill; diff check next. |
+| Results / errors | All final checks passed. First card assertion used an overly broad selector after client navigation; scoped to each heading and reran successfully. |
+| Changes only on local machine | S05-T01 pages, test, checklist and progress update. |
+| Commits awaiting push | S05-T01 task commit. |
+| **Exact next action** | Stage only S05-T01 files, commit and push frontend main. |
 
 ## Verified task completion history
 
