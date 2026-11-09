@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 22 / 85 |
 | Remaining tasks | 63 |
-| Overall state | S04-T03 validated; frontend push pending |
-| Current task | S04-T03 preserve left logo |
-| Last completed task | S04-T02 translucent acrylic navbar |
+| Overall state | S04-T03 pushed; S04-T04 next |
+| Current task | S04-T03 complete; S04-T04 next |
+| Last completed task | S04-T03 unchanged left logo |
 | Next task | S04-T04 centered Services & Technicians link |
-| Last successful GitHub push | Frontend main 548d5ba (S04-T02); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 46536f1 (S04-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S04-T03 |
 | Task description | Keep the existing logo unchanged on the left |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
 | Work already implemented | Kept existing FixItNow text logo and home href. Browser confirms it remains left of main navigation. No source edit was necessary. |
-| Work still to do | Commit/push test and tracking files, then add centered Services & Technicians link. |
+| Work still to do | S04-T03 delivered. Begin S04-T04 after this progress update is pushed. |
 | Tests / commands run | Services browser test verified exact FixItNow text, home href and left position; passed. Prior S04-T02 lint/build remain valid since no source change. |
 | Results / errors | Logo unchanged and left-aligned. |
-| Changes only on local machine | S04-T03 browser assertion and tracking updates pending commit/push. |
-| Commits awaiting push | S04-T03 frontend commit to create and push. |
-| **Exact next action** | Stage test and tracking files, commit/push main, record hash, then begin S04-T04. |
+| Changes only on local machine | This S04-T03 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then place Services & Technicians in the navbar center for S04-T04. |
 
 ## Verified task completion history
 
@@ -74,7 +74,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T07 | Reuse shared layout and styling | Audited shared footer, breadcrumb, back link, skeleton/empty components and card token; no source change needed; 19 of 85 checked | `59db30a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T01 | Make navbar sticky | Root SiteHeader uses sticky top/z-index; browser scroll assertion, lint and build passed; 20 of 85 checked | `08a1c29` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T02 | Give navbar translucent glass treatment | Header uses 85% opacity and backdrop blur; computed browser styles and lint/build passed; 21 of 85 checked | `548d5ba` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S04-T03 | Preserve left logo | Browser verified unchanged FixItNow text, home href and left position; 22 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S04-T03 | Preserve left logo | Browser verified unchanged FixItNow text, home href and left position; 22 of 85 checked | `46536f1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
