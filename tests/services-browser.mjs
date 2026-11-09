@@ -176,6 +176,12 @@ try {
   assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "Skip to content");
   await page.keyboard.press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "main-content");
+  await page.getByRole("link", { name: "Back", exact: true }).click();
+  await page.waitForURL(base + "/");
+  await page.goto(`${base}/services`);
+  await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Home" }).click();
+  await page.waitForURL(base + "/");
+  await page.goto(`${base}/services`);
   const signInLink = page.locator("header").getByRole("link", { name: "Sign in" });
   await signInLink.waitFor();
   assert.equal(await signInLink.getAttribute("href"), "/auth/login");

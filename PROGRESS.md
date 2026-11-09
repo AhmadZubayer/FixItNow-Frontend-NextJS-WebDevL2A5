@@ -1,4 +1,4 @@
-Completion Progress: [40]%
+Completion Progress: [41]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 34 / 85 |
-| Remaining tasks | 51 |
-| Overall state | S06-T01 pushed; S06-T02 next |
+| Completed tasks | 35 / 85 |
+| Remaining tasks | 50 |
+| Overall state | S06-T02 validated; push pending |
 | Current task | S06-T02 services back link and breadcrumbs |
-| Last completed task | S06-T01 services visual reference layout |
-| Next task | S06-T02 services back link and breadcrumbs |
+| Last completed task | S06-T02 services back link and breadcrumbs |
+| Next task | S06-T03 white page and #EFEFEF cards |
 | Last successful GitHub push | Frontend main f946c46 (S06-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S06-T02 |
 | Task description | Add standard green transparent Back and functioning breadcrumbs on /services |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S06-T02 |
-| Work already implemented | S06-T01 layout update pushed as f946c46. Shared BackLink and root breadcrumb are already rendered on services. |
-| Work still to do | Verify their styling, href and browser navigation on /services, fix if needed, mark and push. |
-| Tests / commands run | S06-T01 lint/build and services browser checks passed. |
-| Results / errors | S06-T01 pushed; no live database affected. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then inspect BackLink and breadcrumb browser navigation. |
+| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Browser checks green transparent Back and functional Back/breadcrumb Home navigation to root. |
+| Work still to do | Commit and push S06-T02, record hash, then start S06-T03. |
+| Tests / commands run | Services browser and frontend lint passed; S06-T01 build passed with unchanged application source. |
+| Results / errors | Both navigation clicks reached the home route. |
+| Changes only on local machine | S06-T02 test, checklist and progress update. |
+| Commits awaiting push | S06-T02 task commit. |
+| **Exact next action** | Stage only S06-T02 files, commit and push frontend main. |
 
 ## Verified task completion history
 
