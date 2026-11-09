@@ -44,7 +44,12 @@ const send = (response, status, data) => {
 };
 const backend = createHttpServer((request, response) => {
   if (request.url === `/api/technicians/${profileId}`) return send(response, 200, { data: profile });
-  if (request.url === "/api/auth/me") return send(response, 200, { data: { name: "Customer", role: "CUSTOMER" } });
+  if (request.url === "/api/auth/me") {
+    if (request.headers.authorization === "Bearer valid-technician") {
+      return send(response, 200, { data: { name: "Technician User", role: "TECHNICIAN" } });
+    }
+    return send(response, 200, { data: { name: "Customer", role: "CUSTOMER" } });
+  }
   if (request.url === `/api/bookings/${completedBooking}`) return send(response, 200, { data: { id: completedBooking, status: "COMPLETED", service: { title: "Chosen service" } } });
   if (request.url === "/api/bookings" && request.method === "GET") return send(response, 200, { data: [] });
   if (request.url === "/api/bookings" && request.method === "POST") {
@@ -66,6 +71,20 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
+  const anonContext = await browser.newContext();
+  const anonPage = await anonContext.newPage();
+  await anonPage.goto(`${base}/technicians/${profileId}`);
+  await anonPage.getByText("Log in as a customer to book.").waitFor();
+  assert.equal(await anonPage.getByRole("link", { name: "Log in" }).getAttribute("href"), "/auth/login");
+  await anonContext.close();
+
+  const techContext = await browser.newContext();
+  await techContext.addCookies([{ name: "accessToken", value: "valid-technician", url: base }]);
+  const techPage = await techContext.newPage();
+  await techPage.goto(`${base}/technicians/${profileId}`);
+  await techPage.getByText("Only customers can request bookings.").waitFor();
+  await techContext.close();
+
   const context = await browser.newContext();
   await context.addCookies([{ name: "accessToken", value: "valid-customer", url: base }]);
   const page = await context.newPage();
