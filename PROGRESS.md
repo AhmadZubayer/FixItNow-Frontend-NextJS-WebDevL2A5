@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 33 / 85 |
 | Remaining tasks | 52 |
-| Overall state | S05-T06 validated; push pending |
-| Current task | S05-T06 auth page breadcrumbs |
+| Overall state | S05-T06 pushed; S06-T01 next |
+| Current task | S06-T01 services visual reference layout |
 | Last completed task | S05-T06 auth page breadcrumbs |
 | Next task | S06-T01 services visual reference layout |
-| Last successful GitHub push | Frontend main b307170 (S05-T05); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 8e2095d (S05-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S05-T06 |
-| Task description | Include breadcrumbs on login and registration pages |
-| State | Validated; commit and push pending |
+| Task ID | S06-T01 |
+| Task description | Recreate services listing layout and styling from ui_references/services-ui-ref.png |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Browser test asserts login and registration breadcrumb labels and Home href. |
-| Work still to do | Commit and push S05-T06, record hash, then start services layout task. |
-| Tests / commands run | Services browser test and frontend lint passed; prior build covers unchanged application source. |
-| Results / errors | Both auth breadcrumbs are present; screenshots from S05-T05 showed legibility over image. |
-| Changes only on local machine | S05-T06 browser test, checklist and progress update. |
-| Commits awaiting push | S05-T06 task commit. |
-| **Exact next action** | Stage only S05-T06 files, commit and push frontend main. |
+| Files changed | None yet for S06-T01 |
+| Work already implemented | S05-T06 breadcrumb verification pushed as 8e2095d. Services UI already has category rail, filters, service/technician cards and pagination from earlier functional work. |
+| Work still to do | Compare actual services screenshot to ui_references/services-ui-ref.png, adjust layout/styling while preserving behavior, validate and push. |
+| Tests / commands run | S05-T06 services browser and lint passed; prior build covers unchanged source. |
+| Results / errors | S05-T06 pushed; no live database affected. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then view reference and current services screenshots and inspect components. |
 
 ## Verified task completion history
 
@@ -85,6 +85,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S05-T03 | Add password eye toggles | Both forms use accessible show/hide buttons; browser verified input type and preserved value; lint/build passed; 30 of 85 checked | `4f4ba38` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T04 | Preserve auth flows | Mock-backed browser verified field errors, backend error messages, registration to login and login to role dashboard; lint passed; 31 of 85 checked | `bb5d637` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T05 | Keep auth pages responsive | Browser verified 375px/1280px layout without overflow and screenshots showed readable forms; lint passed; 32 of 85 checked | `b307170` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S05-T06 | Include auth breadcrumbs | Browser verified login/register breadcrumb labels and Home href; screenshots previously showed legibility; lint passed; 33 of 85 checked | `8e2095d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
