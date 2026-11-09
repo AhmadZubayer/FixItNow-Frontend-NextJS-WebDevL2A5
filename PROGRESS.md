@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 30 / 85 |
 | Remaining tasks | 55 |
-| Overall state | S05-T03 validated; push pending |
-| Current task | S05-T03 password eye toggles |
+| Overall state | S05-T03 pushed; S05-T04 next |
+| Current task | S05-T04 preserve auth validation and redirects |
 | Last completed task | S05-T03 password eye toggles |
 | Next task | S05-T04 preserve auth validation and redirects |
-| Last successful GitHub push | Frontend main 4bc6666 (S05-T02); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 4f4ba38 (S05-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S05-T03 |
-| Task description | Add accessible eye icon show/hide toggle to both password inputs |
-| State | Validated; commit and push pending |
+| Task ID | S05-T04 |
+| Task description | Preserve authentication, form validation, error messaging and redirects |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | components/auth/login-form.tsx, components/auth/register-form.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Both controlled password inputs have shadcn icon buttons with Eye/EyeOff, dynamic type, aria-label and aria-pressed. |
-| Work still to do | Commit and push S05-T03, record hash, then start S05-T04. |
-| Tests / commands run | Frontend lint/build with TypeScript; services browser verified show/hide on both forms and preserved value. |
-| Results / errors | All final checks passed. Browser selector initially matched the toggle too; exact Password label fixed the test. |
-| Changes only on local machine | S05-T03 forms, test, checklist and progress update. |
-| Commits awaiting push | S05-T03 task commit. |
-| **Exact next action** | Stage only S05-T03 files, commit and push frontend main. |
+| Files changed | None yet for S05-T04 |
+| Work already implemented | S05-T03 password toggles and controlled-value checks pushed as 4f4ba38. |
+| Work still to do | Verify login/register validation, errors and redirects against mock backend; fix any regression, then mark and push. |
+| Tests / commands run | S05-T03 lint/build and services browser show/hide assertions passed. |
+| Results / errors | S05-T03 pushed; real-backend E2E not run because it writes DB data. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, inspect auth tests and run focused login/register checks. |
 
 ## Verified task completion history
 
@@ -82,6 +82,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S04-T08 | Refresh auth and mobile navbar state | Route-specific session suppresses stale user; browser checked three roles at 375px, login redirect, logout cookie and Sign in restoration; lint/build passed; 27 of 85 checked | `86b438c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T01 | Wrap auth forms in shadcn Cards | Both auth headings/forms inside Cards with #EFEFEF fill; browser, lint/build and diff checks passed; 28 of 85 checked | `6fbd55c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T02 | Add full-screen auth background | Both routes use public/register-bg.png with cover size; mobile screenshot showed readable card/breadcrumb; browser and lint/build passed; 29 of 85 checked | `4bc6666` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S05-T03 | Add password eye toggles | Both forms use accessible show/hide buttons; browser verified input type and preserved value; lint/build passed; 30 of 85 checked | `4f4ba38` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
