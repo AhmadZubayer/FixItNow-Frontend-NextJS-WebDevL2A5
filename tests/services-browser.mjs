@@ -68,6 +68,10 @@ const backend = createHttpServer((request, response) => {
     if (url.searchParams.has("location")) matches = matches.filter((technician) => technician.location.toLowerCase().includes(url.searchParams.get("location").toLowerCase()));
     if (url.searchParams.has("minPrice")) matches = matches.filter((technician) => Number(technician.services[0].price) >= Number(url.searchParams.get("minPrice")));
     if (url.searchParams.has("maxPrice")) matches = matches.filter((technician) => Number(technician.services[0].price) <= Number(url.searchParams.get("maxPrice")));
+    if (url.searchParams.get("priceSort") === "asc") matches.sort((a, b) => Number(a.services[0].price) - Number(b.services[0].price));
+    if (url.searchParams.get("priceSort") === "desc") matches.sort((a, b) => Number(b.services[0].price) - Number(a.services[0].price));
+    if (url.searchParams.get("ratingSort") === "asc") matches.sort((a, b) => a.averageRating - b.averageRating);
+    if (url.searchParams.get("ratingSort") === "desc") matches.sort((a, b) => b.averageRating - a.averageRating);
     const page = Number(url.searchParams.get("page") ?? 1);
     const limit = Number(url.searchParams.get("limit") ?? 9);
     response.writeHead(200, { "content-type": "application/json" });
@@ -146,6 +150,11 @@ try {
   await page.getByRole("option", { name: "High to low" }).click();
   await page.waitForURL("**priceSort=desc*");
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("priceSort") === "desc"));
+
+  await page.getByLabel("Rating", { exact: true }).click();
+  await page.getByRole("option", { name: "High to low" }).click();
+  await page.waitForURL("**ratingSort=desc*");
+  assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("ratingSort") === "desc"));
 
   await page.getByRole("link", { name: /Fan Repair 1/ }).first().click();
   await page.waitForURL("**serviceId=44444444-4444-4444-8444-000000000001*");
