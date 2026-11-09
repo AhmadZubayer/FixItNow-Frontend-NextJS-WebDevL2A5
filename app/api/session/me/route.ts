@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { backend, apiError } from "@/lib/backend";
+import { clearSessionCookies } from "@/lib/session-cookies";
 
-export async function GET() {
+export const GET = async () => {
   const cookieStore = await cookies();
   let token = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
@@ -27,10 +28,11 @@ export async function GET() {
         const response = await backend.get("/api/auth/me", { headers: { Authorization: `Bearer ${nextToken}` } });
         return NextResponse.json(response.data.data);
       } catch {
-        cookieStore.delete("accessToken");
-        cookieStore.set("refreshToken", "", { httpOnly: true, path: "/api/session", maxAge: 0 });
+        // The failed refresh is cleared on the response below.
       }
     }
-    return NextResponse.json({ message }, { status });
+    const response = NextResponse.json({ message }, { status });
+    if (status === 401 || status === 403) clearSessionCookies(response);
+    return response;
   }
-}
+};

@@ -147,9 +147,14 @@ const backend = createHttpServer((request, response) => {
       send(response, 201, { data: { id: "registered-customer" } });
     });
   } else if (request.url === "/api/auth/refresh-token" && request.method === "POST") {
-    request.resume();
-    send(response, 200, { data: { accessToken: "valid-admin" } });
+    let body = "";
+    request.on("data", (chunk) => { body += chunk; });
+    request.on("end", () => {
+      if (JSON.parse(body).refreshToken === "invalid-refresh") return send(response, 401, { message: "Invalid refresh token" });
+      send(response, 200, { data: { accessToken: "valid-admin" } });
+    });
   } else if (request.url === "/api/auth/me" && role) {
+    if (role === "BLOCKED") return send(response, 403, { message: "Your account has been blocked" });
     send(response, 200, { data: { name: "Test user", role } });
   } else if (request.url === "/api/admin/payments" && role === "ADMIN") {
     send(response, 200, { data: [{
@@ -250,6 +255,18 @@ try {
   assert.equal(unknownRole.status, 307);
   assert.equal(new URL(unknownRole.headers.get("location"), base).pathname, "/auth/login");
 
+  const staleRefresh = await dashboard("/dashboard/customer", "refreshToken=invalid-refresh");
+  assert.equal(staleRefresh.status, 307);
+  const staleCookies = staleRefresh.headers.getSetCookie();
+  assert.ok(staleCookies.some((cookie) => /refreshToken=;.*Path=\/;/.test(cookie)));
+  assert.ok(staleCookies.some((cookie) => /refreshToken=;.*Path=\/api\/session;/.test(cookie)));
+  assert.ok(staleCookies.some((cookie) => /accessToken=;/.test(cookie)));
+
+  const blocked = await dashboard("/dashboard/customer", "accessToken=valid-blocked; refreshToken=valid-refresh");
+  assert.equal(blocked.status, 307);
+  assert.ok(blocked.headers.getSetCookie().some((cookie) => /refreshToken=;.*Path=\/;/.test(cookie)));
+  assert.ok(blocked.headers.getSetCookie().some((cookie) => /accessToken=;.*Path=\/;/.test(cookie)));
+
   const refreshed = await dashboard("/dashboard/admin/payments", "refreshToken=valid-refresh");
   assert.equal(refreshed.status, 200);
   assert.match(refreshed.headers.get("set-cookie") ?? "", /accessToken=valid-admin/);
@@ -303,6 +320,7 @@ try {
       await dashboardLink.waitFor({ state: "detached" });
       await rolePage.locator("header").getByRole("link", { name: "Sign in" }).waitFor();
       assert.equal((await roleContext.cookies()).some((cookie) => cookie.name === "accessToken"), false);
+      assert.equal((await roleContext.cookies()).some((cookie) => cookie.name === "refreshToken"), false);
     }
     await roleContext.close();
   }

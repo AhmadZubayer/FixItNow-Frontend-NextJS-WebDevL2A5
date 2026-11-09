@@ -106,7 +106,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Adjust backend routes/controllers/services to meet the documented journeys and UI data requirements.
 - [x] Update Prisma models/schema and migrations **only when needed**, preserving data integrity and existing relationships.
 - [x] Update API request/response contracts, validation, filtering, sorting, pagination, and role checks where required.
-- [ ] Keep frontend and backend behavior synchronized; verify authentication/session handling and role-based routing end to end.
+- [x] Keep frontend and backend behavior synchronized; verify authentication/session handling and role-based routing end to end.
 - [ ] Avoid unrelated refactoring or breaking changes.
 
 ## 10. Frontend `README.md`
