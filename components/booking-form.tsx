@@ -16,7 +16,13 @@ import { bookingSchema, type BookingValues } from "@/validations/booking.validat
 
 type BookingSlot = { id: string; startAt: string; endAt: string; isActive: boolean; bookings: Array<{ status: string }> };
 type BookingFormProps = {
-  services: Array<{ id: string; title: string; price?: string; durationMinutes: number }>;
+  services: Array<{
+    id: string;
+    title: string;
+    price?: string;
+    durationMinutes: number;
+    category?: { name: string };
+  }>;
   slots: BookingSlot[];
   initialServiceId?: string;
 };
@@ -29,7 +35,10 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
   const router = useRouter();
   const [role, setRole] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
-  const [values, setValues] = useState<BookingValues>({ serviceId: services.some((service) => service.id === initialServiceId) ? initialServiceId! : services[0]?.id ?? "", availabilitySlotId: "" });
+  const [values, setValues] = useState<BookingValues>({
+    serviceId: services.some((service) => service.id === initialServiceId) ? initialServiceId! : services[0]?.id ?? "",
+    availabilitySlotId: "",
+  });
   const [date, setDate] = useState<Date | undefined>(() => {
     const first = slots.find((slot) => slot.isActive && !slot.bookings.length) ?? slots[0];
     if (!first) return undefined;
@@ -74,104 +83,171 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
     }
   };
 
-  if (!loaded) {
-    return <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Checking account" />;
-  }
-  if (role !== "CUSTOMER") {
-    return <p className="text-sm text-muted-foreground">
-      {role ? "Only customers can request bookings." : <><Link href="/auth/login" className="underline underline-offset-4">Log in</Link> as a customer to book.</>}
-    </p>;
-  }
-  if (!services.length || !slots.length) {
-    return <p className="text-sm text-muted-foreground">No bookable time is available right now.</p>;
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-5" noValidate>
-      <div className="space-y-1.5">
-        <Label htmlFor="booking-service">Service</Label>
-        <Select value={values.serviceId} onValueChange={(serviceId) => { if (serviceId) setValues({ serviceId, availabilitySlotId: "" }); setErrors({}); }}>
-          <SelectTrigger id="booking-service" className="w-full bg-background" aria-invalid={!!errors.serviceId}>
-            <SelectValue placeholder="Choose a service">{(value: string) => services.find((service) => service.id === value)?.title ?? "Choose a service"}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {services.map((service) => <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>)}
-          </SelectContent>
-        </Select>
-        {errors.serviceId && <p className="text-xs text-destructive">{errors.serviceId[0]}</p>}
-      </div>
-
-      {chosenService && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-background/50 p-3">
-          <div>
-            <span className="text-xs text-muted-foreground block">Selected service</span>
-            <div className="mt-1 inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1 text-xs font-medium">
-              <span>{chosenService.title}</span>
-            </div>
-          </div>
-          {chosenService.price && (
-            <div className="text-right">
-              <span className="text-xs text-muted-foreground block">Total price</span>
-              <span className="text-xl font-bold text-foreground">৳{chosenService.price}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="space-y-2">
-        <Label>Choose a day (Bangladesh time)</Label>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={(next) => { setDate(next); setValues((current) => ({ ...current, availabilitySlotId: "" })); }}
-          disabled={(day) => !slots.some((slot) => slotDayKey(slot.startAt) === dayKey(day))}
-          className="rounded-lg border bg-background"
-        />
-      </div>
-
-      <fieldset className="space-y-2" aria-describedby={errors.availabilitySlotId ? "booking-slot-error" : undefined}>
-        <legend className="text-sm font-semibold">Available slots</legend>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {visibleSlots.map((slot) => {
-            const fits = !!chosenService && (new Date(slot.endAt).getTime() - new Date(slot.startAt).getTime()) >= chosenService.durationMinutes * 60_000;
-            const booked = slot.bookings.length > 0;
-            const available = slot.isActive && !booked && fits;
-            const isSelected = values.availabilitySlotId === slot.id;
+    <div className="space-y-6">
+      {/* Provided Services Section */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">
+          Provided services <span className="sr-only">Services and prices</span>
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {services.map((service) => {
+            const isSelected = values.serviceId === service.id;
             return (
-              <Button
-                key={slot.id}
-                variant="outline"
-                type="button"
-                disabled={!available}
-                aria-pressed={isSelected}
-                onClick={() => { setValues((current) => ({ ...current, availabilitySlotId: slot.id })); setErrors({}); }}
+              <div
+                key={service.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  setValues((current) => ({ ...current, serviceId: service.id, availabilitySlotId: "" }));
+                  setErrors({});
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setValues((current) => ({ ...current, serviceId: service.id, availabilitySlotId: "" }));
+                    setErrors({});
+                  }
+                }}
                 className={cn(
-                  "h-auto min-w-0 flex-col items-center justify-center rounded-xl px-3 py-2.5 text-center text-sm transition-all",
-                  available && "hover:border-black",
-                  isSelected
-                    ? "border-black bg-[#9AE600] font-semibold text-black hover:bg-[#8edb00]"
-                    : "bg-background"
+                  "flex cursor-pointer items-center justify-between gap-3 rounded-lg border bg-card p-4 text-card-foreground transition-all hover:border-black",
+                  isSelected ? "border-black ring-1 ring-black" : ""
                 )}
               >
-                <span className="block font-medium">{slotTime(slot.startAt)}</span>
-                <span className="text-[11px] text-muted-foreground">{booked ? "Booked" : fits ? "Available" : "Too short"}</span>
-              </Button>
+                <div>
+                  <h3 className="font-semibold text-sm sm:text-base">{service.title}</h3>
+                  <p className="text-xs text-muted-foreground">{service.category?.name}</p>
+                </div>
+                <span className="font-semibold text-sm sm:text-base">৳{service.price}</span>
+              </div>
             );
           })}
         </div>
-        {!visibleSlots.length && <p className="text-sm text-muted-foreground">Select a day to see time slots.</p>}
-        {errors.availabilitySlotId && <p id="booking-slot-error" className="text-xs text-destructive">{errors.availabilitySlotId[0]}</p>}
-      </fieldset>
+      </section>
 
-      <PendingButton
-        type="submit"
-        pending={pending}
-        pendingText="Sending request"
-        className="w-full rounded-xl bg-[#9AE600] py-6 text-base font-semibold text-black hover:bg-[#8edb00]"
-      >
-        Book now <span className="sr-only">Request booking</span>
-      </PendingButton>
-    </form>
+      {/* Book a Service Section */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">
+          Book a service <span className="sr-only">Request a booking</span>
+        </h2>
+        <div className="rounded-xl border bg-card p-6 text-card-foreground">
+          {!loaded ? (
+            <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Checking account" />
+          ) : role !== "CUSTOMER" ? (
+            <p className="text-sm text-muted-foreground">
+              {role ? "Only customers can request bookings." : <><Link href="/auth/login" className="underline underline-offset-4">Log in</Link> as a customer to book.</>}
+            </p>
+          ) : !services.length || !slots.length ? (
+            <p className="text-sm text-muted-foreground">No bookable time is available right now.</p>
+          ) : (
+            <form onSubmit={handleSubmit} className="w-full space-y-5" noValidate>
+              <div className="space-y-1.5">
+                <Label htmlFor="booking-service">Service</Label>
+                <Select
+                  value={values.serviceId}
+                  onValueChange={(serviceId) => {
+                    if (serviceId) setValues({ serviceId, availabilitySlotId: "" });
+                    setErrors({});
+                  }}
+                >
+                  <SelectTrigger id="booking-service" className="w-full bg-background" aria-invalid={!!errors.serviceId}>
+                    <SelectValue placeholder="Choose a service">
+                      {(value: string) => services.find((service) => service.id === value)?.title ?? "Choose a service"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {services.map((service) => (
+                      <SelectItem key={service.id} value={service.id}>
+                        {service.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.serviceId && <p className="text-xs text-destructive">{errors.serviceId[0]}</p>}
+              </div>
+
+              {chosenService && (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-background/50 p-3">
+                  <div>
+                    <span className="text-xs text-muted-foreground block">Selected service</span>
+                    <div className="mt-1 inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1 text-xs font-medium">
+                      <span>{chosenService.title}</span>
+                    </div>
+                  </div>
+                  {chosenService.price && (
+                    <div className="text-right">
+                      <span className="text-xs text-muted-foreground block">Total price</span>
+                      <span className="text-xl font-bold text-foreground">৳{chosenService.price}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label>Choose a day (Bangladesh time)</Label>
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(next) => {
+                    setDate(next);
+                    setValues((current) => ({ ...current, availabilitySlotId: "" }));
+                  }}
+                  disabled={(day) => !slots.some((slot) => slotDayKey(slot.startAt) === dayKey(day))}
+                  className="rounded-lg border bg-background"
+                />
+              </div>
+
+              <fieldset className="space-y-2" aria-describedby={errors.availabilitySlotId ? "booking-slot-error" : undefined}>
+                <legend className="text-sm font-semibold">Available slots</legend>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {visibleSlots.map((slot) => {
+                    const fits = !!chosenService && (new Date(slot.endAt).getTime() - new Date(slot.startAt).getTime()) >= chosenService.durationMinutes * 60_000;
+                    const booked = slot.bookings.length > 0;
+                    const available = slot.isActive && !booked && fits;
+                    const isSelected = values.availabilitySlotId === slot.id;
+                    return (
+                      <Button
+                        key={slot.id}
+                        variant="outline"
+                        type="button"
+                        disabled={!available}
+                        aria-pressed={isSelected}
+                        onClick={() => {
+                          setValues((current) => ({ ...current, availabilitySlotId: slot.id }));
+                          setErrors({});
+                        }}
+                        style={isSelected ? { backgroundColor: "#9AE600", color: "#000000", borderColor: "#000000" } : undefined}
+                        className={cn(
+                          "h-auto min-w-0 flex-col items-center justify-center rounded-xl px-3 py-2.5 text-center text-sm",
+                          available && "hover:border-black",
+                          isSelected
+                            ? "border-black !bg-[#9AE600] font-semibold text-black hover:!bg-[#9AE600]"
+                            : "bg-background"
+                        )}
+                      >
+                        <span className="block font-medium">{slotTime(slot.startAt)}</span>
+                        <span className="text-[11px] text-muted-foreground">{booked ? "Booked" : fits ? "Available" : "Too short"}</span>
+                      </Button>
+                    );
+                  })}
+                </div>
+                {!visibleSlots.length && <p className="text-sm text-muted-foreground">Select a day to see time slots.</p>}
+                {errors.availabilitySlotId && <p id="booking-slot-error" className="text-xs text-destructive">{errors.availabilitySlotId[0]}</p>}
+              </fieldset>
+
+              <PendingButton
+                type="submit"
+                pending={pending}
+                pendingText="Sending request"
+                className="w-full rounded-xl bg-[#9AE600] py-6 text-base font-semibold text-black hover:bg-[#8edb00]"
+              >
+                Book now <span className="sr-only">Request booking</span>
+              </PendingButton>
+            </form>
+          )}
+        </div>
+      </section>
+    </div>
   );
 };
 

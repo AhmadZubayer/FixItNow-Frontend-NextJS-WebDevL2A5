@@ -97,40 +97,11 @@ const TechnicianPage = async ({
 
         {/* Right Column: Provided Services & Book a Service */}
         <div className="space-y-6 lg:col-span-7">
-          {/* Provided Services Section */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight">
-              Provided services <span className="sr-only">Services and prices</span>
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {technician.services.map((service) => (
-                <div
-                  key={service.id}
-                  className="flex items-center justify-between gap-3 rounded-lg border bg-card p-4 text-card-foreground transition-colors hover:border-black"
-                >
-                  <div>
-                    <h3 className="font-semibold text-sm sm:text-base">{service.title}</h3>
-                    <p className="text-xs text-muted-foreground">{service.category.name}</p>
-                  </div>
-                  <span className="font-semibold text-sm sm:text-base">৳{service.price}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Book a Service Section */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight">
-              Book a service <span className="sr-only">Request a booking</span>
-            </h2>
-            <div className="rounded-xl border bg-card p-6 text-card-foreground">
-              <BookingForm
-                services={technician.services}
-                slots={technician.availabilitySlots ?? []}
-                initialServiceId={serviceId}
-              />
-            </div>
-          </section>
+          <BookingForm
+            services={technician.services}
+            slots={technician.availabilitySlots ?? []}
+            initialServiceId={serviceId}
+          />
         </div>
       </div>
     </main>

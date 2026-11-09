@@ -1,4 +1,4 @@
-Completion Progress: [61]%
+Completion Progress: [62]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 52 / 85 |
-| Remaining tasks | 33 |
-| Overall state | S07-T03 validated; commit and push pending |
-| Current task | S07-T03 match layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath breadcrumbs |
-| Last completed task | S07-T03 match layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath breadcrumbs |
-| Next task | S07-T04 implement interactions and information shown in reference with actual technician data |
-| Last successful GitHub push | Frontend main 8de96e9 (S07-T02); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 53 / 85 |
+| Remaining tasks | 32 |
+| Overall state | S07-T04 validated; commit and push pending |
+| Current task | S07-T04 implement interactions and information shown in reference with actual technician data |
+| Last completed task | S07-T04 implement interactions and information shown in reference with actual technician data |
+| Next task | S07-T05 preserve required customer-to-technician actions and permissions from /REQUIREMENTS.md |
+| Last successful GitHub push | Frontend main 492fca0 (S07-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S07-T03 |
-| Task description | Match the layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath the breadcrumbs |
+| Task ID | S07-T04 |
+| Task description | Implement the interactions and information shown in the reference, using actual technician data and respecting the /REQUIREMENTS.md workflow |
 | State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/technicians/[id]/page.tsx, components/booking-form.tsx, tests/booking-slots-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Refactored technician profile into two-column layout matching reference image: left column with technician profile card (BackLink, name, location, experience, rating, skills badges) and Customer reviews; right column with Provided services card grid and Book a service card with selected service summary, available slot pills, and full-width Book now button. Tested desktop side-by-side coordinates and 375px mobile responsive width. |
-| Work still to do | Commit and push S07-T03, record hash, then begin S07-T04. |
+| Files changed | components/booking-form.tsx, app/technicians/[id]/page.tsx, tests/booking-slots-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Integrated interactive service card switching that synchronizes with the booking select, selected service summary tag, and dynamic total price; interactive available slot selection with active green highlight and aria-pressed state; and Book now form submission. Verified through automated browser tests. |
+| Work still to do | Commit and push S07-T04, record hash, then begin S07-T05. |
 | Tests / commands run | `npm run lint`, `npm run build`, `node tests/booking-slots-browser.mjs` passed. |
-| Results / errors | Verified two-column layout, headings, and slot/card presentation. |
-| Changes only on local machine | S07-T03 layout and test updates, TASKS.md and PROGRESS.md. |
-| Commits awaiting push | S07-T03 task commit. |
-| **Exact next action** | Stage only S07-T03 files, commit and push frontend main. |
+| Results / errors | Verified interactive card selection, price update, slot selection, and submission. |
+| Changes only on local machine | S07-T04 implementation and tests, TASKS.md and PROGRESS.md. |
+| Commits awaiting push | S07-T04 task commit. |
+| **Exact next action** | Stage only S07-T04 files, commit and push frontend main. |
 
 ## Verified task completion history
 
@@ -104,6 +104,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S06-T16 | Place pagination under cards above footer | Browser verified vertical stacking of technician cards, pagination, and shared footer; 49 of 85 checked | `8572665` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T01 | Verify technician profile route | Browser test verified /technicians/[id] is the active route resolving data; 50 of 85 checked | `20742aa` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T02 | Show functional breadcrumbs above profile content | Browser verified route breadcrumbs with functional ancestor links positioned above profile content; 51 of 85 checked | `8de96e9` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T03 | Match layout and presentation in UI reference | Browser verified two-column layout, customer reviews, provided services cards, and booking form structure; 52 of 85 checked | `492fca0` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

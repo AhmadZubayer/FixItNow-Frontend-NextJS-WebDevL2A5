@@ -85,7 +85,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Verify the actual technician detail route, and use `/technicians/[id]` as the intended page.
 - [x] Show functional breadcrumbs above the profile content.
 - [x] Match the layout and presentation in `ui_references/technician-profile-page-ui-ref.jpg` **beneath the breadcrumbs**.
-- [ ] Implement the interactions and information shown in the reference, using actual technician data and respecting the `/REQUIREMENTS.md` workflow.
+- [x] Implement the interactions and information shown in the reference, using actual technician data and respecting the `/REQUIREMENTS.md` workflow.
 - [ ] Preserve required customer-to-technician actions and permissions from `/REQUIREMENTS.md` (do not invent new business flows).
 - [ ] Handle loading, missing/invalid technician IDs, and API errors gracefully.
 - [ ] Apply global card styling, back-button styling, responsiveness, and footer.
