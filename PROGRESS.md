@@ -1,4 +1,4 @@
-Completion Progress: [33]%
+Completion Progress: [34]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 28 / 85 |
-| Remaining tasks | 57 |
-| Overall state | S05-T01 pushed; S05-T02 next |
+| Completed tasks | 29 / 85 |
+| Remaining tasks | 56 |
+| Overall state | S05-T02 validated; push pending |
 | Current task | S05-T02 full-screen auth background image |
-| Last completed task | S05-T01 shadcn Card for auth forms |
-| Next task | S05-T02 full-screen auth background image |
+| Last completed task | S05-T02 full-screen auth background image |
+| Next task | S05-T03 password eye toggles |
 | Last successful GitHub push | Frontend main 6fbd55c (S05-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S05-T02 |
 | Task description | Use public/register-bg.png as full-screen background on login and sign-up |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S05-T02 |
-| Work already implemented | S05-T01 auth Cards pushed as 6fbd55c. |
-| Work still to do | Inspect existing image and root layout, apply full-screen background to both auth pages, verify both routes, then push. |
-| Tests / commands run | S05-T01 lint/build and services browser card assertions passed. |
-| Results / errors | S05-T01 pushed; no real-backend E2E because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then inspect public/register-bg.png and auth page containment. |
+| Files changed | app/globals.css, both auth page files, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Auth routes mark their main; body gets the public image at cover size across the viewport, and breadcrumb has an opaque backing. |
+| Work still to do | Commit and push S05-T02, record hash, then start S05-T03. |
+| Tests / commands run | Frontend lint/build; services browser verified both computed backgrounds, asset 200 response and card fills; inspected mobile login screenshot. |
+| Results / errors | All checks passed; mobile screenshot showed readable card and breadcrumb over the image. |
+| Changes only on local machine | S05-T02 styling, route markers, test, checklist and progress update. |
+| Commits awaiting push | S05-T02 task commit. |
+| **Exact next action** | Stage only S05-T02 files, commit and push frontend main. |
 
 ## Verified task completion history
 

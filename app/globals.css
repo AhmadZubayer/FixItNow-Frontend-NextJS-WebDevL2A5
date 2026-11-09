@@ -136,6 +136,20 @@
   }
 }
 
+body:has(main[data-auth-page]) {
+  background-image: url("/register-bg.png");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+body:has(main[data-auth-page]) [data-slot="breadcrumb"] {
+  width: fit-content;
+  border-radius: var(--radius);
+  background: rgb(239 239 239 / 92%);
+  padding: 0.25rem 0.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

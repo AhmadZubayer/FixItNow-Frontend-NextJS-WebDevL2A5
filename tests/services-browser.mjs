@@ -179,10 +179,16 @@ try {
   const loginCard = page.getByRole("heading", { name: "Log in" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
   assert.equal(await loginCard.locator("form").count(), 1);
   assert.equal(await loginCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.match(await page.evaluate(() => getComputedStyle(document.body).backgroundImage), /register-bg\.png/);
+  assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
+  await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-login-current.png"), fullPage: true });
   await page.goto(`${base}/auth/register`);
   const registerCard = page.getByRole("heading", { name: "Create an account" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
   assert.equal(await registerCard.locator("form").count(), 1);
   assert.equal(await registerCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.match(await page.evaluate(() => getComputedStyle(document.body).backgroundImage), /register-bg\.png/);
+  assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
+  assert.equal((await page.request.get(`${base}/register-bg.png`)).status(), 200);
   console.log("PASS services filters, pagination, and mobile width");
 } finally {
   await browser?.close();
