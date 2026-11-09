@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 27 / 85 |
 | Remaining tasks | 58 |
-| Overall state | S04-T08 validated; push pending |
-| Current task | S04-T08 auth state, role route, mobile and logout updates |
+| Overall state | S04-T08 pushed; S05-T01 next |
+| Current task | S05-T01 shadcn Card for auth forms |
 | Last completed task | S04-T08 auth state, role route, mobile and logout updates |
 | Next task | S05-T01 shadcn Card for auth forms |
-| Last successful GitHub push | Frontend main 01aba14 (S04-T07); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 86b438c (S04-T08); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S04-T08 |
-| Task description | Ensure navbar auth state, role routing, mobile navigation and logout update without stale UI |
-| State | Validated; commit and push pending |
+| Task ID | S05-T01 |
+| Task description | Wrap login and sign-up forms in default shadcn Card |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | components/session-actions.tsx, tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Visible header session is tied to current pathname; a prior route's user is hidden while the new route loads. |
-| Work still to do | Commit and push S04-T08, record its hash, then begin S05-T01. |
-| Tests / commands run | Frontend lint, build with TypeScript, dashboard role browser test, git diff --check. |
-| Results / errors | Browser checked customer/technician/admin nav at 375px, anonymous login to customer role, and logout restoring Sign in without cookie. All checks passed; real-backend E2E not run because it writes DB data. |
-| Changes only on local machine | S04-T08 source, test, checklist and progress update. |
-| Commits awaiting push | S04-T08 task commit. |
-| **Exact next action** | Stage only S04-T08 files, commit and push frontend main. |
+| Files changed | None yet for S05-T01 |
+| Work already implemented | S04-T08 route-specific session state and mobile/auth browser coverage pushed as 86b438c. |
+| Work still to do | Inspect auth page structure and Card component, wrap both forms, verify visual and automated checks, then push. |
+| Tests / commands run | S04-T08 frontend lint/build and dashboard role browser test passed. |
+| Results / errors | S04-T08 pushed; real-backend E2E not run because it writes DB data. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then inspect auth pages and Card component for S05-T01. |
 
 ## Verified task completion history
 
@@ -79,6 +79,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S04-T05 | Center authenticated Dashboard link | Browser confirmed anonymous omission and customer/technician/admin role hrefs; lint/build and diff checks passed; 24 of 85 checked | `66c9009` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T06 | Add full-name account dropdown | Shadcn dropdown exposes Log out; browser confirmed menu and session cookie clearing; lint/build passed; 25 of 85 checked | `0ba751a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T07 | Keep signed-out Sign in button | Link label aligned with checklist and browser followed it to /auth/login; lint/build passed; 26 of 85 checked | `01aba14` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S04-T08 | Refresh auth and mobile navbar state | Route-specific session suppresses stale user; browser checked three roles at 375px, login redirect, logout cookie and Sign in restoration; lint/build passed; 27 of 85 checked | `86b438c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
