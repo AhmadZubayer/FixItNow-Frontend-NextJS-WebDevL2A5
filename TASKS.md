@@ -76,7 +76,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Update backend endpoints/query handling if needed to make searching, filtering, and sorting actually work.
 
 ### Pagination
-- [ ] Use the default **shadcn Pagination** components.
+- [x] Use the default **shadcn Pagination** components.
 - [ ] Display **no more than 9 technician cards per page**.
 - [ ] Implement functional page navigation backed by the correct paginated data and total-page information.
 - [ ] Place pagination **under the technician cards**, with the shared footer appearing below the page content.
