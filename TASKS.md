@@ -56,7 +56,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Add an **eye icon** toggle to each password input to show/hide the password while preserving accessibility and form behavior.
 - [x] Keep existing authentication, form validation, error messaging, and redirects working.
 - [x] Ensure both pages are responsive and the form remains readable against the background image.
-- [ ] Include breadcrumbs on these pages as required globally.
+- [x] Include breadcrumbs on these pages as required globally.
 
 ## 6. Services listing — `/services`
 ### Layout and visual fidelity

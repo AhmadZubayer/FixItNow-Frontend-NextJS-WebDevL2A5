@@ -1,4 +1,4 @@
-Completion Progress: [38]%
+Completion Progress: [39]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 32 / 85 |
-| Remaining tasks | 53 |
-| Overall state | S05-T05 pushed; S05-T06 next |
+| Completed tasks | 33 / 85 |
+| Remaining tasks | 52 |
+| Overall state | S05-T06 validated; push pending |
 | Current task | S05-T06 auth page breadcrumbs |
-| Last completed task | S05-T05 responsive readable auth pages |
-| Next task | S05-T06 auth page breadcrumbs |
+| Last completed task | S05-T06 auth page breadcrumbs |
+| Next task | S06-T01 services visual reference layout |
 | Last successful GitHub push | Frontend main b307170 (S05-T05); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S05-T06 |
 | Task description | Include breadcrumbs on login and registration pages |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S05-T06 |
-| Work already implemented | S05-T05 responsive auth checks and screenshots pushed as b307170. Root breadcrumb already maps /auth/login and /auth/register. |
-| Work still to do | Verify both breadcrumb paths, links and legibility on auth routes, then mark and push. |
-| Tests / commands run | S05-T05 services browser and lint passed; prior build covers unchanged source. |
-| Results / errors | S05-T05 pushed; no live database affected. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then add breadcrumb assertions for both auth pages. |
+| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Browser test asserts login and registration breadcrumb labels and Home href. |
+| Work still to do | Commit and push S05-T06, record hash, then start services layout task. |
+| Tests / commands run | Services browser test and frontend lint passed; prior build covers unchanged application source. |
+| Results / errors | Both auth breadcrumbs are present; screenshots from S05-T05 showed legibility over image. |
+| Changes only on local machine | S05-T06 browser test, checklist and progress update. |
+| Commits awaiting push | S05-T06 task commit. |
+| **Exact next action** | Stage only S05-T06 files, commit and push frontend main. |
 
 ## Verified task completion history
 

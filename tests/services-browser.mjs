@@ -176,6 +176,9 @@ try {
   await signInLink.click();
   await page.waitForURL("**/auth/login");
   assert.equal(await page.getByRole("button", { name: "Log in" }).count(), 1);
+  const loginBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
+  assert.equal(await loginBreadcrumb.getByRole("link", { name: "Home" }).getAttribute("href"), "/");
+  assert.equal(await loginBreadcrumb.getByText("Log in").count(), 1);
   const loginCard = page.getByRole("heading", { name: "Log in" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
   assert.equal(await loginCard.locator("form").count(), 1);
   assert.equal(await loginCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
@@ -196,6 +199,9 @@ try {
   assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-login-current.png"), fullPage: true });
   await page.goto(`${base}/auth/register`);
+  const registerBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
+  assert.equal(await registerBreadcrumb.getByRole("link", { name: "Home" }).getAttribute("href"), "/");
+  assert.equal(await registerBreadcrumb.getByText("Create account").count(), 1);
   const registerCard = page.getByRole("heading", { name: "Create an account" }).locator('xpath=ancestor::*[@data-slot="card"][1]');
   assert.equal(await registerCard.locator("form").count(), 1);
   assert.equal(await registerCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
