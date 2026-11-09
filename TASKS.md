@@ -73,7 +73,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Ensure every filter/sort control updates the displayed results as soon as its selection changes.
 - [x] Keep search, selected service, sorting, and pagination consistent when combined; reset to page 1 when a filter/search changes.
 - [x] Add appropriate skeletons/loading states, no-results messaging, and error handling; prevent outdated responses from replacing newer search results.
-- [ ] Update backend endpoints/query handling if needed to make searching, filtering, and sorting actually work.
+- [x] Update backend endpoints/query handling if needed to make searching, filtering, and sorting actually work.
 
 ### Pagination
 - [ ] Use the default **shadcn Pagination** components.

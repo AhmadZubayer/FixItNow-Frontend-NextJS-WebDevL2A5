@@ -1,4 +1,4 @@
-Completion Progress: [52]%
+Completion Progress: [53]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 44 / 85 |
-| Remaining tasks | 41 |
-| Overall state | S06-T11 validated; commit and push pending |
-| Current task | S06-T11 loading skeletons, empty states, error handling, and transition freshness |
-| Last completed task | S06-T11 loading skeletons, empty states, error handling, and transition freshness |
-| Next task | S06-T12 backend endpoint query handling audit |
-| Last successful GitHub push | Frontend main 97a4bb8 (S06-T10); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 45 / 85 |
+| Remaining tasks | 40 |
+| Overall state | S06-T12 validated; commit and push pending |
+| Current task | S06-T12 backend endpoint query handling audit |
+| Last completed task | S06-T12 backend endpoint query handling audit |
+| Next task | S06-T13 use shadcn Pagination components |
+| Last successful GitHub push | Frontend main 687b810 (S06-T11); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S06-T11 |
-| Task description | Add appropriate skeletons/loading states, no-results messaging, and error handling; prevent outdated responses from replacing newer search results |
+| Task ID | S06-T12 |
+| Task description | Update backend endpoints/query handling if needed to make searching, filtering, and sorting actually work |
 | State | Validated; commit and push pending |
-| Repositories affected | Frontend only |
+| Repositories affected | Frontend only (backend queries delivered in S01-T05) |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/services/loading.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Updated `loading.tsx` to match the services two-column layout using arrow functions. Browser test verified empty/no-results messaging for services and technicians when a search yields zero matches, plus `useTransition` and debounce freshness protection. |
-| Work still to do | Commit and push S06-T11, record hash, then begin S06-T12. |
-| Tests / commands run | `npm run lint`, `node tests/services-browser.mjs`, `npm run build` passed. |
-| Results / errors | Verified loading skeleton, empty states, error text, and transition responsiveness. |
-| Changes only on local machine | S06-T11 code and test updates, TASKS.md and PROGRESS.md. |
-| Commits awaiting push | S06-T11 task commit. |
-| **Exact next action** | Stage only S06-T11 files, commit and push frontend main. |
+| Files changed | TASKS.md, PROGRESS.md |
+| Work already implemented | Verified backend query validation and Prisma query logic for search, sort, category, price, rating, and pagination filters. Ran `tests/public-query-validation.mjs`, `tests/public-query-data.mjs`, and backend build cleanly. |
+| Work still to do | Commit and push S06-T12, record hash, then begin S06-T13. |
+| Tests / commands run | Backend query validation, data tests, and build passed; frontend lint/build green. |
+| Results / errors | Backend contracts support all required search/filter/sort parameters. |
+| Changes only on local machine | TASKS.md and PROGRESS.md tracking updates. |
+| Commits awaiting push | S06-T12 task commit. |
+| **Exact next action** | Stage only S06-T12 files, commit and push frontend main. |
 
 ## Verified task completion history
 
@@ -96,6 +96,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S06-T08 | Verify service card filtering | Browser confirmed selecting service card filters technicians, displays banner, and deselects on re-click; 41 of 85 checked | `439a9ac` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T09 | Verify all filter updates | Browser verified all filter/sort controls (search, category, sorts, location, price, rating) update results dynamically; 42 of 85 checked | `8f0cd84` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T10 | Verify combined filters and page reset | Browser test verified combined filter parameters, sorting on page 2 resets to page 1, and filters persist; 43 of 85 checked | `97a4bb8` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S06-T11 | Verify loading and empty states | Browser and layout test confirmed tailored services loading skeleton, empty states for zero results, and transition freshness; 44 of 85 checked | `687b810` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
