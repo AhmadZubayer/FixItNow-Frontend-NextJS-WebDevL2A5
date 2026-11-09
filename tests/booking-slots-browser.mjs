@@ -69,6 +69,10 @@ try {
   const page = await context.newPage();
   await page.goto(`${base}/technicians/${profileId}?serviceId=${chosenService}`);
   await page.getByRole("heading", { name: "Request a booking" }).waitFor();
+  const profileBack = page.getByRole("link", { name: "Back to services" });
+  assert.equal(await profileBack.getAttribute("href"), "/services");
+  assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
+  assert.equal(await profileBack.locator("svg").evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
   const profileBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   await profileBreadcrumb.waitFor();
   assert.equal(await profileBreadcrumb.count(), 1);
@@ -100,6 +104,9 @@ try {
     await route.continue();
   });
   await page.goto(`${base}/dashboard/customer/bookings/${completedBooking}/review`);
+  const reviewBack = page.getByRole("link", { name: "Back to bookings" });
+  assert.equal(await reviewBack.getAttribute("href"), "/dashboard/customer");
+  assert.equal(await reviewBack.evaluate((element) => getComputedStyle(element).backgroundColor), "rgba(0, 0, 0, 0)");
   assert.equal(await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Customer workspace" }).getAttribute("href"), "/dashboard/customer");
   await page.getByRole("status", { name: "Loading booking" }).waitFor();
   const rating = page.getByRole("combobox", { name: "Rating" });

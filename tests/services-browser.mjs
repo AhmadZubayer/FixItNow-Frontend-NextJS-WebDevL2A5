@@ -92,6 +92,10 @@ try {
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${base}/services`);
+  const back = page.getByRole("link", { name: "Back", exact: true });
+  assert.equal(await back.getAttribute("href"), "/");
+  assert.equal(await back.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
+  assert.equal(await back.evaluate((element) => getComputedStyle(element).backgroundColor), "rgba(0, 0, 0, 0)");
   const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
   await breadcrumbs.waitFor();
   assert.equal(await breadcrumbs.count(), 1);

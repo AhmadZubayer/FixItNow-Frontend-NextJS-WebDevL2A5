@@ -1,6 +1,6 @@
 import axios from "axios";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import BackLink from "@/components/back-link";
 import { connection } from "next/server";
 
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,7 @@ const TechnicianPage = async ({ params, searchParams }: { params: Promise<{ id: 
 
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 space-y-8 px-4 py-8 sm:px-6">
-      <div className="space-y-3"><Link href="/services" className="text-xs text-muted-foreground underline underline-offset-4">Back to services</Link><h1 className="text-2xl font-semibold tracking-tight">{technician.user.name}</h1><p className="text-sm text-muted-foreground">{technician.location} · {technician.experienceYears} years of experience · {technician.averageRating.toFixed(1)} rating from {technician.reviewCount} reviews</p><p className="max-w-2xl text-sm">{technician.bio}</p><div className="flex flex-wrap gap-1">{technician.skills.map((skill) => <Badge key={skill} variant="secondary">{skill}</Badge>)}</div></div>
+      <div className="space-y-3"><BackLink href="/services" label="Back to services" /><h1 className="text-2xl font-semibold tracking-tight">{technician.user.name}</h1><p className="text-sm text-muted-foreground">{technician.location} · {technician.experienceYears} years of experience · {technician.averageRating.toFixed(1)} rating from {technician.reviewCount} reviews</p><p className="max-w-2xl text-sm">{technician.bio}</p><div className="flex flex-wrap gap-1">{technician.skills.map((skill) => <Badge key={skill} variant="secondary">{skill}</Badge>)}</div></div>
       <section className="space-y-3"><h2 className="text-lg font-semibold">Services and prices</h2><div className="grid gap-3 sm:grid-cols-2">{technician.services.map((service) => <div key={service.id} className="flex items-center justify-between gap-3 rounded-lg border bg-card text-card-foreground p-4"><div><h3 className="font-medium">{service.title}</h3><p className="text-xs text-muted-foreground">{service.category.name}</p></div><span className="font-medium">৳{service.price}</span></div>)}</div></section>
       <section className="space-y-3"><h2 className="text-lg font-semibold">Request a booking</h2><BookingForm services={technician.services} slots={technician.availabilitySlots ?? []} initialServiceId={serviceId} /></section>
       <section className="space-y-3"><h2 className="text-lg font-semibold">Customer reviews</h2>{technician.reviews?.length ? <div className="space-y-3">{technician.reviews.map((review) => <div key={review.id} className="rounded-lg border bg-card text-card-foreground p-4"><p className="text-xs font-medium">{review.customer.name} · {review.rating}/5</p><p className="mt-2 text-sm">{review.comment}</p></div>)}</div> : <p className="text-sm text-muted-foreground">No reviews yet.</p>}</section>
