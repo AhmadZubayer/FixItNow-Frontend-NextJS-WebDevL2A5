@@ -6,7 +6,7 @@ import SessionActions from "@/components/session-actions";
 
 const SiteHeader = () => {
   return (
-    <header className="sticky top-0 z-40 border-b bg-background">
+    <header className="sticky top-0 z-40 border-b bg-background/85 shadow-sm backdrop-blur-xl backdrop-saturate-150">
       <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href="/" className="text-base font-semibold tracking-tight focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
           FixItNow

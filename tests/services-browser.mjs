@@ -147,6 +147,9 @@ try {
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-services-current.png"), fullPage: true });
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   assert.equal(await page.locator("header").evaluate((element) => Math.round(element.getBoundingClientRect().top)), 0);
+  const headerStyle = await page.locator("header").evaluate((element) => ({ background: getComputedStyle(element).backgroundColor, blur: getComputedStyle(element).backdropFilter }));
+  assert.match(headerStyle.background, /\/ 0\.85\)$/);
+  assert.match(headerStyle.blur, /blur\(/);
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Plumbing" }).click();
