@@ -192,6 +192,16 @@ try {
   await page.waitForURL((url) => !url.searchParams.has("q") && !url.searchParams.has("minPrice") && !url.searchParams.has("minRating"));
   assert.equal(await technicianCards.count(), 9);
 
+  await page.getByLabel("Search services or technicians").fill("NonExistentXYZ");
+  await page.getByLabel("Search services or technicians").press("Enter");
+  await page.waitForURL("**q=NonExistentXYZ*");
+  assert.equal(await page.getByText("No services found").count(), 1);
+  assert.equal(await page.getByText("No technicians found").count(), 1);
+
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await page.waitForURL((url) => !url.searchParams.has("q"));
+  assert.equal(await technicianCards.count(), 9);
+
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-services-current.png"), fullPage: true });
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   assert.equal(await page.locator("header").evaluate((element) => Math.round(element.getBoundingClientRect().top)), 0);
