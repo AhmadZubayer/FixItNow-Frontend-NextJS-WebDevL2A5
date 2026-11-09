@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 34 / 85 |
 | Remaining tasks | 51 |
-| Overall state | S06-T01 validated; push pending |
-| Current task | S06-T01 services visual reference layout |
+| Overall state | S06-T01 pushed; S06-T02 next |
+| Current task | S06-T02 services back link and breadcrumbs |
 | Last completed task | S06-T01 services visual reference layout |
 | Next task | S06-T02 services back link and breadcrumbs |
-| Last successful GitHub push | Frontend main 8e2095d (S05-T06); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main f946c46 (S06-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S06-T01 |
-| Task description | Recreate services listing layout and styling from ui_references/services-ui-ref.png |
-| State | Validated; commit and push pending |
+| Task ID | S06-T02 |
+| Task description | Add standard green transparent Back and functioning breadcrumbs on /services |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/services/page.tsx, components/services/filters.tsx, components/service-card.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Wider content and category rail; desktop title aligns with search/primary selects; larger service cards with prominent green selection action; active category retains green hover. Extra filters and technician section remain for required journeys. |
-| Work still to do | Commit and push S06-T01, record hash, then start S06-T02. |
-| Tests / commands run | Frontend lint/build, services browser filters/pagination/mobile and card layout assertions, screenshot comparison. |
-| Results / errors | All checks passed. Screenshot is closer to reference hierarchy; extra filters and technician cards remain visible as required by functional flows. |
-| Changes only on local machine | S06-T01 styling, test, checklist and progress update. |
-| Commits awaiting push | S06-T01 task commit. |
-| **Exact next action** | Stage only S06-T01 files, commit and push frontend main. |
+| Files changed | None yet for S06-T02 |
+| Work already implemented | S06-T01 layout update pushed as f946c46. Shared BackLink and root breadcrumb are already rendered on services. |
+| Work still to do | Verify their styling, href and browser navigation on /services, fix if needed, mark and push. |
+| Tests / commands run | S06-T01 lint/build and services browser checks passed. |
+| Results / errors | S06-T01 pushed; no live database affected. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then inspect BackLink and breadcrumb browser navigation. |
 
 ## Verified task completion history
 
@@ -86,6 +86,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S05-T04 | Preserve auth flows | Mock-backed browser verified field errors, backend error messages, registration to login and login to role dashboard; lint passed; 31 of 85 checked | `bb5d637` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T05 | Keep auth pages responsive | Browser verified 375px/1280px layout without overflow and screenshots showed readable forms; lint passed; 32 of 85 checked | `b307170` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T06 | Include auth breadcrumbs | Browser verified login/register breadcrumb labels and Home href; screenshots previously showed legibility; lint passed; 33 of 85 checked | `8e2095d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S06-T01 | Align services layout to reference | Wider rail/content, title with primary filters, larger cards and green actions; screenshot comparison plus lint/build/browser checks passed; 34 of 85 checked | `f946c46` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
