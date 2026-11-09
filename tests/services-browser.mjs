@@ -124,6 +124,12 @@ try {
   const firstServiceCard = page.locator("section[aria-labelledby='service-results'] [data-slot='card']").first();
   assert((await firstServiceCard.boundingBox()).height >= 200);
   assert.equal(await firstServiceCard.getByText("Show technicians").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
+  await firstServiceCard.hover();
+  await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='service-results'] [data-slot='card']")).borderTopColor === "rgb(0, 0, 0)");
+  assert.equal(await firstServiceCard.evaluate((element) => getComputedStyle(element).borderTopColor), "rgb(0, 0, 0)");
+  await technicianCards.first().hover();
+  await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).borderTopColor === "rgb(0, 0, 0)");
+  assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).borderTopColor), "rgb(0, 0, 0)");
   assert.equal(await technicianCards.count(), 9);
   await page.getByRole("button", { name: "Go to next page" }).click();
   await page.waitForURL("**/services?page=2");

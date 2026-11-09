@@ -1,4 +1,4 @@
-Completion Progress: [42]%
+Completion Progress: [44]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 36 / 85 |
-| Remaining tasks | 49 |
-| Overall state | S06-T03 pushed; S06-T04 next |
+| Completed tasks | 37 / 85 |
+| Remaining tasks | 48 |
+| Overall state | S06-T04 validated; push pending |
 | Current task | S06-T04 black hover borders on service/technician cards |
-| Last completed task | S06-T03 white page and #EFEFEF cards |
-| Next task | S06-T04 black hover borders on service/technician cards |
+| Last completed task | S06-T04 black hover borders on service/technician cards |
+| Next task | S06-T05 responsive services reference layout |
 | Last successful GitHub push | Frontend main b22be1c (S06-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S06-T04 |
 | Task description | Black border on hover for service and technician cards |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S06-T04 |
-| Work already implemented | S06-T03 white/card surface verification pushed as b22be1c. Both card types already carry hover:border-black classes. |
-| Work still to do | Verify actual computed hover border in browser for each card type, fix if needed, mark and push. |
-| Tests / commands run | S06-T03 services browser passed; S06-T01 lint/build cover same source. |
-| Results / errors | S06-T03 pushed; no live database affected. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then add hover border assertions to services browser test. |
+| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Browser now hovers both card types and waits until computed borderTopColor is black. |
+| Work still to do | Commit and push S06-T04, record hash, then begin S06-T05. |
+| Tests / commands run | Services browser and lint passed; S06-T01 build covers unchanged application source. |
+| Results / errors | Both borders finish at rgb(0, 0, 0). Initial immediate assertion saw an in-transition color; test now waits for final state. |
+| Changes only on local machine | S06-T04 browser test, checklist and progress update. |
+| Commits awaiting push | S06-T04 task commit. |
+| **Exact next action** | Stage only S06-T04 files, commit and push frontend main. |
 
 ## Verified task completion history
 
