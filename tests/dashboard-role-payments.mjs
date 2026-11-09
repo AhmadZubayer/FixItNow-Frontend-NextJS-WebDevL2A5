@@ -176,7 +176,7 @@ const backend = createHttpServer((request, response) => {
   } else if (request.url === `/api/bookings/${acceptedBookingId}` && role === "CUSTOMER") {
     send(response, 200, { data: { id: acceptedBookingId, status: "ACCEPTED", priceAtBooking: "100.00", service: { title: "Fan Repair" } } });
   } else if (request.url === `/api/payments/${completedPaymentId}` && role === "CUSTOMER") {
-    send(response, 200, { data: { id: completedPaymentId, bookingId: acceptedBookingId, amount: "100.00", status: "COMPLETED", booking: { status: "PAID", service: { title: "Fan Repair" } } } });
+    send(response, 200, { data: { id: completedPaymentId, bookingId: acceptedBookingId, amount: "100.00", status: "COMPLETED", booking: { status: "PAID", items: [{ title: "Fan Repair" }, { title: "Socket Repair" }], service: { title: "Fan Repair" } } } });
   } else if (request.url?.startsWith("/api/admin/users/") && request.method === "PATCH" && role === "ADMIN") {
     let body = "";
     request.on("data", (chunk) => { body += chunk; });
@@ -525,6 +525,7 @@ try {
 
   await paymentPage.goto(`${base}/payment/success?paymentId=${completedPaymentId}`);
   await paymentPage.getByText("Stripe payment confirmed by the server.").waitFor();
+  await paymentPage.getByText("Fan Repair, Socket Repair", { exact: true }).waitFor();
   assert.equal(await paymentPage.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await paymentPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);

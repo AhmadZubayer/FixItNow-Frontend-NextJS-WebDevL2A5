@@ -11,7 +11,6 @@ import PendingButton from "@/components/pending-button";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { bookingSchema, type BookingValues } from "@/validations/booking.validation";
 
 type BookingSlot = { id: string; startAt: string; endAt: string; isActive: boolean; bookings: Array<{ status: string }> };
@@ -19,7 +18,7 @@ type BookingFormProps = {
   services: Array<{
     id: string;
     title: string;
-    price?: string;
+    price: string;
     durationMinutes: number;
     category?: { name: string };
   }>;
@@ -36,7 +35,7 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
   const [role, setRole] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [values, setValues] = useState<BookingValues>({
-    serviceId: services.some((service) => service.id === initialServiceId) ? initialServiceId! : services[0]?.id ?? "",
+    serviceIds: services.some(service => service.id === initialServiceId) ? [initialServiceId!] : services.slice(0, 1).map(service => service.id),
     availabilitySlotId: "",
   });
   const [date, setDate] = useState<Date | undefined>(() => {
@@ -47,7 +46,19 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
   });
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [pending, setPending] = useState(false);
-  const chosenService = services.find((service) => service.id === values.serviceId);
+  const selectedServices = services.filter(service => values.serviceIds.includes(service.id));
+  const totalMinutes = selectedServices.reduce((sum, service) => sum + service.durationMinutes, 0);
+  const totalPoisha = selectedServices.reduce((sum, service) => sum + Math.round(Number(service.price) * 100), 0);
+
+  const toggleService = (id: string) => {
+    setValues(current => ({
+      serviceIds: current.serviceIds.includes(id)
+        ? current.serviceIds.filter(selectedId => selectedId !== id)
+        : [...current.serviceIds, id],
+      availabilitySlotId: "",
+    }));
+    setErrors({});
+  };
   const visibleSlots = slots.filter((slot) => date && slotDayKey(slot.startAt) === dayKey(date));
 
   useEffect(() => {
@@ -92,34 +103,23 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {services.map((service) => {
-            const isSelected = values.serviceId === service.id;
+            const isSelected = values.serviceIds.includes(service.id);
             return (
-              <div
+              <Button
                 key={service.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => {
-                  setValues((current) => ({ ...current, serviceId: service.id, availabilitySlotId: "" }));
-                  setErrors({});
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setValues((current) => ({ ...current, serviceId: service.id, availabilitySlotId: "" }));
-                    setErrors({});
-                  }
-                }}
+                type="button"
+                variant="outline"
+                aria-pressed={isSelected}
+                disabled={!isSelected && values.serviceIds.length >= 50}
+                onClick={() => toggleService(service.id)}
                 className={cn(
-                  "flex cursor-pointer items-center justify-between gap-3 rounded-lg border bg-card p-4 text-card-foreground transition-all hover:border-black",
+                  "h-auto min-w-0 justify-between gap-3 rounded-lg bg-card p-4 text-left whitespace-normal text-card-foreground hover:border-black",
                   isSelected ? "border-black ring-1 ring-black" : ""
                 )}
               >
-                <div>
-                  <h3 className="font-semibold text-sm sm:text-base">{service.title}</h3>
-                  <p className="text-xs text-muted-foreground">{service.category?.name}</p>
-                </div>
+                <span className="min-w-0"><span className="block text-sm font-semibold sm:text-base">{service.title}</span><span className="block text-xs text-muted-foreground">{service.category?.name} · {service.durationMinutes} min</span></span>
                 <span className="font-semibold text-sm sm:text-base">৳{service.price}</span>
-              </div>
+              </Button>
             );
           })}
         </div>
@@ -141,48 +141,21 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
             <p className="text-sm text-muted-foreground">No bookable time is available right now.</p>
           ) : (
             <form onSubmit={handleSubmit} className="w-full space-y-5" noValidate>
-              <div className="space-y-1.5">
-                <Label htmlFor="booking-service">Service</Label>
-                <Select
-                  value={values.serviceId}
-                  onValueChange={(serviceId) => {
-                    if (serviceId) setValues({ serviceId, availabilitySlotId: "" });
-                    setErrors({});
-                  }}
-                >
-                  <SelectTrigger id="booking-service" className="w-full bg-background" aria-invalid={!!errors.serviceId}>
-                    <SelectValue placeholder="Choose a service">
-                      {(value: string) => services.find((service) => service.id === value)?.title ?? "Choose a service"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {services.map((service) => (
-                      <SelectItem key={service.id} value={service.id}>
-                        {service.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.serviceId && <p className="text-xs text-destructive">{errors.serviceId[0]}</p>}
-              </div>
-
-              {chosenService && (
-                <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-background/50 p-3">
-                  <div>
-                    <span className="text-xs text-muted-foreground block">Selected service</span>
-                    <div className="mt-1 inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1 text-xs font-medium">
-                      <span>{chosenService.title}</span>
-                    </div>
+              <div className="space-y-2 rounded-lg border bg-background/50 p-3" aria-live="polite">
+                <p className="text-sm font-medium">Selected services</p>
+                <p className="text-xs text-muted-foreground">Use the service cards to add or remove services for this visit.</p>
+                {selectedServices.length > 0 && <ul className="flex flex-wrap gap-2">
+                  {selectedServices.map(service => <li key={service.id} className="rounded-full border bg-background px-3 py-1 text-xs">{service.title}</li>)}
+                </ul>}
+                {errors.serviceIds && <p className="text-xs text-destructive">{errors.serviceIds[0]}</p>}
+                <div className="flex items-end justify-between gap-2">
+                  <span className="text-sm text-muted-foreground">{totalMinutes} min total</span>
+                  <div className="text-right">
+                    <span className="block text-xs text-muted-foreground">Total price</span>
+                    <span className="text-xl font-bold">৳{(totalPoisha / 100).toFixed(totalPoisha % 100 ? 2 : 0)}</span>
                   </div>
-                  {chosenService.price && (
-                    <div className="text-right">
-                      <span className="text-xs text-muted-foreground block">Total price</span>
-                      <span className="text-xl font-bold text-foreground">৳{chosenService.price}</span>
-                    </div>
-                  )}
                 </div>
-              )}
-
+              </div>
               <div className="space-y-2">
                 <Label>Choose a day (Bangladesh time)</Label>
                 <Calendar
@@ -201,7 +174,7 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
                 <legend className="text-sm font-semibold">Available slots</legend>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {visibleSlots.map((slot) => {
-                    const fits = !!chosenService && (new Date(slot.endAt).getTime() - new Date(slot.startAt).getTime()) >= chosenService.durationMinutes * 60_000;
+                    const fits = totalMinutes > 0 && (new Date(slot.endAt).getTime() - new Date(slot.startAt).getTime()) >= totalMinutes * 60_000;
                     const booked = slot.bookings.length > 0;
                     const available = slot.isActive && !booked && fits;
                     const isSelected = values.availabilitySlotId === slot.id;
@@ -226,7 +199,7 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
                         )}
                       >
                         <span className="block font-medium">{slotTime(slot.startAt)}</span>
-                        <span className="text-[11px] text-muted-foreground">{booked ? "Booked" : fits ? "Available" : "Too short"}</span>
+                        <span className="text-[11px] text-muted-foreground">{booked ? "Booked" : !totalMinutes ? "Select services" : fits ? "Available" : "Too short"}</span>
                       </Button>
                     );
                   })}

@@ -33,5 +33,6 @@ export type TechnicianBooking = {
   startAt: string;
   priceAtBooking: string;
   customer: { name: string };
+  items?: Array<{ title: string }>;
   service: { title: string };
 };

@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { bookingLabel, type BookingLabel } from "@/lib/booking-label";
 
-type Payment = { status: string; bookingId: string; amount: string; booking: { status: string; service: { title: string } } };
+type Payment = { status: string; bookingId: string; amount: string; booking: BookingLabel & { status: string } };
 
 export default function PaymentStatus({ paymentId }: { paymentId: string }) {
   const [payment, setPayment] = useState<Payment | null>(null);
@@ -29,5 +30,5 @@ export default function PaymentStatus({ paymentId }: { paymentId: string }) {
     return () => { active = false; window.clearInterval(interval); };
   }, [paymentId, status]);
 
-  return <div className="space-y-4"><h1 className="text-2xl font-semibold tracking-tight">Payment status</h1>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}{!payment && !error && <p className="text-sm text-muted-foreground">Checking the payment record…</p>}{payment && <div className="space-y-2 rounded-lg border bg-card text-card-foreground p-4"><p className="font-medium">{payment.booking.service.title}</p><p className="text-sm">Amount: ৳{payment.amount}</p><Badge variant={payment.status === "COMPLETED" ? "default" : payment.status === "PENDING" ? "secondary" : "destructive"}>{payment.status.replaceAll("_", " ")}</Badge><p className="text-sm text-muted-foreground">{payment.status === "COMPLETED" && ["PAID", "IN_PROGRESS", "COMPLETED"].includes(payment.booking.status) ? "Stripe payment confirmed by the server." : payment.status === "PENDING" ? "Stripe has returned you to FixItNow. We are waiting for server confirmation." : "This payment was not confirmed. Check your booking before trying again."}</p></div>}<Button render={<Link href="/dashboard/customer" />}>View bookings</Button></div>;
+  return <div className="space-y-4"><h1 className="text-2xl font-semibold tracking-tight">Payment status</h1>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}{!payment && !error && <p className="text-sm text-muted-foreground">Checking the payment record…</p>}{payment && <div className="space-y-2 rounded-lg border bg-card text-card-foreground p-4"><p className="font-medium">{bookingLabel(payment.booking)}</p><p className="text-sm">Amount: ৳{payment.amount}</p><Badge variant={payment.status === "COMPLETED" ? "default" : payment.status === "PENDING" ? "secondary" : "destructive"}>{payment.status.replaceAll("_", " ")}</Badge><p className="text-sm text-muted-foreground">{payment.status === "COMPLETED" && ["PAID", "IN_PROGRESS", "COMPLETED"].includes(payment.booking.status) ? "Stripe payment confirmed by the server." : payment.status === "PENDING" ? "Stripe has returned you to FixItNow. We are waiting for server confirmation." : "This payment was not confirmed. Check your booking before trying again."}</p></div>}<Button render={<Link href="/dashboard/customer" />}>View bookings</Button></div>;
 }

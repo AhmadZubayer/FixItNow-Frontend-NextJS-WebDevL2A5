@@ -13,6 +13,7 @@ export type AdminBooking = {
   priceAtBooking: string;
   createdAt: string;
   customer: { name: string };
+  items?: Array<{ title: string }>;
   service: { title: string; technicianProfile: { user: { name: string } } };
 };
 

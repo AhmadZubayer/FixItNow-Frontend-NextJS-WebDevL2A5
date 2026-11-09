@@ -246,3 +246,13 @@ Append a short entry whenever a session ends or a usage limit approaches:
 - Implemented and verified. The services listing shows technician results only, the landing page uses original vector artwork, and dashboard cards are white on a light-gray background. Authentication artwork is scoped to the auth layout.
 - Checks passed: frontend lint, route type generation and TypeScript, default production build, and the services, dashboard/payments, and booking-slot browser suites. The in-app browser also confirmed the landing layout, mobile width, and technician signup selection.
 - Frontend only. Original checklist remains 85 / 85 (100%). No database or backend changes were needed for this follow-up.
+
+## Multi-service bookings and demo reviews (2026-11-10)
+
+- Current task: support multiple services on one technician booking and add labeled demo reviews to the 100 seeded profiles.
+- Plan: keep the existing booking service relation for ownership and compatibility, add relational line items with price and duration snapshots, validate the combined duration against the slot, update dashboard displays and checkout, apply the additive migration, then seed and verify scoped demo reviews.
+- Main database migration 20261110000000_add_booking_items applied successfully. Historical single-service bookings use their existing service as a display fallback.
+- Main database has 300 labeled demo reviews, three per seeded technician. Synthetic completed visits are non-billable and do not create payment records. Extended 1,200 unbooked, non-overlapping demo slots to four hours.
+- Live frontend API checks passed for valid two-service booking (BDT 2,100), duplicate and mixed-technician rejection, insufficient time, prevention of a second booking on the same slot, cancellation, and legacy single-service request. QA bookings were cancelled.
+- Backend build, typecheck, and four regression tests passed. Backend main commit 4eec14e pushed to origin/main. Checklist remains 85 / 85 (100%).
+- Final frontend lint, production build with TypeScript, and all three browser regression suites passed. Browser coverage verifies live total updates, removal, combined-duration slot restrictions, multi-service submission, and payment display.

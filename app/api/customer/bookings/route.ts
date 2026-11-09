@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { apiError } from "@/lib/backend";
 import { sessionRequest } from "@/lib/session-request";
-import { bookingSchema } from "@/validations/booking.validation";
+import { bookingRequestSchema } from "@/validations/booking.validation";
 
 export async function GET() {
   try {
@@ -14,7 +14,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export const POST = async (request: Request) => {
   let body: unknown;
   try {
     body = await request.json();
@@ -22,8 +22,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Invalid booking request" }, { status: 400 });
   }
 
-  const result = bookingSchema.safeParse(body);
-  if (!result.success) return NextResponse.json({ message: "Choose a service and available time" }, { status: 400 });
+  const result = bookingRequestSchema.safeParse(body);
+  if (!result.success) return NextResponse.json({ message: "Choose valid services and an available time" }, { status: 400 });
 
   try {
     const booking = await sessionRequest("post", "/api/bookings", result.data);
@@ -32,4 +32,4 @@ export async function POST(request: Request) {
     const { status, message } = apiError(error);
     return NextResponse.json({ message }, { status });
   }
-}
+};

@@ -22,6 +22,7 @@ const chosenService = "44444444-4444-4444-8444-444444444444";
 const otherService = "55555555-5555-4555-8555-555555555555";
 const openSlot = "66666666-6666-4666-8666-666666666666";
 const bookedSlot = "77777777-7777-4777-8777-777777777777";
+const shortSlot = "99999999-9999-4999-8999-999999999999";
 const completedBooking = "88888888-8888-4888-8888-888888888888";
 const appointmentDay = new Date(Date.now() + 7 * 86400000);
 appointmentDay.setUTCHours(3, 0, 0, 0);
@@ -38,6 +39,7 @@ const profile = {
   availabilitySlots: [
     { id: openSlot, startAt, endAt, isActive: true, bookings: [] },
     { id: bookedSlot, startAt: new Date(new Date(startAt).getTime() + 3 * 3600000).toISOString(), endAt: new Date(new Date(startAt).getTime() + 5 * 3600000).toISOString(), isActive: false, bookings: [{ status: "REQUESTED" }] },
+    { id: shortSlot, startAt: new Date(new Date(startAt).getTime() + 6 * 3600000).toISOString(), endAt: new Date(new Date(startAt).getTime() + 7 * 3600000).toISOString(), isActive: true, bookings: [] },
   ],
 };
 const send = (response, status, data) => {
@@ -124,7 +126,7 @@ try {
   const breadcrumbTop = await profileBreadcrumb.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   const contentTop = await page.locator("main").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   assert.ok(breadcrumbTop < contentTop, "Breadcrumbs must appear above profile content");
-  const serviceCard = page.getByRole("heading", { name: "Services and prices" }).locator("..").locator("div.rounded-lg.border").first();
+  const serviceCard = page.getByRole("button", { name: /Other service/ });
   assert.equal(await serviceCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   const profileCard = page.locator("main div.rounded-xl.border.bg-card").first();
   assert.equal(await profileCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
@@ -151,15 +153,18 @@ try {
   const leftBox = await leftCol.evaluate((element) => element.getBoundingClientRect());
   const rightBox = await rightCol.evaluate((element) => element.getBoundingClientRect());
   assert.ok(leftBox.right <= rightBox.left, "Left and right columns must be positioned side-by-side on desktop");
-  await page.getByRole("combobox", { name: "Service" }).getByText("Chosen service").waitFor();
-  await page.getByText("Selected service").waitFor();
+  const chosen = page.getByRole("button", { name: /Chosen service/ });
+  const other = page.getByRole("button", { name: /Other service/ });
+  await page.getByText("Selected services", { exact: true }).waitFor();
+  assert.equal(await chosen.getAttribute("aria-pressed"), "true");
   assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳200");
-  await page.locator("h3", { hasText: "Other service" }).click();
-  await page.getByRole("combobox", { name: "Service" }).getByText("Other service").waitFor();
-  assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳100");
-  await page.locator("h3", { hasText: "Chosen service" }).click();
-  await page.getByRole("combobox", { name: "Service" }).getByText("Chosen service").waitFor();
+  await other.click();
+  assert.equal(await other.getAttribute("aria-pressed"), "true");
+  assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳300");
+  assert.equal(await page.getByRole("button", { name: /Too short/ }).isDisabled(), true);
+  await other.click();
   assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳200");
+  await other.click();
   const booked = page.getByRole("button", { name: /Booked/ });
   await booked.waitFor();
   assert.equal(await booked.isDisabled(), true);
@@ -171,7 +176,7 @@ try {
   assert.ok(await available.evaluate((element) => element.style.backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")), "Selected slot must have active green background");
   await page.getByRole("button", { name: "Book now" }).click();
   await page.waitForURL("**/dashboard/customer");
-  assert.deepEqual(bookings, [{ serviceId: chosenService, availabilitySlotId: openSlot }]);
+  assert.deepEqual(bookings, [{ serviceIds: [chosenService, otherService], availabilitySlotId: openSlot }]);
   await page.goto(`${base}/auth/register`);
   await page.getByRole("navigation", { name: "breadcrumb" }).getByText("Create account").waitFor();
   assert.equal(await page.locator("footer").count(), 1);
