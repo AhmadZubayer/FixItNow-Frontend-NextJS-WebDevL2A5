@@ -32,11 +32,12 @@ const RootLayout = ({ children }: LayoutProps<"/">) => {
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:font-medium focus:shadow-lg">Skip to content</a>
         <SiteHeader />
         <Suspense fallback={<div className="mx-auto h-7 w-full max-w-7xl px-4 pt-4 sm:px-6" />}>
           <RouteBreadcrumbs />
         </Suspense>
-        {children}
+        <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col">{children}</div>
         <SiteFooter />
         <Toaster richColors={false} position="bottom-right" />
       </body>

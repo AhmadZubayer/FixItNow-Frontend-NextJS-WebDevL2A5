@@ -150,6 +150,11 @@ try {
   await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Plumbing" }).click();
   await page.waitForURL((url) => url.searchParams.get("categoryId") === plumbingId);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.goto(`${base}/services`);
+  await page.keyboard.press("Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "Skip to content");
+  await page.keyboard.press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "main-content");
   console.log("PASS services filters, pagination, and mobile width");
 } finally {
   await browser?.close();
