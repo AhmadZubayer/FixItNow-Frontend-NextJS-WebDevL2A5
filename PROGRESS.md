@@ -1,4 +1,4 @@
-Completion Progress: [71]%
+Completion Progress: [72]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 71% |
+| Completion Progress | 72% |
 | Last Working Agent | Codex |
-| Completed tasks | 60 / 85 |
-| Remaining tasks | 25 |
-| Overall state | S08-T04 verified; tracking update ready to commit and push |
-| Last completed task | S08-T04 Style the selected dashboard tab with #9AE600 and readable contrast |
-| Current unfinished task | S08-T05 Place breadcrumbs between the tab bar and main content card |
-| Next task for Codex | Verify dashboard breadcrumb placement for all three roles and nested dashboard pages |
-| Latest commit hashes | Frontend `main`: `54a6e03`; Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main 54a6e03 (S08-T03 handoff); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 61 / 85 |
+| Remaining tasks | 24 |
+| Overall state | S08-T05 verified; tracking update ready to commit and push |
+| Last completed task | S08-T05 Place breadcrumbs between the tab bar and main content card |
+| Current unfinished task | S08-T06 Render each selected tab's content inside the main shadcn Card below breadcrumbs |
+| Next task for Codex | Verify main-card containment across dashboard route content |
+| Latest commit hashes | Frontend `main`: `89a8ffa`; Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main 89a8ffa (S08-T04); backend main 7ce0891 (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S08-T05 |
-| Task description | Place breadcrumbs between the tab bar and the main content card |
-| State | S08-T04 verified, awaiting commit and push |
+| Task ID | S08-T06 |
+| Task description | Render the selected tab's content inside a main shadcn Card below the breadcrumbs |
+| State | S08-T05 verified; commit and push pending |
 | Last Working Agent | Codex |
-| Current unfinished task | S08-T05 |
+| Current unfinished task | S08-T06 |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `54a6e03`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | `tests/dashboard-role-payments.mjs`, `TASKS.md`, `PROGRESS.md` (S08-T04 verification/tracking). |
-| Work already implemented | Selected dashboard tabs use exact `#9AE600` fill, black text and border, and semibold weight for clear contrast and active state. Browser assertions verify computed styles on admin, customer, and technician dashboards. |
-| Work still to do | Commit and push S08-T04 test and tracking update; then verify S08-T05 breadcrumb placement. |
-| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: exact selected tab computed styles for all three roles, plus role access, role-specific labels, and dashboard structure). |
-| Results / errors | S08-T04 browser verification passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S08-T04 test and tracking updates pending commit. |
-| Commits awaiting push | S08-T04 task commit not yet created. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `89a8ffa`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | `tests/dashboard-role-payments.mjs` (nested route ordering assertions); `TASKS.md`, `PROGRESS.md` (S08-T05 tracking). |
+| Work already implemented | Shared dashboard layout renders role tabs, then breadcrumbs, then the main content card. Browser test verifies the order on all three primary dashboards and customer payments, technician bookings, admin technicians, and admin payments. |
+| Work still to do | Commit and push the S08-T05 verification and tracking update. |
+| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: tab/breadcrumb/card order on primary and nested dashboard routes, plus prior role and style assertions). |
+| Results / errors | S08-T05 browser verification passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S08-T05 verification and tracking update pending commit. |
+| Commits awaiting push | S08-T05 task commit not yet created. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T04 before starting S08-T05. |
+| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T05 before starting S08-T06. |
 
 ## Verified task completion history
 
@@ -120,6 +120,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S08-T02 | Render shadcn dashboard tabs directly under the shared navbar | `npm run build` passed (36 routes); `node tests/dashboard-role-payments.mjs` verified tab placement above breadcrumbs for customer, technician, and admin; 58 of 85 checked | `702e4b6` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T03 | Show role-appropriate dashboard tab labels dynamically | Browser test asserted exact tab labels for customer, technician, and admin; existing role-route authorization assertions passed; 59 of 85 checked | `399b699` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T04 | Style selected dashboard tab in #9AE600 | Browser verified computed #9AE600 fill, black text/border, and 600 font weight on all three role dashboards; 60 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T05 | Place breadcrumbs between dashboard tabs and main content card | Browser checked tab/breadcrumb/card order on primary dashboards and four nested customer, technician, and admin pages; 61 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

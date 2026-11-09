@@ -95,7 +95,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Directly under the shared navbar, render **shadcn Tabs** for dashboard navigation.
 - [x] Show only the tab labels/options appropriate to the authenticated user's role; build the tabs dynamically from the role.
 - [x] Style the **selected tab** with `#9AE600` while preserving readable contrast and obvious active state.
-- [ ] Place breadcrumbs **between the tab bar and the main content card**.
+- [x] Place breadcrumbs **between the tab bar and the main content card**.
 - [ ] Render the selected tab's content inside a **main shadcn Card** below the breadcrumbs.
 - [ ] Keep all tables, child cards, and related content **inside that main card**.
 - [ ] Ensure each tab renders its correct data and functions; changing tabs updates the content.

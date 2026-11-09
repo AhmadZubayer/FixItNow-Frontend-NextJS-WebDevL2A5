@@ -50,6 +50,21 @@ const assertSelectedTabStyle = async (tab) => {
   });
 };
 
+const assertDashboardBreadcrumbOrder = async (page, path) => {
+  const tabs = page.getByRole("tablist");
+  const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
+  const mainCard = page.locator("main > div[data-slot='card']");
+  await Promise.all([tabs.waitFor(), breadcrumbs.waitFor(), mainCard.waitFor()]);
+
+  const [tabsTop, breadcrumbsTop, cardTop] = await Promise.all([
+    tabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY),
+    breadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY),
+    mainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY),
+  ]);
+  assert.ok(tabsTop < breadcrumbsTop, `${path}: tabs must appear above breadcrumbs`);
+  assert.ok(breadcrumbsTop < cardTop, `${path}: breadcrumbs must appear above the main card`);
+};
+
 const backend = createHttpServer((request, response) => {
   const token = request.headers.authorization?.replace("Bearer ", "");
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
@@ -327,6 +342,21 @@ try {
   assert.ok(tBreadcrumbsTop < tCardTop, "Technician breadcrumbs must appear above main card");
   assert.equal(await techMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await techCtx.close();
+
+  const nestedDashboardRoutes = [
+    { path: "/dashboard/customer/payments", role: "customer" },
+    { path: "/dashboard/technician/bookings", role: "technician" },
+    { path: "/dashboard/admin/technicians", role: "admin" },
+    { path: "/dashboard/admin/payments", role: "admin" },
+  ];
+  for (const route of nestedDashboardRoutes) {
+    const nestedContext = await browser.newContext();
+    await nestedContext.addCookies([{ name: "accessToken", value: `valid-${route.role}`, url: base }]);
+    const nestedPage = await nestedContext.newPage();
+    await nestedPage.goto(`${base}${route.path}`);
+    await assertDashboardBreadcrumbOrder(nestedPage, route.path);
+    await nestedContext.close();
+  }
 
   console.log("PASS dashboard roles, admin views, and consistent page structure");
 } finally {
