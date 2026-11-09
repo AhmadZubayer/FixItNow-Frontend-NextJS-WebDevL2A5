@@ -96,6 +96,8 @@ try {
   }
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(`${base}/services?q=%20%20`);
+  assert.equal(observed.some((url) => ["/api/services", "/api/technicians"].includes(url.pathname) && url.searchParams.get("q") === ""), false);
   await page.goto(`${base}/services`);
   const logo = page.locator('header a[href="/"]').first();
   assert.equal((await logo.innerText()).trim(), "FixItNow");

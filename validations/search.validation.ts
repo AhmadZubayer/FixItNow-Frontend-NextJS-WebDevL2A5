@@ -3,7 +3,7 @@ import { z } from "zod";
 const price = z.string().regex(/^\d{1,8}(\.\d{1,2})?$/, "Enter a valid price with up to two decimal places");
 
 export const searchSchema = z.object({
-  q: z.string().trim().max(100, "Search must be 100 characters or fewer").optional(),
+  q: z.string().trim().max(100, "Search must be 100 characters or fewer").optional().transform((value) => value || undefined),
   categoryId: z.uuid("Choose a valid category").optional(),
   serviceId: z.uuid("Choose a valid service").optional(),
   location: z.string().trim().min(2, "Enter at least 2 characters").optional(),
