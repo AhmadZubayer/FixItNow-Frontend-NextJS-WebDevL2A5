@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 17 / 85 |
 | Remaining tasks | 68 |
-| Overall state | S03-T05 validated; frontend push pending |
-| Current task | S03-T05 distinct page backgrounds |
-| Last completed task | S03-T04 transparent green back links |
+| Overall state | S03-T05 pushed; S03-T06 next |
+| Current task | S03-T05 complete; S03-T06 next |
+| Last completed task | S03-T05 distinct page and card backgrounds |
 | Next task | S03-T06 consistent spacing and accessibility |
-| Last successful GitHub push | Frontend main dc6da12 (S03-T04); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 538190d (S03-T05); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S03-T05 |
 | Task description | Keep page backgrounds visually distinct from #EFEFEF cards, especially on /services |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
 | Work already implemented | Existing /services white main background and #EFEFEF cards were verified as distinct by browser computed styles and screenshot. Global light background remains white. No source change was required. |
-| Work still to do | Commit and push verification/tracking files, then begin S03-T06. |
+| Work still to do | S03-T05 delivered. Begin S03-T06 after this progress update is pushed. |
 | Tests / commands run | Services browser test passed, asserting white main background rgb(255,255,255) and card rgb(239,239,239); prior screenshot inspected. |
 | Results / errors | Visual separation confirmed on services desktop and mobile layout; no code issue found. |
-| Changes only on local machine | S03-T05 browser assertion and tracking updates pending commit/push. |
-| Commits awaiting push | S03-T05 frontend commit to create and push. |
-| **Exact next action** | Stage S03-T05 test and tracking files, commit/push main, record hash, then begin S03-T06. |
+| Changes only on local machine | This S03-T05 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S03-T06 by checking spacing, focus and hover patterns. |
 
 ## Verified task completion history
 
@@ -69,7 +69,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T02 | Add shared footer | Root layout renders semantic #EFEFEF footer; browser tests checked public, auth and dashboard routes; lint/build passed; 14 of 85 checked | `332cd72` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T03 | Show breadcrumbs on all pages | Added root route-aware breadcrumb and removed duplicate locals; build, lint/type and browser link checks passed; 15 of 85 checked | `4635dbe` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T04 | Style and preserve back navigation | Shared transparent back link uses #9AE600 text/icon on four pages; browser href/color assertions and lint/build passed; 16 of 85 checked | `dc6da12` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S03-T05 | Keep card and page surfaces distinct | Browser confirmed /services white page against #EFEFEF cards and prior screenshot inspection; 17 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S03-T05 | Keep card and page surfaces distinct | Browser confirmed /services white page against #EFEFEF cards and prior screenshot inspection; 17 of 85 checked | `538190d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
