@@ -1,4 +1,4 @@
-Completion Progress: [60]%
+Completion Progress: [61]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 51 / 85 |
-| Remaining tasks | 34 |
-| Overall state | S07-T02 validated; commit and push pending |
-| Current task | S07-T02 show functional breadcrumbs above profile content |
-| Last completed task | S07-T02 show functional breadcrumbs above profile content |
-| Next task | S07-T03 match layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath breadcrumbs |
-| Last successful GitHub push | Frontend main 20742aa (S07-T01); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 52 / 85 |
+| Remaining tasks | 33 |
+| Overall state | S07-T03 validated; commit and push pending |
+| Current task | S07-T03 match layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath breadcrumbs |
+| Last completed task | S07-T03 match layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath breadcrumbs |
+| Next task | S07-T04 implement interactions and information shown in reference with actual technician data |
+| Last successful GitHub push | Frontend main 8de96e9 (S07-T02); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S07-T02 |
-| Task description | Show functional breadcrumbs above the profile content |
+| Task ID | S07-T03 |
+| Task description | Match the layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath the breadcrumbs |
 | State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | tests/booking-slots-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Verified route-aware breadcrumbs render Home (`/`), Services & Technicians (`/services`), and Technician profile, visually positioned above profile content. |
-| Work still to do | Commit and push S07-T02, record hash, then begin S07-T03. |
-| Tests / commands run | `npm run lint`, `node tests/booking-slots-browser.mjs` passed. |
-| Results / errors | Verified functional breadcrumb ancestors and vertical position above main profile content. |
-| Changes only on local machine | S07-T02 test updates, TASKS.md and PROGRESS.md. |
-| Commits awaiting push | S07-T02 task commit. |
-| **Exact next action** | Stage only S07-T02 files, commit and push frontend main. |
+| Files changed | app/technicians/[id]/page.tsx, components/booking-form.tsx, tests/booking-slots-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Refactored technician profile into two-column layout matching reference image: left column with technician profile card (BackLink, name, location, experience, rating, skills badges) and Customer reviews; right column with Provided services card grid and Book a service card with selected service summary, available slot pills, and full-width Book now button. Tested desktop side-by-side coordinates and 375px mobile responsive width. |
+| Work still to do | Commit and push S07-T03, record hash, then begin S07-T04. |
+| Tests / commands run | `npm run lint`, `npm run build`, `node tests/booking-slots-browser.mjs` passed. |
+| Results / errors | Verified two-column layout, headings, and slot/card presentation. |
+| Changes only on local machine | S07-T03 layout and test updates, TASKS.md and PROGRESS.md. |
+| Commits awaiting push | S07-T03 task commit. |
+| **Exact next action** | Stage only S07-T03 files, commit and push frontend main. |
 
 ## Verified task completion history
 
@@ -103,6 +103,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S06-T15 | Verify functional page navigation | Browser test verified bidirectional pagination, active indicator, and direct page-number clicks updating results; 48 of 85 checked | `61851bf` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T16 | Place pagination under cards above footer | Browser verified vertical stacking of technician cards, pagination, and shared footer; 49 of 85 checked | `8572665` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T01 | Verify technician profile route | Browser test verified /technicians/[id] is the active route resolving data; 50 of 85 checked | `20742aa` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T02 | Show functional breadcrumbs above profile content | Browser verified route breadcrumbs with functional ancestor links positioned above profile content; 51 of 85 checked | `8de96e9` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

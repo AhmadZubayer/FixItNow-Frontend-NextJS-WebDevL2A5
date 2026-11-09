@@ -89,6 +89,14 @@ try {
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.setViewportSize({ width: 1280, height: 800 });
+  await page.getByRole("heading", { name: "Customer reviews" }).waitFor();
+  await page.getByRole("heading", { name: "Provided services" }).waitFor();
+  await page.getByRole("heading", { name: "Book a service" }).waitFor();
+  const leftCol = page.locator("h1").locator("xpath=ancestor::div[contains(@class, 'rounded-xl')][1]");
+  const rightCol = page.getByRole("heading", { name: "Book a service" }).locator("xpath=ancestor::section[1]");
+  const leftBox = await leftCol.evaluate((element) => element.getBoundingClientRect());
+  const rightBox = await rightCol.evaluate((element) => element.getBoundingClientRect());
+  assert.ok(leftBox.right <= rightBox.left, "Left and right columns must be positioned side-by-side on desktop");
   await page.getByRole("combobox", { name: "Service" }).getByText("Chosen service").waitFor();
   const booked = page.getByRole("button", { name: /Booked/ });
   await booked.waitFor();
