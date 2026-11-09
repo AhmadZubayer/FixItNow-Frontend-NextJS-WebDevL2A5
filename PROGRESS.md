@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 36 / 85 |
 | Remaining tasks | 49 |
-| Overall state | S06-T03 validated; push pending |
-| Current task | S06-T03 white page and #EFEFEF cards |
+| Overall state | S06-T03 pushed; S06-T04 next |
+| Current task | S06-T04 black hover borders on service/technician cards |
 | Last completed task | S06-T03 white page and #EFEFEF cards |
 | Next task | S06-T04 black hover borders on service/technician cards |
-| Last successful GitHub push | Frontend main 3c445b0 (S06-T02); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main b22be1c (S06-T03); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S06-T03 |
-| Task description | Distinguish white services page from #EFEFEF service/technician cards |
-| State | Validated; commit and push pending |
+| Task ID | S06-T04 |
+| Task description | Black border on hover for service and technician cards |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | TASKS.md, PROGRESS.md |
-| Work already implemented | Current browser test asserts white main and #EFEFEF service/technician card fills; refreshed screenshot reviewed. |
-| Work still to do | Commit and push S06-T03 tracking update, then begin hover borders task. |
-| Tests / commands run | Services browser passed with current source; S06-T01 lint/build passed with same application code. |
-| Results / errors | Computed colors and screenshot show distinct page and card surfaces. |
-| Changes only on local machine | S06-T03 checklist and progress update. |
-| Commits awaiting push | S06-T03 tracking commit. |
-| **Exact next action** | Stage TASKS.md and PROGRESS.md, commit and push frontend main. |
+| Files changed | None yet for S06-T04 |
+| Work already implemented | S06-T03 white/card surface verification pushed as b22be1c. Both card types already carry hover:border-black classes. |
+| Work still to do | Verify actual computed hover border in browser for each card type, fix if needed, mark and push. |
+| Tests / commands run | S06-T03 services browser passed; S06-T01 lint/build cover same source. |
+| Results / errors | S06-T03 pushed; no live database affected. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then add hover border assertions to services browser test. |
 
 ## Verified task completion history
 
@@ -88,6 +88,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S05-T06 | Include auth breadcrumbs | Browser verified login/register breadcrumb labels and Home href; screenshots previously showed legibility; lint passed; 33 of 85 checked | `8e2095d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T01 | Align services layout to reference | Wider rail/content, title with primary filters, larger cards and green actions; screenshot comparison plus lint/build/browser checks passed; 34 of 85 checked | `f946c46` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T02 | Verify services Back/breadcrumb | Browser checked #9AE600 transparent Back and both links navigating to root; lint passed; 35 of 85 checked | `3c445b0` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S06-T03 | Distinguish page and card colors | Browser confirmed white main and #EFEFEF service/technician cards; screenshot reviewed; 36 of 85 checked | `b22be1c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
