@@ -38,7 +38,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Use shared layout and styling solutions rather than repeating page-by-page implementations.
 
 ## 4. Navigation bar
-- [ ] Make the global navbar **sticky**.
+- [x] Make the global navbar **sticky**.
 - [ ] Give the navbar a translucent **acrylic/glass** appearance (subtle blur and transparency) without compromising readability.
 - [ ] Keep the existing logo unchanged on the **left**.
 - [ ] In the **center**, show `Services & Technicians` linking to `/services`.

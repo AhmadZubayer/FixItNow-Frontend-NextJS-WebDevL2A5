@@ -145,6 +145,8 @@ try {
   assert.equal(await page.getByLabel("Price", { exact: true }).innerText(), "High to low");
 
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-services-current.png"), fullPage: true });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  assert.equal(await page.locator("header").evaluate((element) => Math.round(element.getBoundingClientRect().top)), 0);
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Plumbing" }).click();
