@@ -258,6 +258,7 @@ try {
   // Verify consistent page structure on Admin dashboard
   const adminTabs = page.getByRole("tablist");
   await adminTabs.waitFor();
+  assert.deepEqual(await adminTabs.getByRole("tab").allTextContents(), ["Overview & Users", "Technicians", "Platform payments"]);
   const activeAdminTab = adminTabs.getByRole("tab", { name: "Overview & Users" });
   assert.ok(await activeAdminTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
   const adminBreadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
@@ -276,6 +277,7 @@ try {
   await custPage.goto(`${base}/dashboard/customer`);
   const custTabs = custPage.getByRole("tablist");
   await custTabs.waitFor();
+  assert.deepEqual(await custTabs.getByRole("tab").allTextContents(), ["Bookings", "Payments"]);
   const activeCustTab = custTabs.getByRole("tab", { name: "Bookings" });
   assert.ok(await activeCustTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
   const custBreadcrumbs = custPage.getByRole("navigation", { name: "breadcrumb" });
@@ -295,6 +297,7 @@ try {
   await tPage.goto(`${base}/dashboard/technician`);
   const techTabs = tPage.getByRole("tablist");
   await techTabs.waitFor();
+  assert.deepEqual(await techTabs.getByRole("tab").allTextContents(), ["Overview & Services", "Booking requests"]);
   const activeTechTab = techTabs.getByRole("tab", { name: "Overview & Services" });
   assert.ok(await activeTechTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
   const techBreadcrumbs = tPage.getByRole("navigation", { name: "breadcrumb" });

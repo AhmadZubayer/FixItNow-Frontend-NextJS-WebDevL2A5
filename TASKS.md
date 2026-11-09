@@ -93,7 +93,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 ## 8. Dashboards — customer, technician, and admin
 - [x] Update `/dashboard/customer`, `/dashboard/technician`, and `/dashboard/admin` with a consistent page structure.
 - [x] Directly under the shared navbar, render **shadcn Tabs** for dashboard navigation.
-- [ ] Show only the tab labels/options appropriate to the authenticated user's role; build the tabs dynamically from the role.
+- [x] Show only the tab labels/options appropriate to the authenticated user's role; build the tabs dynamically from the role.
 - [ ] Style the **selected tab** with `#9AE600` while preserving readable contrast and obvious active state.
 - [ ] Place breadcrumbs **between the tab bar and the main content card**.
 - [ ] Render the selected tab's content inside a **main shadcn Card** below the breadcrumbs.

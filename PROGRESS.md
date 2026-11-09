@@ -1,4 +1,4 @@
-Completion Progress: [68]%
+Completion Progress: [69]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 68% |
+| Completion Progress | 69% |
 | Last Working Agent | Antigravity |
-| Completed tasks | 58 / 85 |
-| Remaining tasks | 27 |
-| Overall state | S08-T02 verified; tracking update ready to commit and push |
-| Last completed task | S08-T02 Directly under the shared navbar, render shadcn Tabs for dashboard navigation |
-| Current unfinished task | S08-T03 Show only role-appropriate dashboard tab labels/options |
-| Next task for Codex | Verify role-derived tabs for customer, technician, and admin in the browser |
-| Latest commit hashes | Frontend `main`: `6d6ccd7`; Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main 6d6ccd7 (S08-T01); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 59 / 85 |
+| Remaining tasks | 26 |
+| Overall state | S08-T03 role-specific tab options verified; commit and push pending |
+| Last completed task | S08-T03 Show role-appropriate dashboard tab labels dynamically |
+| Current unfinished task | S08-T04 Style the selected dashboard tab with #9AE600 and readable contrast |
+| Next task for Codex | Verify selected tab color and contrast across customer, technician, and admin dashboards |
+| Latest commit hashes | Frontend `main`: `702e4b6`; Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main 702e4b6 (S08-T02); backend main 7ce0891 (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S08-T03 |
-| Task description | Show only the tab labels/options appropriate to the authenticated user's role; build the tabs dynamically from the role |
-| State | Not started; S08-T02 verified and awaiting tracking commit/push |
+| Task ID | S08-T04 |
+| Task description | Style the selected dashboard tab with #9AE600 while preserving readable contrast and an obvious active state |
+| State | S08-T03 implementation and browser verification passed; tracking changes pending commit and push |
 | Last Working Agent | Codex |
-| Current unfinished task | S08-T03 |
+| Current unfinished task | S08-T04 |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main` (commit `6d6ccd7`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | `TASKS.md`, `progress.md` (S08-T02 tracking only). |
-| Work already implemented | Dashboard layout renders shadcn Tabs in the dashboard nested layout, directly after the shared navbar and before breadcrumbs. Browser assertions verified that order for customer, technician, and admin. |
-| Work still to do | Commit and push S08-T02 tracking update. Then verify S08-T03 role-specific tab options in browser. |
-| Tests / commands run | `npm run build` (pass: 36 routes generated); `node tests/dashboard-role-payments.mjs` (pass: all role dashboard structure assertions). Initial `npm run build` without the approved Node runtime failed because `npm` was not available in the sandbox PATH; rerun via installed Node succeeded. |
-| Results / errors | S08-T02 verified. Frontend source was otherwise clean at `c9d9139`; backend retains unrelated pre-existing worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`). |
-| Changes only on local machine | None (all changes committed and pushed). |
-| Commits awaiting push | None. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `702e4b6`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | `tests/dashboard-role-payments.mjs` (exact role tab label assertions); `TASKS.md`, `PROGRESS.md` (S08-T03 tracking). |
+| Work already implemented | Dashboard layout defines separate customer, technician, and admin tab lists from the dashboard role segment; route authorization prevents cross-role dashboard access. Browser test asserts the exact tab labels for each role. |
+| Work still to do | Commit and push S08-T03 files, then verify selected tab color/contrast for S08-T04. |
+| Tests / commands run | `npm run build` (pass: 36 routes generated); `node tests/dashboard-role-payments.mjs` (pass: role access and exact role-specific tab labels plus layout assertions). |
+| Results / errors | S08-T03 browser verification passed. Backend retains unrelated pre-existing worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S08-T03 test and tracking changes pending commit. |
+| Commits awaiting push | S08-T03 task commit not yet created. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage only `TASKS.md` and `progress.md`, commit S08-T02, push to `origin/main`, then start S08-T03 verification. |
+| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T03 before starting S08-T04. |
 
 ## Verified task completion history
 
@@ -117,7 +117,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S07-T06 | Handle loading, missing/invalid technician IDs, and API errors gracefully | Automated browser test verified tailored loading skeleton, 404 missing ID, 400 invalid ID, and 500 error boundary; 55 of 85 checked | `70405fc` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T07 | Apply global card styling, back-button styling, responsiveness, and footer | Automated browser test verified #EFEFEF cards, #9AE600 transparent BackLink, 375px responsiveness, and shared footer; 56 of 85 checked | `d353bf7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T01 | Update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure | Automated browser test verified dynamic role tabs directly under navbar, breadcrumbs between tabs and card, and main shadcn Card wrapper across customer, technician, and admin dashboards; 57 of 85 checked | `6d6ccd7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S08-T02 | Render shadcn dashboard tabs directly under the shared navbar | `npm run build` passed (36 routes); `node tests/dashboard-role-payments.mjs` verified tab placement above breadcrumbs for customer, technician, and admin; 58 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T02 | Render shadcn dashboard tabs directly under the shared navbar | `npm run build` passed (36 routes); `node tests/dashboard-role-payments.mjs` verified tab placement above breadcrumbs for customer, technician, and admin; 58 of 85 checked | `702e4b6` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S08-T03 | Show role-appropriate dashboard tab labels dynamically | Browser test asserted exact tab labels for customer, technician, and admin; existing role-route authorization assertions passed; 59 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
