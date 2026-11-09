@@ -140,9 +140,14 @@ try {
   await page.waitForURL("**/services?page=2");
   assert.equal(await technicianCards.count(), 3);
 
+  await page.getByLabel("Price", { exact: true }).click();
+  await page.getByRole("option", { name: "Low to high" }).click();
+  await page.waitForURL((url) => url.searchParams.get("priceSort") === "asc" && !url.searchParams.has("page"));
+  assert.equal(await technicianCards.count(), 9);
+
   await page.getByLabel("Search services or technicians").fill("Fan");
   await page.getByLabel("Search services or technicians").press("Enter");
-  await page.waitForURL("**/services?q=Fan");
+  await page.waitForURL("**q=Fan*");
   assert.equal(await technicianCards.count(), 9);
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("q") === "Fan" && url.searchParams.get("page") === "1"));
   assert(observed.some((url) => url.pathname === "/api/services" && url.searchParams.get("q") === "Fan"));
