@@ -170,6 +170,12 @@ try {
   assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "Skip to content");
   await page.keyboard.press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "main-content");
+  const signInLink = page.locator("header").getByRole("link", { name: "Sign in" });
+  await signInLink.waitFor();
+  assert.equal(await signInLink.getAttribute("href"), "/auth/login");
+  await signInLink.click();
+  await page.waitForURL("**/auth/login");
+  assert.equal(await page.getByRole("button", { name: "Log in" }).count(), 1);
   console.log("PASS services filters, pagination, and mobile width");
 } finally {
   await browser?.close();

@@ -1,4 +1,4 @@
-Completion Progress: [29]%
+Completion Progress: [31]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 25 / 85 |
-| Remaining tasks | 60 |
-| Overall state | S04-T06 pushed; S04-T07 next |
+| Completed tasks | 26 / 85 |
+| Remaining tasks | 59 |
+| Overall state | S04-T07 validated; push pending |
 | Current task | S04-T07 signed-out Sign in button |
-| Last completed task | S04-T06 authenticated name dropdown |
-| Next task | S04-T07 signed-out Sign in button |
+| Last completed task | S04-T07 signed-out Sign in button |
+| Next task | S04-T08 auth state, role route, mobile and logout updates |
 | Last successful GitHub push | Frontend main 0ba751a (S04-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S04-T07 |
 | Task description | Keep existing Sign in button and behavior for signed-out users |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S04-T07 |
-| Work already implemented | S04-T06 shadcn full-name account menu and Logout pushed as 0ba751a. Anonymous controls still have the existing Log in and Sign up links. |
-| Work still to do | Check signed-out Sign in wording and behavior, validate browser interaction, then mark and push S04-T07. |
-| Tests / commands run | S04-T06 frontend lint/build and dashboard role browser test passed. |
-| Results / errors | S04-T06 pushed; real-backend E2E not run because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then inspect anonymous navbar and login flow for S04-T07. |
+| Files changed | components/session-actions.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Anonymous header button reads Sign in and still links to /auth/login. |
+| Work still to do | Commit and push S04-T07, record hash, then start S04-T08. |
+| Tests / commands run | Frontend lint and build (including TypeScript), services browser navigation test, git diff check next. |
+| Results / errors | Browser followed Sign in to /auth/login and found the login form; all run checks passed. |
+| Changes only on local machine | S04-T07 source, test, checklist and progress update. |
+| Commits awaiting push | S04-T07 task commit. |
+| **Exact next action** | Stage only S04-T07 files, commit and push frontend main. |
 
 ## Verified task completion history
 

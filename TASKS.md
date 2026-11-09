@@ -47,7 +47,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
   - Technician → `/dashboard/technician`
   - Admin → `/dashboard/admin`
 - [x] On the **right**, show the authenticated user's **full name**. Clicking it opens a shadcn dropdown containing a **Log out** action.
-- [ ] When signed out, keep the existing **Sign in** button and behavior.
+- [x] When signed out, keep the existing **Sign in** button and behavior.
 - [ ] Ensure auth state, role routing, mobile navigation, and log-out behavior update correctly without stale UI.
 
 ## 5. Login and sign-up pages

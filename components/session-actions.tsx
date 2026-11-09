@@ -52,7 +52,7 @@ const SessionActions = () => {
       {loaded && user && <Button variant="ghost" render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}>Dashboard</Button>}
     </nav>
     <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3">
-      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <><Button variant="ghost" render={<Link href="/auth/login" />}>Log in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></> : <DropdownMenu>
+      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <><Button variant="ghost" render={<Link href="/auth/login" />}>Sign in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></> : <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" className="max-w-36 sm:max-w-48" />}>
           <span className="truncate">{user.name}</span>
         </DropdownMenuTrigger>
