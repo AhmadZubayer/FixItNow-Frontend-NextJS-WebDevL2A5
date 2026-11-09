@@ -1,4 +1,4 @@
-Completion Progress: [59]%
+Completion Progress: [60]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 50 / 85 |
-| Remaining tasks | 35 |
-| Overall state | S07-T01 validated; commit and push pending |
-| Current task | S07-T01 verify technician profile route /technicians/[id] |
-| Last completed task | S07-T01 verify technician profile route /technicians/[id] |
-| Next task | S07-T02 show functional breadcrumbs above profile content |
-| Last successful GitHub push | Frontend main 8572665 (S06-T16); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 51 / 85 |
+| Remaining tasks | 34 |
+| Overall state | S07-T02 validated; commit and push pending |
+| Current task | S07-T02 show functional breadcrumbs above profile content |
+| Last completed task | S07-T02 show functional breadcrumbs above profile content |
+| Next task | S07-T03 match layout and presentation in ui_references/technician-profile-page-ui-ref.jpg beneath breadcrumbs |
+| Last successful GitHub push | Frontend main 20742aa (S07-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S07-T01 |
-| Task description | Verify actual technician detail route and use /technicians/[id] |
+| Task ID | S07-T02 |
+| Task description | Show functional breadcrumbs above the profile content |
 | State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | tests/booking-slots-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Verified route `/technicians/[id]` is the authoritative route across cards, search, and navigation; confirmed port separation and mock handling in browser test suite. |
-| Work still to do | Commit and push S07-T01, record hash, then begin S07-T02. |
+| Work already implemented | Verified route-aware breadcrumbs render Home (`/`), Services & Technicians (`/services`), and Technician profile, visually positioned above profile content. |
+| Work still to do | Commit and push S07-T02, record hash, then begin S07-T03. |
 | Tests / commands run | `npm run lint`, `node tests/booking-slots-browser.mjs` passed. |
-| Results / errors | Verified `/technicians/[id]` profile page resolves and loads data. |
-| Changes only on local machine | S07-T01 test updates, TASKS.md and PROGRESS.md. |
-| Commits awaiting push | S07-T01 task commit. |
-| **Exact next action** | Stage only S07-T01 files, commit and push frontend main. |
+| Results / errors | Verified functional breadcrumb ancestors and vertical position above main profile content. |
+| Changes only on local machine | S07-T02 test updates, TASKS.md and PROGRESS.md. |
+| Commits awaiting push | S07-T02 task commit. |
+| **Exact next action** | Stage only S07-T02 files, commit and push frontend main. |
 
 ## Verified task completion history
 
@@ -102,6 +102,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S06-T14 | Verify 9 technician cards limit | Browser test verified exactly 9 technician cards on page 1 and remaining 3 on page 2; 47 of 85 checked | `2fc9170` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T15 | Verify functional page navigation | Browser test verified bidirectional pagination, active indicator, and direct page-number clicks updating results; 48 of 85 checked | `61851bf` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T16 | Place pagination under cards above footer | Browser verified vertical stacking of technician cards, pagination, and shared footer; 49 of 85 checked | `8572665` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T01 | Verify technician profile route | Browser test verified /technicians/[id] is the active route resolving data; 50 of 85 checked | `20742aa` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

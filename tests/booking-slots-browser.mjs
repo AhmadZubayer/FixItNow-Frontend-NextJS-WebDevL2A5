@@ -78,7 +78,12 @@ try {
   const profileBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   await profileBreadcrumb.waitFor();
   assert.equal(await profileBreadcrumb.count(), 1);
+  assert.equal(await profileBreadcrumb.getByRole("link", { name: "Home" }).getAttribute("href"), "/");
   assert.equal(await profileBreadcrumb.getByRole("link", { name: "Services & Technicians" }).getAttribute("href"), "/services");
+  await profileBreadcrumb.getByText("Technician profile").waitFor();
+  const breadcrumbTop = await profileBreadcrumb.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  const contentTop = await page.locator("main").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  assert.ok(breadcrumbTop < contentTop, "Breadcrumbs must appear above profile content");
   const serviceCard = page.getByRole("heading", { name: "Services and prices" }).locator("..").locator("div.rounded-lg.border").first();
   assert.equal(await serviceCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.setViewportSize({ width: 375, height: 812 });
