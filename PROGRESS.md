@@ -1,4 +1,4 @@
-Completion Progress: [84]%
+Completion Progress: [85]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 84% |
+| Completion Progress | 85% |
 | Last Working Agent | Codex |
-| Completed tasks | 71 / 85 |
-| Remaining tasks | 14 |
-| Overall state | Section 9 integration checks passed; S09-T05 scope review is complete and tracking awaits push |
-| Last completed task | S09-T05 Avoid unrelated refactoring or breaking changes |
-| Current unfinished task | S10-T01 Create or update a simple, professional, formal frontend README |
-| Next task for Codex | Compare the frontend README with actual features, environment variables, scripts, and routes, then revise it as needed |
-| Latest commit hashes | Frontend `main`: `c445ef4` (S09-T04 tracking); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `c445ef4` (S09-T04 auth verification); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 72 / 85 |
+| Remaining tasks | 13 |
+| Overall state | S10-T01 README update is complete; implementation and progress commits await push |
+| Last completed task | S10-T01 Create or update a simple, professional, formal frontend README |
+| Current unfinished task | S10-T02 Keep README language clear, natural, and consistent with backend documentation tone |
+| Next task for Codex | Review the README wording and structure against the backend README style and refine any unclear language |
+| Latest commit hashes | Frontend `main`: `e983589` (S10-T01); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `c3675fd` (S09 integration review); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S10-T01 |
-| Task description | Create or update a simple, professional, formal frontend README |
-| State | S09-T05 scope and regression review passed; checklist/progress commit pending push |
+| Task ID | S10-T02 |
+| Task description | Keep README language clear, natural, and consistent with backend documentation tone |
+| State | S10-T01 README update passed static review; commits await push |
 | Last Working Agent | Codex |
-| Current unfinished task | S10-T01 |
+| Current unfinished task | S10-T02 |
 | Repositories affected | Frontend only; backend unchanged |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `c445ef4`; S09-T05 tracking commit pending); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | S09-T05 reviewed S09-T03 `validations/search.validation.ts` and `tests/services-browser.mjs`, plus S09-T04 session routes, `lib/session-cookies.ts`, and `tests/dashboard-role-payments.mjs`; no unrelated code edits were found. |
-| Work already implemented | Section 9 is now 5/5 checked. S09-T05 reviewed commit scopes and reran the marketplace, role/session/admin, and booking browser suites; no unrelated refactoring or regressions were found. S09-T04 invalid/blocked sessions and logout correctly expire access and refresh cookies across both paths. |
-| Work still to do | Review and update the frontend README to accurately describe setup, environment variable names, scripts, features, and routes. |
-| Tests / commands run | `git diff --check 7b8df3b..HEAD` passed; commit review confirmed focused file scopes; `node tests/services-browser.mjs`, `node tests/dashboard-role-payments.mjs`, and `node tests/booking-slots-browser.mjs` passed. Production build passed after S09-T04. |
-| Results / errors | No unrelated code changes or regressions were found. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S09-T05 checklist/progress update pending commit. |
-| Commits awaiting push | S09-T05 tracking commit pending. |
+| Branches and remotes | Frontend `main` → `origin/main` (task commit `e983589`; tracking commit pending); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S09-T05 reviewed S09-T03/S09-T04 implementation files; no unrelated code edits were made. |
+| Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
+| Work still to do | Review wording against the backend README tone, then verify every documented feature, setup value, command, and route against the actual implementation. |
+| Tests / commands run | `git diff --check` passed for the README update; content was reviewed against frontend route files, package scripts, and environment variable usage. No runtime changes were made. |
+| Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
+| Changes only on local machine | S10-T01 README/TASKS commit `e983589`; progress update not yet committed. |
+| Commits awaiting push | Frontend `e983589` and the forthcoming S10-T01 tracking commit. |
 | Known issues / blockers | None. |
-| **Exact next action** | Commit the S09-T05 checklist/progress update and push frontend `main`; then inspect `README.md` against `package.json`, frontend routes, environment variable names, and the backend README tone for S10-T01. |
+| **Exact next action** | Commit the S10-T01 progress update and push frontend `main`; then review README wording against the backend README for S10-T02. |
 
 ## Verified task completion history
 
@@ -130,7 +130,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S09-T02 | Preserve Prisma schema and relationships where no change is needed | Audited all models and four migrations; backend Prisma generation/build passed; existing models support required flows, so no migration was needed; 68 of 85 checked | `7b8df3b` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S09-T03 | Align API contracts, validation, marketplace queries, and role gates | Audited frontend/backend request and response contracts, validators, pagination metadata, session refresh and backend roles; normalized blank search terms; lint, production build, services browser test, and dashboard role/payment test passed; 69 of 85 checked | `6388b54` / `main` | No changes | Pushed to `origin/main` (tracking `866cb94`) | 2026-11-09 |
 | S09-T04 | Verify synchronized auth/session handling and role routing | Fixed session cookie expiry across root and `/api/session` paths; targeted lint/build, dashboard role/login/logout/refresh test, and booking-slots test passed; 70 of 85 checked | `6079b3a` / `main` | No changes | Pushed to `origin/main` (tracking `c445ef4`) | 2026-11-09 |
-| S09-T05 | Avoid unrelated refactoring or breaking changes | Reviewed scoped S09-T03/S09-T04 diffs; `git diff --check` and marketplace, dashboard/session, and booking browser tests passed; 71 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S09-T05 | Avoid unrelated refactoring or breaking changes | Reviewed scoped S09-T03/S09-T04 diffs; `git diff --check` and marketplace, dashboard/session, and booking browser tests passed; 71 of 85 checked | `c3675fd` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S10-T01 | Create or update a simple, professional, formal frontend README | Replaced the framework template with a project README; reviewed structure and ran `git diff --check`; 72 of 85 checked | `e983589` / `main` | No changes | Pending push with tracking commit | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
