@@ -1,4 +1,4 @@
-Completion Progress: [82]%
+Completion Progress: [84]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 82% |
+| Completion Progress | 84% |
 | Last Working Agent | Codex |
-| Completed tasks | 70 / 85 |
-| Remaining tasks | 15 |
-| Overall state | S09-T04 session and role-routing verification passed; task commit and tracking update await push |
-| Last completed task | S09-T04 Keep frontend and backend behavior synchronized; verify authentication/session handling and role-based routing end to end |
-| Current unfinished task | S09-T05 Avoid unrelated refactoring or breaking changes |
-| Next task for Codex | Review the task diff and integration state for unrelated or breaking changes, then complete final section 9 checks |
-| Latest commit hashes | Frontend `main`: `6079b3a` (S09-T04); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `866cb94` (S09-T03 contract audit); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 71 / 85 |
+| Remaining tasks | 14 |
+| Overall state | Section 9 integration checks passed; S09-T05 scope review is complete and tracking awaits push |
+| Last completed task | S09-T05 Avoid unrelated refactoring or breaking changes |
+| Current unfinished task | S10-T01 Create or update a simple, professional, formal frontend README |
+| Next task for Codex | Compare the frontend README with actual features, environment variables, scripts, and routes, then revise it as needed |
+| Latest commit hashes | Frontend `main`: `c445ef4` (S09-T04 tracking); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `c445ef4` (S09-T04 auth verification); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S09-T05 |
-| Task description | Avoid unrelated refactoring or breaking changes |
-| State | S09-T04 implementation and validation passed; task and tracking commits await push |
+| Task ID | S10-T01 |
+| Task description | Create or update a simple, professional, formal frontend README |
+| State | S09-T05 scope and regression review passed; checklist/progress commit pending push |
 | Last Working Agent | Codex |
-| Current unfinished task | S09-T05 |
+| Current unfinished task | S10-T01 |
 | Repositories affected | Frontend only; backend unchanged |
-| Branches and remotes | Frontend `main` → `origin/main` (task commit `6079b3a`; tracking commit pending); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | S09-T04: `app/api/session/me/route.ts`, `app/api/session/refresh/route.ts`, `app/api/session/logout/route.ts`, new `lib/session-cookies.ts`, `tests/dashboard-role-payments.mjs`, `TASKS.md`, `PROGRESS.md`. S09-T03: `validations/search.validation.ts`, `tests/services-browser.mjs`. |
-| Work already implemented | S09-T04 review found stale refresh cookies were not reliably removed: setting the same cookie name twice through Next's mutable cookie store emitted only one path. Added response header expiry for access token and both refresh-cookie paths, used by session lookup, refresh failure, and logout. Blocked (`403`) sessions and invalid (`401`) sessions now clear cookies. Role checks remain enforced by the proxy for dashboard routing and backend middleware for protected APIs. S09-T03 blank-search normalization also remains pushed. |
-| Work still to do | Review S09-T05 for unrelated edits or breaking behavior; section 9 then completes at 70/70 checked. |
-| Tests / commands run | Targeted frontend lint passed cleanly; `npm run build` passed (36 routes); `node tests/dashboard-role-payments.mjs` passed (login, role routing, refresh, invalid refresh cleanup, blocked-user cleanup, logout clears access and refresh cookies); `node tests/booking-slots-browser.mjs` passed. Backend source unchanged. |
-| Results / errors | An early test assertion revealed the duplicate-name path issue; it was corrected and the expanded browser test passed. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S09-T04 task commit `6079b3a`; progress update not yet committed. |
-| Commits awaiting push | Frontend `6079b3a` and the forthcoming S09-T04 tracking commit. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `c445ef4`; S09-T05 tracking commit pending); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | S09-T05 reviewed S09-T03 `validations/search.validation.ts` and `tests/services-browser.mjs`, plus S09-T04 session routes, `lib/session-cookies.ts`, and `tests/dashboard-role-payments.mjs`; no unrelated code edits were found. |
+| Work already implemented | Section 9 is now 5/5 checked. S09-T05 reviewed commit scopes and reran the marketplace, role/session/admin, and booking browser suites; no unrelated refactoring or regressions were found. S09-T04 invalid/blocked sessions and logout correctly expire access and refresh cookies across both paths. |
+| Work still to do | Review and update the frontend README to accurately describe setup, environment variable names, scripts, features, and routes. |
+| Tests / commands run | `git diff --check 7b8df3b..HEAD` passed; commit review confirmed focused file scopes; `node tests/services-browser.mjs`, `node tests/dashboard-role-payments.mjs`, and `node tests/booking-slots-browser.mjs` passed. Production build passed after S09-T04. |
+| Results / errors | No unrelated code changes or regressions were found. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S09-T05 checklist/progress update pending commit. |
+| Commits awaiting push | S09-T05 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage and commit `PROGRESS.md`, push frontend `main`, and verify both repositories' status before reviewing and completing S09-T05. |
+| **Exact next action** | Commit the S09-T05 checklist/progress update and push frontend `main`; then inspect `README.md` against `package.json`, frontend routes, environment variable names, and the backend README tone for S10-T01. |
 
 ## Verified task completion history
 
@@ -129,7 +129,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S09-T01 | Align backend integration and admin dashboard data with required journeys | Audited backend/frontend contracts; admin overview now shows active bookings and completed-payment platform earnings; frontend lint/build/browser checks and backend build passed; 67 of 85 checked | `3edfe37` / `main` | No backend source changes | Pushed to origin/main | 2026-11-09 |
 | S09-T02 | Preserve Prisma schema and relationships where no change is needed | Audited all models and four migrations; backend Prisma generation/build passed; existing models support required flows, so no migration was needed; 68 of 85 checked | `7b8df3b` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S09-T03 | Align API contracts, validation, marketplace queries, and role gates | Audited frontend/backend request and response contracts, validators, pagination metadata, session refresh and backend roles; normalized blank search terms; lint, production build, services browser test, and dashboard role/payment test passed; 69 of 85 checked | `6388b54` / `main` | No changes | Pushed to `origin/main` (tracking `866cb94`) | 2026-11-09 |
-| S09-T04 | Verify synchronized auth/session handling and role routing | Fixed session cookie expiry across root and `/api/session` paths; targeted lint/build, dashboard role/login/logout/refresh test, and booking-slots test passed; 70 of 85 checked | `6079b3a` / `main` | No changes | Pending push with tracking commit | 2026-11-09 |
+| S09-T04 | Verify synchronized auth/session handling and role routing | Fixed session cookie expiry across root and `/api/session` paths; targeted lint/build, dashboard role/login/logout/refresh test, and booking-slots test passed; 70 of 85 checked | `6079b3a` / `main` | No changes | Pushed to `origin/main` (tracking `c445ef4`) | 2026-11-09 |
+| S09-T05 | Avoid unrelated refactoring or breaking changes | Reviewed scoped S09-T03/S09-T04 diffs; `git diff --check` and marketplace, dashboard/session, and booking browser tests passed; 71 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
