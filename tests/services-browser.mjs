@@ -248,6 +248,7 @@ try {
   assert.equal(await signInLink.getAttribute("href"), "/auth/login");
   await signInLink.click();
   await page.waitForURL("**/auth/login");
+  await page.getByRole("button", { name: "Log in" }).waitFor();
   assert.equal(await page.getByRole("button", { name: "Log in" }).count(), 1);
   const loginBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   assert.equal(await loginBreadcrumb.getByRole("link", { name: "Home" }).getAttribute("href"), "/");
