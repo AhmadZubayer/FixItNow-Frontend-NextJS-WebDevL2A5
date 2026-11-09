@@ -26,6 +26,14 @@ const users = Array.from({ length: 12 }, (_, index) => ({
   activeStatus: "ACTIVE",
   createdAt: "2026-01-01T00:00:00.000Z",
 }));
+const adminBookings = [{
+  id: "booking-active",
+  status: "PAID",
+  priceAtBooking: "100.00",
+  createdAt: "2026-01-01T00:00:00.000Z",
+  customer: { name: "Customer One" },
+  service: { title: "Fan Repair", technicianProfile: { user: { name: "Technician One" } } },
+}];
 
 const send = (response, status, data) => {
   response.writeHead(status, { "content-type": "application/json" });
@@ -155,7 +163,7 @@ const backend = createHttpServer((request, response) => {
   } else if (request.url === "/api/admin/users" && role === "ADMIN") {
     send(response, 200, { data: users });
   } else if (request.url === "/api/admin/bookings" && role === "ADMIN") {
-    send(response, 200, { data: [] });
+    send(response, 200, { data: adminBookings });
   } else if (request.url === "/api/admin/categories" && role === "ADMIN") {
     send(response, 200, { data: [{ id: "11111111-1111-4111-8111-111111111111", name: "Electrical", slug: "electrical", description: "Electrical work", isActive: true }] });
   } else if (request.url?.startsWith("/api/admin/users/") && request.method === "PATCH" && role === "ADMIN") {
@@ -372,6 +380,10 @@ try {
   await assertDashboardMainCardContainsHeading(page, "/dashboard/admin");
   await assertDashboardShell(page, "/dashboard/admin");
   await assertDashboardContentContained(page, "/dashboard/admin", { requireTable: true });
+  const platformOverview = page.getByRole("region", { name: "Platform overview" });
+  assert.match(await platformOverview.getByText("Active bookings").locator("..").innerText(), /1/);
+  assert.match(await platformOverview.getByText("Platform revenue").locator("..").innerText(), /15\.00/);
+  assert.equal(await platformOverview.getByText("Paid job value").count(), 0);
   const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
   assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.getByRole("button", { name: "Edit" }).click();

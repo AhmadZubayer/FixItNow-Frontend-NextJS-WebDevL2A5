@@ -1,4 +1,4 @@
-Completion Progress: [78]%
+Completion Progress: [79]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 78% |
+| Completion Progress | 79% |
 | Last Working Agent | Codex |
-| Completed tasks | 66 / 85 |
-| Remaining tasks | 19 |
-| Overall state | S08-T10 verified; tracking update ready to commit and push |
-| Last completed task | S08-T10 Apply #EFEFEF cards, loading states, responsive layouts, and shared footer |
-| Current unfinished task | S09-T01 Adjust backend routes/controllers/services to meet the documented journeys and UI data requirements |
-| Next task for Codex | Audit the current backend API and integration contracts against REQUIREMENTS.md; change backend only for verified gaps |
-| Latest commit hashes | Frontend `main`: `abb3c6f`; Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main abb3c6f (S08-T09); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 67 / 85 |
+| Remaining tasks | 18 |
+| Overall state | S09-T01 verified; tracking update ready to commit and push |
+| Last completed task | S09-T01 Adjust backend routes/controllers/services to meet the documented journeys and UI data requirements |
+| Current unfinished task | S09-T02 Update Prisma models/schema and migrations only if needed |
+| Next task for Codex | Audit Prisma schema and migration history against current API and business rules; change schema only for a verified gap |
+| Latest commit hashes | Frontend `main`: `0c64123`; Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main 0c64123 (S08-T10); backend main 7ce0891 (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S09-T01 |
-| Task description | Adjust backend routes/controllers/services to meet the documented journeys and UI data requirements |
-| State | S08-T10 verified; commit and push pending |
+| Task ID | S09-T02 |
+| Task description | Update Prisma models/schema and migrations only when needed, preserving data integrity and existing relationships |
+| State | S09-T01 verified; commit and push pending |
 | Last Working Agent | Codex |
-| Current unfinished task | S09-T01 |
+| Current unfinished task | S09-T02 |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `abb3c6f`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | `tests/dashboard-role-payments.mjs` (card/footer/responsive/loading assertions); `TASKS.md`, `PROGRESS.md` (S08-T10 tracking). |
-| Work already implemented | Dashboard cards and footer use `#EFEFEF`; customer dashboard shows a skeleton while bookings are loading; layouts remain responsive. Browser test verifies these behaviors on primary and nested routes. |
-| Work still to do | Commit and push S08-T10 verification, then audit backend API contracts for S09-T01. |
-| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: computed card/footer colors, no horizontal overflow at 375px, and delayed-response skeleton visible then dismissed; all earlier dashboard checks pass). |
-| Results / errors | S08-T10 browser verification passed. Live backend/database E2E tests remain out of scope here because they require fixtures and create or mutate records. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S08-T10 test and tracking updates pending commit. |
-| Commits awaiting push | S08-T10 task commit not yet created. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `0c64123`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | `app/dashboard/admin/page.tsx` (platform revenue and active booking metrics); `lib/admin-types.ts` (admin payment summary contract); `tests/dashboard-role-payments.mjs` (mocked admin metric assertions); `TASKS.md`, `PROGRESS.md`. No backend source files changed. |
+| Work already implemented | Audited backend auth, public search, availability, booking/status transitions, customer payments/reviews, admin moderation/categories/payments, and frontend proxy paths. The admin payments endpoint is already role-protected and returns technician/platform shares, with shares realized only on completed payments. Corrected the admin overview to use this contract for platform revenue and count active bookings rather than all bookings. |
+| Work still to do | Commit and push S09-T01 frontend integration; then inspect Prisma schema and migrations for S09-T02. |
+| Tests / commands run | Frontend `npm run lint -- app/dashboard/admin/page.tsx lib/admin-types.ts` (pass); frontend `npm run build` (pass, 36 routes); `node tests/dashboard-role-payments.mjs` (pass, including 1 active booking and ৳15.00 platform revenue); backend `npm run build` (pass: Prisma Client generation and tsup). |
+| Results / errors | S09-T01 contract and integration checks passed. No live database/payment provider was used. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S09-T01 frontend integration and tracking updates pending commit. |
+| Commits awaiting push | S09-T01 task commit not yet created. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T10 before starting S09-T01. |
+| **Exact next action** | Stage only `app/dashboard/admin/page.tsx`, `lib/admin-types.ts`, `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S09-T01 before beginning S09-T02. |
 
 ## Verified task completion history
 
@@ -125,7 +125,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S08-T07 | Keep tables, child cards, and related dashboard content inside the main card | Browser verified containment of tables, child cards, sections, and forms on role dashboards and populated admin routes; 63 of 85 checked | `f45c2df` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T08 | Verify dashboard tabs update route and role-specific content | Browser clicked customer Payments, technician Booking requests, and admin Technicians/Platform payments; each URL and heading matched; 64 of 85 checked | `4d5c882` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T09 | Enforce dashboard role access and preserve required workflows | Dashboard test covered every role/path combination and unknown roles; booking-slots browser test passed customer booking/permission checks; 65 of 85 checked | `abb3c6f` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S08-T10 | Apply card, loading, responsive, and footer requirements to dashboards | Browser verified #EFEFEF card/footer, 375px overflow absence, and delayed-response skeleton on role dashboards and nested routes; 66 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T10 | Apply card, loading, responsive, and footer requirements to dashboards | Browser verified #EFEFEF card/footer, 375px overflow absence, and delayed-response skeleton on role dashboards and nested routes; 66 of 85 checked | `0c64123` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S09-T01 | Align backend integration and admin dashboard data with required journeys | Audited backend/frontend contracts; admin overview now shows active bookings and completed-payment platform earnings; frontend lint/build/browser checks and backend build passed; 67 of 85 checked | Pending commit | No backend source changes | Pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

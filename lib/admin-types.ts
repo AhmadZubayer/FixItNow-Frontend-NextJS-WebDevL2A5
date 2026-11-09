@@ -23,3 +23,8 @@ export type AdminCategory = {
   description: string | null;
   isActive: boolean;
 };
+
+export type AdminPaymentSummary = {
+  status: string;
+  platformEarning: string;
+};
