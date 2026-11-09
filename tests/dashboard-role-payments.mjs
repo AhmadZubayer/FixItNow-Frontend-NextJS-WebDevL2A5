@@ -32,6 +32,24 @@ const send = (response, status, data) => {
   response.end(JSON.stringify(data));
 };
 
+const assertSelectedTabStyle = async (tab) => {
+  const style = await tab.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      backgroundColor: computed.backgroundColor,
+      color: computed.color,
+      borderColor: computed.borderColor,
+      fontWeight: computed.fontWeight,
+    };
+  });
+  assert.deepEqual(style, {
+    backgroundColor: "rgb(154, 230, 0)",
+    color: "rgb(0, 0, 0)",
+    borderColor: "rgb(0, 0, 0)",
+    fontWeight: "600",
+  });
+};
+
 const backend = createHttpServer((request, response) => {
   const token = request.headers.authorization?.replace("Bearer ", "");
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
@@ -260,7 +278,7 @@ try {
   await adminTabs.waitFor();
   assert.deepEqual(await adminTabs.getByRole("tab").allTextContents(), ["Overview & Users", "Technicians", "Platform payments"]);
   const activeAdminTab = adminTabs.getByRole("tab", { name: "Overview & Users" });
-  assert.ok(await activeAdminTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
+  await assertSelectedTabStyle(activeAdminTab);
   const adminBreadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
   const adminMainCard = page.locator("main div[data-slot='card']");
   const adminTabsTop = await adminTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
@@ -279,7 +297,7 @@ try {
   await custTabs.waitFor();
   assert.deepEqual(await custTabs.getByRole("tab").allTextContents(), ["Bookings", "Payments"]);
   const activeCustTab = custTabs.getByRole("tab", { name: "Bookings" });
-  assert.ok(await activeCustTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
+  await assertSelectedTabStyle(activeCustTab);
   const custBreadcrumbs = custPage.getByRole("navigation", { name: "breadcrumb" });
   const custMainCard = custPage.locator("main div[data-slot='card']");
   const custTabsTop = await custTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
@@ -299,7 +317,7 @@ try {
   await techTabs.waitFor();
   assert.deepEqual(await techTabs.getByRole("tab").allTextContents(), ["Overview & Services", "Booking requests"]);
   const activeTechTab = techTabs.getByRole("tab", { name: "Overview & Services" });
-  assert.ok(await activeTechTab.evaluate((element) => getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)" || getComputedStyle(element).backgroundColor.includes("oklab") || getComputedStyle(element).backgroundColor.includes("154")));
+  await assertSelectedTabStyle(activeTechTab);
   const techBreadcrumbs = tPage.getByRole("navigation", { name: "breadcrumb" });
   const techMainCard = tPage.locator("main div[data-slot='card']");
   const tTabsTop = await techTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
