@@ -1,4 +1,4 @@
-Completion Progress: [34]%
+Completion Progress: [35]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 29 / 85 |
-| Remaining tasks | 56 |
-| Overall state | S05-T02 pushed; S05-T03 next |
+| Completed tasks | 30 / 85 |
+| Remaining tasks | 55 |
+| Overall state | S05-T03 validated; push pending |
 | Current task | S05-T03 password eye toggles |
-| Last completed task | S05-T02 full-screen auth background image |
-| Next task | S05-T03 password eye toggles |
+| Last completed task | S05-T03 password eye toggles |
+| Next task | S05-T04 preserve auth validation and redirects |
 | Last successful GitHub push | Frontend main 4bc6666 (S05-T02); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S05-T03 |
 | Task description | Add accessible eye icon show/hide toggle to both password inputs |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S05-T03 |
-| Work already implemented | S05-T02 full-screen auth image and breadcrumb backing pushed as 4bc6666. |
-| Work still to do | Inspect password inputs, add accessible eye toggles, verify form values and behavior, then push. |
-| Tests / commands run | S05-T02 lint/build and services browser image/card checks passed; mobile screenshot inspected. |
-| Results / errors | S05-T02 pushed; no real-backend E2E because it writes DB data. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then edit the two auth password controls. |
+| Files changed | components/auth/login-form.tsx, components/auth/register-form.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Both controlled password inputs have shadcn icon buttons with Eye/EyeOff, dynamic type, aria-label and aria-pressed. |
+| Work still to do | Commit and push S05-T03, record hash, then start S05-T04. |
+| Tests / commands run | Frontend lint/build with TypeScript; services browser verified show/hide on both forms and preserved value. |
+| Results / errors | All final checks passed. Browser selector initially matched the toggle too; exact Password label fixed the test. |
+| Changes only on local machine | S05-T03 forms, test, checklist and progress update. |
+| Commits awaiting push | S05-T03 task commit. |
+| **Exact next action** | Stage only S05-T03 files, commit and push frontend main. |
 
 ## Verified task completion history
 
