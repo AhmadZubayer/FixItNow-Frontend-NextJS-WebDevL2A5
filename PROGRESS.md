@@ -1,4 +1,4 @@
-Completion Progress: [76]%
+Completion Progress: [78]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 76% |
+| Completion Progress | 78% |
 | Last Working Agent | Codex |
-| Completed tasks | 65 / 85 |
-| Remaining tasks | 20 |
-| Overall state | S08-T09 verified; tracking update ready to commit and push |
-| Last completed task | S08-T09 Enforce role-based dashboard access and preserve required workflows |
-| Current unfinished task | S08-T10 Apply #EFEFEF cards, loading states, responsive layouts, and shared footer |
-| Next task for Codex | Verify role dashboards retain #EFEFEF cards, loading/error states, responsive behavior, and shared footer |
-| Latest commit hashes | Frontend `main`: `4d5c882`; Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main 4d5c882 (S08-T08); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 66 / 85 |
+| Remaining tasks | 19 |
+| Overall state | S08-T10 verified; tracking update ready to commit and push |
+| Last completed task | S08-T10 Apply #EFEFEF cards, loading states, responsive layouts, and shared footer |
+| Current unfinished task | S09-T01 Adjust backend routes/controllers/services to meet the documented journeys and UI data requirements |
+| Next task for Codex | Audit the current backend API and integration contracts against REQUIREMENTS.md; change backend only for verified gaps |
+| Latest commit hashes | Frontend `main`: `abb3c6f`; Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main abb3c6f (S08-T09); backend main 7ce0891 (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S08-T10 |
-| Task description | Apply global #EFEFEF card styling, skeletons/loading states, responsive layouts, and shared footer |
-| State | S08-T09 verified; commit and push pending |
+| Task ID | S09-T01 |
+| Task description | Adjust backend routes/controllers/services to meet the documented journeys and UI data requirements |
+| State | S08-T10 verified; commit and push pending |
 | Last Working Agent | Codex |
-| Current unfinished task | S08-T10 |
+| Current unfinished task | S09-T01 |
 | Repositories affected | Frontend only |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `4d5c882`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | `tests/dashboard-role-payments.mjs` (full role/path authorization matrix); `TASKS.md`, `PROGRESS.md` (S08-T09 tracking). |
-| Work already implemented | Dashboard proxy redirects anonymous and mismatched-role users; same-role users can reach their protected nested routes. Browser test now covers all role/route combinations and rejects unknown roles. The mock-backed booking-slot test continues to cover customer booking flow and non-customer booking restrictions; the dashboard test covers admin moderation and payment views. |
-| Work still to do | Commit and push S08-T09 verification; then audit responsive/card/loading/footer behavior for S08-T10. |
-| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: full role/path matrix, unknown role, dashboard workflows/UI); `node tests/booking-slots-browser.mjs` (pass: customer booking, slot restrictions, profile role permissions, and review loading/error). |
-| Results / errors | S08-T09 mock-backed browser verification passed. Live backend/database E2E tests were not run because those scripts require fixture credentials and create or mutate records. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
-| Changes only on local machine | S08-T09 test and tracking changes pending commit. |
-| Commits awaiting push | S08-T09 task commit not yet created. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `abb3c6f`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | `tests/dashboard-role-payments.mjs` (card/footer/responsive/loading assertions); `TASKS.md`, `PROGRESS.md` (S08-T10 tracking). |
+| Work already implemented | Dashboard cards and footer use `#EFEFEF`; customer dashboard shows a skeleton while bookings are loading; layouts remain responsive. Browser test verifies these behaviors on primary and nested routes. |
+| Work still to do | Commit and push S08-T10 verification, then audit backend API contracts for S09-T01. |
+| Tests / commands run | `node tests/dashboard-role-payments.mjs` (pass: computed card/footer colors, no horizontal overflow at 375px, and delayed-response skeleton visible then dismissed; all earlier dashboard checks pass). |
+| Results / errors | S08-T10 browser verification passed. Live backend/database E2E tests remain out of scope here because they require fixtures and create or mutate records. Backend retains pre-existing unrelated worktree items (deleted `deploy.txt`, untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`); these remain untouched. |
+| Changes only on local machine | S08-T10 test and tracking updates pending commit. |
+| Commits awaiting push | S08-T10 task commit not yet created. |
 | Known issues / blockers | None. |
-| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T09 before starting S08-T10. |
+| **Exact next action** | Stage only `tests/dashboard-role-payments.mjs`, `TASKS.md`, and `PROGRESS.md`; commit and push S08-T10 before starting S09-T01. |
 
 ## Verified task completion history
 
@@ -119,12 +119,13 @@ Add **one row per verified task** after implementation and validation; include a
 | S08-T01 | Update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure | Automated browser test verified dynamic role tabs directly under navbar, breadcrumbs between tabs and card, and main shadcn Card wrapper across customer, technician, and admin dashboards; 57 of 85 checked | `6d6ccd7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T02 | Render shadcn dashboard tabs directly under the shared navbar | `npm run build` passed (36 routes); `node tests/dashboard-role-payments.mjs` verified tab placement above breadcrumbs for customer, technician, and admin; 58 of 85 checked | `702e4b6` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T03 | Show role-appropriate dashboard tab labels dynamically | Browser test asserted exact tab labels for customer, technician, and admin; existing role-route authorization assertions passed; 59 of 85 checked | `399b699` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S08-T04 | Style selected dashboard tab in #9AE600 | Browser verified computed #9AE600 fill, black text/border, and 600 font weight on all three role dashboards; 60 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
-| S08-T05 | Place breadcrumbs between dashboard tabs and main content card | Browser checked tab/breadcrumb/card order on primary dashboards and four nested customer, technician, and admin pages; 61 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T04 | Style selected dashboard tab in #9AE600 | Browser verified computed #9AE600 fill, black text/border, and 600 font weight on all three role dashboards; 60 of 85 checked | `89a8ffa` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S08-T05 | Place breadcrumbs between dashboard tabs and main content card | Browser checked tab/breadcrumb/card order on primary dashboards and four nested customer, technician, and admin pages; 61 of 85 checked | `b13b974` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T06 | Render dashboard page content inside the main shadcn Card | Browser verified the page heading is visible inside the main card across primary and nested dashboard routes; 62 of 85 checked | `86c443f` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T07 | Keep tables, child cards, and related dashboard content inside the main card | Browser verified containment of tables, child cards, sections, and forms on role dashboards and populated admin routes; 63 of 85 checked | `f45c2df` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S08-T08 | Verify dashboard tabs update route and role-specific content | Browser clicked customer Payments, technician Booking requests, and admin Technicians/Platform payments; each URL and heading matched; 64 of 85 checked | `4d5c882` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S08-T09 | Enforce dashboard role access and preserve required workflows | Dashboard test covered every role/path combination and unknown roles; booking-slots browser test passed customer booking/permission checks; 65 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
+| S08-T09 | Enforce dashboard role access and preserve required workflows | Dashboard test covered every role/path combination and unknown roles; booking-slots browser test passed customer booking/permission checks; 65 of 85 checked | `abb3c6f` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S08-T10 | Apply card, loading, responsive, and footer requirements to dashboards | Browser verified #EFEFEF card/footer, 375px overflow absence, and delayed-response skeleton on role dashboards and nested routes; 66 of 85 checked | Pending commit | No changes | Pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

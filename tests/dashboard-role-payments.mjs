@@ -96,6 +96,30 @@ const assertDashboardContentContained = async (page, path, { requireTable = fals
   if (requireTable) assert.ok(await mainCard.locator("table").count() > 0, `${path}: expected a table`);
 };
 
+const assertDashboardShell = async (page, path) => {
+  const mainCard = page.locator("main > div[data-slot='card']");
+  assert.equal(
+    await mainCard.evaluate((element) => getComputedStyle(element).backgroundColor),
+    "rgb(239, 239, 239)",
+    `${path}: main card must use #EFEFEF`
+  );
+  const footer = page.locator("footer");
+  assert.equal(await footer.count(), 1, `${path}: shared footer must appear once`);
+  assert.equal(
+    await footer.evaluate((element) => getComputedStyle(element).backgroundColor),
+    "rgb(239, 239, 239)",
+    `${path}: footer must use #EFEFEF`
+  );
+
+  await page.setViewportSize({ width: 375, height: 812 });
+  assert.equal(
+    await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    true,
+    `${path}: dashboard must not overflow at mobile width`
+  );
+  await page.setViewportSize({ width: 1280, height: 800 });
+};
+
 const backend = createHttpServer((request, response) => {
   const token = request.headers.authorization?.replace("Bearer ", "");
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
@@ -232,6 +256,22 @@ try {
   assert.equal(customerTechnicians.status, 307);
 
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
+  const loadingContext = await browser.newContext();
+  await loadingContext.addCookies([{ name: "accessToken", value: "valid-customer", url: base }]);
+  const loadingPage = await loadingContext.newPage();
+  let releaseBookingsResponse;
+  const bookingsResponseHeld = new Promise((resolve) => { releaseBookingsResponse = resolve; });
+  await loadingPage.route("**/api/customer/bookings", async (route) => {
+    await bookingsResponseHeld;
+    await route.continue();
+  });
+  await loadingPage.goto(`${base}/dashboard/customer`);
+  const dashboardSkeleton = loadingPage.getByRole("status", { name: "Loading content" });
+  await dashboardSkeleton.waitFor();
+  releaseBookingsResponse();
+  await dashboardSkeleton.waitFor({ state: "hidden" });
+  await loadingContext.close();
+
   for (const role of ["customer", "technician", "admin"]) {
     const roleContext = await browser.newContext();
     await roleContext.addCookies([{ name: "accessToken", value: `valid-${role}`, url: base }]);
@@ -330,6 +370,7 @@ try {
   assert.equal(await page.locator("footer").count(), 1);
   await page.getByRole("heading", { name: "Categories" }).waitFor();
   await assertDashboardMainCardContainsHeading(page, "/dashboard/admin");
+  await assertDashboardShell(page, "/dashboard/admin");
   await assertDashboardContentContained(page, "/dashboard/admin", { requireTable: true });
   const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
   assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
@@ -367,6 +408,7 @@ try {
   const custPage = await custContext.newPage();
   await custPage.goto(`${base}/dashboard/customer`);
   await assertDashboardMainCardContainsHeading(custPage, "/dashboard/customer");
+  await assertDashboardShell(custPage, "/dashboard/customer");
   await assertDashboardContentContained(custPage, "/dashboard/customer");
   const custTabs = custPage.getByRole("tablist");
   await custTabs.waitFor();
@@ -393,6 +435,7 @@ try {
   await tPage.goto(`${base}/dashboard/technician`);
   await assertDashboardMainCardContainsHeading(tPage, "/dashboard/technician");
   await tPage.getByRole("heading", { name: "Your profile" }).waitFor();
+  await assertDashboardShell(tPage, "/dashboard/technician");
   await assertDashboardContentContained(tPage, "/dashboard/technician");
   const techTabs = tPage.getByRole("tablist");
   await techTabs.waitFor();
@@ -424,6 +467,7 @@ try {
     const nestedPage = await nestedContext.newPage();
     await nestedPage.goto(`${base}${route.path}`);
     await assertDashboardBreadcrumbOrder(nestedPage, route.path);
+    await assertDashboardShell(nestedPage, route.path);
     await assertDashboardContentContained(nestedPage, route.path, {
       requireTable: route.path.startsWith("/dashboard/admin/"),
     });
