@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 19 / 85 |
 | Remaining tasks | 66 |
-| Overall state | S03-T07 validated; frontend push pending |
-| Current task | S03-T07 shared layout and styling reuse |
-| Last completed task | S03-T06 spacing and keyboard focus |
+| Overall state | S03-T07 pushed; S04-T01 next |
+| Current task | S03-T07 complete; S04-T01 next |
+| Last completed task | S03-T07 shared layout and styling reuse |
 | Next task | S04-T01 sticky global navbar |
-| Last successful GitHub push | Frontend main 3cafc17 (S03-T06); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 59db30a (S03-T07); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S03-T07 |
 | Task description | Use shared layout and styling solutions instead of repeating page-by-page implementations |
-| State | Review complete; tracking push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | TASKS.md and PROGRESS.md tracking only |
 | Work already implemented | Audited reused SiteFooter, RouteBreadcrumbs, BackLink, PageSkeleton, BookingDetailSkeleton, EmptyState and shared bg-card token. Root layout provides shared site chrome; multiple routes consume these components. No further refactor needed for this item. |
-| Work still to do | Mark S03-T07, update count and push tracking commit, then start navbar section. |
+| Work still to do | S03-T07 delivered. Begin S04-T01 after this progress update is pushed. |
 | Tests / commands run | Read-only reuse audit via rg and clean Git status. S03-T06 lint/build/browser tests passed and no source changed since. |
 | Results / errors | Shared site layout and styling patterns cover the touched flows; no code change needed. |
-| Changes only on local machine | S03-T07 tracking update pending commit/push. |
-| Commits awaiting push | S03-T07 tracking commit to create and push. |
-| **Exact next action** | Commit and push S03-T07 tracking files, record hash, then start S04-T01. |
+| Changes only on local machine | This S03-T07 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S04-T01 by making the existing header sticky. |
 
 ## Verified task completion history
 
@@ -71,7 +71,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T04 | Style and preserve back navigation | Shared transparent back link uses #9AE600 text/icon on four pages; browser href/color assertions and lint/build passed; 16 of 85 checked | `dc6da12` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T05 | Keep card and page surfaces distinct | Browser confirmed /services white page against #EFEFEF cards and prior screenshot inspection; 17 of 85 checked | `538190d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T06 | Align spacing and keyboard focus | Aligned header with content/footer; added skip link, focus target and anchor outline; keyboard/mobile test, screenshot, lint/build passed; 18 of 85 checked | `3cafc17` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S03-T07 | Reuse shared layout and styling | Audited shared footer, breadcrumb, back link, skeleton/empty components and card token; no source change needed; 19 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S03-T07 | Reuse shared layout and styling | Audited shared footer, breadcrumb, back link, skeleton/empty components and card token; no source change needed; 19 of 85 checked | `59db30a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
