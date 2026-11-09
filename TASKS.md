@@ -114,7 +114,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Use clear, natural, non-complex language and a similar level of detail/tone to `FixItNow-backend-server/README.md`; do not copy backend-specific instructions that do not apply.
 - [x] Explain the project purpose, key features, prerequisites, setup, environment configuration (variable names only; no secrets), development commands, and relevant frontend routes.
 - [x] Include the technician profile page (`/technicians/[id]`) in the route/feature overview.
-- [ ] Ensure all documentation matches the actual implementation and package scripts.
+- [x] Ensure all documentation matches the actual implementation and package scripts.
 
 ## 11. Validation and completion
 - [ ] Check that customer, technician, and admin journeys still match `/REQUIREMENTS.md`.
