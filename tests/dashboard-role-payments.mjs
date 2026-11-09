@@ -73,6 +73,29 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
   assert.ok(breadcrumbsTop < cardTop, `${path}: breadcrumbs must appear above the main card`);
 };
 
+const assertDashboardContentContained = async (page, path, { requireTable = false } = {}) => {
+  const mainCard = page.locator("main > div[data-slot='card']");
+  await mainCard.waitFor();
+  if (requireTable) await mainCard.locator("table").first().waitFor();
+
+  for (const [kind, selector] of [
+    ["table", "table"],
+    ["card", "[data-slot='card']"],
+    ["section", "section"],
+    ["form", "form"],
+  ]) {
+    const elements = await page.locator(`main ${selector}`).all();
+    for (const element of elements) {
+      const contained = await element.evaluate(
+        (node) => node.closest("main > div[data-slot='card']") !== null
+      );
+      assert.ok(contained, `${path}: ${kind} content must stay inside the main card`);
+    }
+  }
+
+  if (requireTable) assert.ok(await mainCard.locator("table").count() > 0, `${path}: expected a table`);
+};
+
 const backend = createHttpServer((request, response) => {
   const token = request.headers.authorization?.replace("Bearer ", "");
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
@@ -271,6 +294,7 @@ try {
   const rows = page.locator("tbody tr");
   await rows.first().waitFor();
   assert.equal(await rows.count(), 10);
+  await assertDashboardContentContained(page, "/dashboard/admin/technicians", { requireTable: true });
   await page.getByRole("button", { name: "Next" }).click();
   assert.equal(await rows.count(), 2);
   await page.getByLabel("Search technicians").fill("Technician 12");
@@ -284,10 +308,12 @@ try {
   await page.getByRole("heading", { name: "Platform payment history" }).waitFor();
   await page.getByRole("cell", { name: "৳85.00" }).waitFor();
   await page.getByRole("cell", { name: "৳15.00" }).waitFor();
+  await assertDashboardContentContained(page, "/dashboard/admin/payments", { requireTable: true });
   await page.goto(`${base}/dashboard/admin`);
   assert.equal(await page.locator("footer").count(), 1);
   await page.getByRole("heading", { name: "Categories" }).waitFor();
   await assertDashboardMainCardContainsHeading(page, "/dashboard/admin");
+  await assertDashboardContentContained(page, "/dashboard/admin", { requireTable: true });
   const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
   assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.getByRole("button", { name: "Edit" }).click();
@@ -318,6 +344,7 @@ try {
   const custPage = await custContext.newPage();
   await custPage.goto(`${base}/dashboard/customer`);
   await assertDashboardMainCardContainsHeading(custPage, "/dashboard/customer");
+  await assertDashboardContentContained(custPage, "/dashboard/customer");
   const custTabs = custPage.getByRole("tablist");
   await custTabs.waitFor();
   assert.deepEqual(await custTabs.getByRole("tab").allTextContents(), ["Bookings", "Payments"]);
@@ -339,6 +366,8 @@ try {
   const tPage = await techCtx.newPage();
   await tPage.goto(`${base}/dashboard/technician`);
   await assertDashboardMainCardContainsHeading(tPage, "/dashboard/technician");
+  await tPage.getByRole("heading", { name: "Your profile" }).waitFor();
+  await assertDashboardContentContained(tPage, "/dashboard/technician");
   const techTabs = tPage.getByRole("tablist");
   await techTabs.waitFor();
   assert.deepEqual(await techTabs.getByRole("tab").allTextContents(), ["Overview & Services", "Booking requests"]);
@@ -366,6 +395,9 @@ try {
     const nestedPage = await nestedContext.newPage();
     await nestedPage.goto(`${base}${route.path}`);
     await assertDashboardBreadcrumbOrder(nestedPage, route.path);
+    await assertDashboardContentContained(nestedPage, route.path, {
+      requireTable: route.path.startsWith("/dashboard/admin/"),
+    });
     await nestedContext.close();
   }
 
