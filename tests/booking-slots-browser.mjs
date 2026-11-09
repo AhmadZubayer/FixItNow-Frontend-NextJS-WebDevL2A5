@@ -112,6 +112,7 @@ try {
   assert.equal(await profileBack.getAttribute("href"), "/services");
   assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
   assert.equal(await profileBack.locator("svg").evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
+  assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).backgroundColor), "rgba(0, 0, 0, 0)");
   const profileBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   await profileBreadcrumb.waitFor();
   assert.equal(await profileBreadcrumb.count(), 1);
@@ -123,14 +124,28 @@ try {
   assert.ok(breadcrumbTop < contentTop, "Breadcrumbs must appear above profile content");
   const serviceCard = page.getByRole("heading", { name: "Services and prices" }).locator("..").locator("div.rounded-lg.border").first();
   assert.equal(await serviceCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  const profileCard = page.locator("main div.rounded-xl.border.bg-card").first();
+  assert.equal(await profileCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  const bookingCard = page.getByRole("heading", { name: "Book a service" }).locator("..").locator("div.rounded-xl.border.bg-card");
+  assert.equal(await bookingCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  const footer = page.locator("footer");
+  await footer.waitFor();
+  assert.equal(await footer.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  const footerTop = await footer.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+  assert.ok(contentTop < footerTop, "Footer must appear below profile content");
+
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  const leftCol = page.locator("h1").locator("xpath=ancestor::div[contains(@class, 'rounded-xl')][1]");
+  const rightCol = page.getByRole("heading", { name: "Book a service" }).locator("xpath=ancestor::section[1]");
+  const leftBoxMobile = await leftCol.evaluate((element) => element.getBoundingClientRect());
+  const rightBoxMobile = await rightCol.evaluate((element) => element.getBoundingClientRect());
+  assert.ok(leftBoxMobile.bottom <= rightBoxMobile.top + 50, "Columns must stack vertically on mobile");
+
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.getByRole("heading", { name: "Customer reviews" }).waitFor();
   await page.getByRole("heading", { name: "Provided services" }).waitFor();
   await page.getByRole("heading", { name: "Book a service" }).waitFor();
-  const leftCol = page.locator("h1").locator("xpath=ancestor::div[contains(@class, 'rounded-xl')][1]");
-  const rightCol = page.getByRole("heading", { name: "Book a service" }).locator("xpath=ancestor::section[1]");
   const leftBox = await leftCol.evaluate((element) => element.getBoundingClientRect());
   const rightBox = await rightCol.evaluate((element) => element.getBoundingClientRect());
   assert.ok(leftBox.right <= rightBox.left, "Left and right columns must be positioned side-by-side on desktop");

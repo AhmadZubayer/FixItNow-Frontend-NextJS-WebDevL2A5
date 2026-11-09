@@ -1,4 +1,4 @@
-Completion Progress: [65]%
+Completion Progress: [66]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 55 / 85 |
-| Remaining tasks | 30 |
-| Overall state | S07-T06 validated; commit and push pending |
-| Current task | S07-T06 handle loading, missing/invalid technician IDs, and API errors gracefully |
-| Last completed task | S07-T06 handle loading, missing/invalid technician IDs, and API errors gracefully |
-| Next task | S07-T07 apply global card styling, back-button styling, responsiveness, and footer |
-| Last successful GitHub push | Frontend main 5096a2b (S07-T06); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 56 / 85 |
+| Remaining tasks | 29 |
+| Overall state | S07-T07 validated; commit and push pending |
+| Current task | S07-T07 apply global card styling, back-button styling, responsiveness, and footer |
+| Last completed task | S07-T07 apply global card styling, back-button styling, responsiveness, and footer |
+| Next task | S08-T01 update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure |
+| Last successful GitHub push | Frontend main d0ab72a (S07-T07); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S07-T07 |
-| Task description | Apply global card styling, back-button styling, responsiveness, and footer |
-| State | In progress |
+| Task ID | S08-T01 |
+| Task description | Update /dashboard/customer, /dashboard/technician, and /dashboard/admin with a consistent page structure |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/technicians/[id]/page.tsx, tests/booking-slots-browser.mjs, PROGRESS.md |
-| Work already implemented | S07-T06 completed and validated. Auditing profile cards for #EFEFEF fill, #9AE600 transparent BackLink, 375px mobile responsiveness without horizontal overflow, and shared footer. |
-| Work still to do | Verify all styling constraints and responsive behavior across profile components, update tests if needed, mark S07-T07 complete. |
-| Tests / commands run | `npm run lint`, `npm run build`, `node tests/booking-slots-browser.mjs` passed. |
-| Results / errors | All checks passing. |
-| Changes only on local machine | S07-T07 audit. |
-| Commits awaiting push | None currently pending. |
-| **Exact next action** | Audit card styling, back-button styling, responsiveness, and footer on `/technicians/[id]`. |
+| Files changed | app/dashboard/customer/page.tsx, app/dashboard/technician/page.tsx, app/dashboard/admin/page.tsx, components/dashboard-tabs.tsx, PROGRESS.md |
+| Work already implemented | S07-T07 pushed (`d0ab72a`). Section 7 complete (7/7 tasks). Ready to implement unified dashboard page structure with shared tab bar, breadcrumbs placement, and main content card. |
+| Work still to do | Inspect current dashboard pages, design shared structure with shadcn Tabs, breadcrumbs, and main card wrapper. |
+| Tests / commands run | `node tests/booking-slots-browser.mjs`, `npm run lint`. |
+| Results / errors | S07-T07 passed. |
+| Changes only on local machine | S08-T01 preparation. |
+| Commits awaiting push | None. |
+| **Exact next action** | Inspect dashboard routes and implement unified dashboard page structure. |
 
 ## Verified task completion history
 
@@ -107,7 +107,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S07-T03 | Match layout and presentation in UI reference | Browser verified two-column layout, customer reviews, provided services cards, and booking form structure; 52 of 85 checked | `492fca0` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T04 | Implement reference interactions and data | Browser verified interactive service selection, real-time price updates, active slot selection, and booking submission; 53 of 85 checked | `c9d27d1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T05 | Preserve required customer-to-technician actions and permissions | Automated browser test verified visitor login prompt, role restrictions, and active customer booking submission; 54 of 85 checked | `62502b7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S07-T06 | Handle loading, missing/invalid technician IDs, and API errors gracefully | Automated browser test verified tailored loading skeleton, 404 missing ID, 400 invalid ID, and 500 error boundary; 55 of 85 checked | `5096a2b` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T06 | Handle loading, missing/invalid technician IDs, and API errors gracefully | Automated browser test verified tailored loading skeleton, 404 missing ID, 400 invalid ID, and 500 error boundary; 55 of 85 checked | `70405fc` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T07 | Apply global card styling, back-button styling, responsiveness, and footer | Automated browser test verified #EFEFEF cards, #9AE600 transparent BackLink, 375px responsiveness, and shared footer; 56 of 85 checked | `d0ab72a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

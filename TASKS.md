@@ -88,7 +88,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Implement the interactions and information shown in the reference, using actual technician data and respecting the `/REQUIREMENTS.md` workflow.
 - [x] Preserve required customer-to-technician actions and permissions from `/REQUIREMENTS.md` (do not invent new business flows).
 - [x] Handle loading, missing/invalid technician IDs, and API errors gracefully.
-- [ ] Apply global card styling, back-button styling, responsiveness, and footer.
+- [x] Apply global card styling, back-button styling, responsiveness, and footer.
 
 ## 8. Dashboards — customer, technician, and admin
 - [ ] Update `/dashboard/customer`, `/dashboard/technician`, and `/dashboard/admin` with a consistent page structure.
