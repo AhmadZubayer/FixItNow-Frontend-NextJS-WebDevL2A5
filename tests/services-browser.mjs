@@ -104,6 +104,8 @@ try {
   assert.equal(await page.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   const technicianCards = page.locator("section[aria-labelledby='technician-results'] a[href^='/technicians/']");
   await technicianCards.first().waitFor();
+  const pageBackground = await page.locator("main").evaluate((element) => getComputedStyle(element).backgroundColor);
+  assert.equal(pageBackground, "rgb(255, 255, 255)");
   assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await page.locator('[data-slot="card"]').first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await technicianCards.count(), 9);
