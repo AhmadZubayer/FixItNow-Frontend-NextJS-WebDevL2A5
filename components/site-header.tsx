@@ -8,7 +8,7 @@ import SessionActions from "@/components/session-actions";
 const SiteHeader = () => {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 shadow-sm backdrop-blur-xl backdrop-saturate-150">
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 px-4 py-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 px-4 py-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6 sm:has-[.service-navbar-search]:grid-cols-[auto_minmax(0,1fr)_auto]">
         <Link href="/" className="col-start-1 row-start-1 inline-flex w-fit items-center gap-2 text-lg font-bold tracking-tight focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
           <Wrench aria-hidden className="size-6 text-[#145b28]" /> FixItNow
         </Link>

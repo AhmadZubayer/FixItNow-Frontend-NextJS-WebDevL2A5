@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useCallback, useRef, useTransition } from "react";
 
-import SearchField from "@/components/search-field";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -24,7 +23,6 @@ const ServicesFilters = ({ categories, initial, errors }: ServicesFiltersProps) 
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const paramsRef = useRef(new URLSearchParams(initial));
-  const [search, setSearch] = useState(initial.q ?? "");
 
   const update = useCallback((changes: FilterValues) => {
     const params = new URLSearchParams(paramsRef.current);
@@ -39,11 +37,7 @@ const ServicesFilters = ({ categories, initial, errors }: ServicesFiltersProps) 
 
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,3fr)]" aria-label="Service filters">
-      <form onSubmit={(event) => { event.preventDefault(); update({ q: search.trim() }); }} role="search">
-        <SearchField id="service-search" label="Search services or technicians" className="h-10 rounded-full px-4" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search services or technicians..." error={errors.q} />
-      </form>
-      <div className="grid gap-3 sm:grid-cols-3">
+    <div className="grid grid-cols-2 items-start gap-3 sm:grid-cols-[repeat(3,minmax(0,1fr))_auto]" aria-label="Service filters">
         <div className="space-y-1">
           <Label htmlFor="service-category">Category</Label>
           <Select value={selectValue(initial.categoryId)} onValueChange={(value) => update({ categoryId: value === "all" ? "" : value ?? "", serviceId: "", serviceTitle: "" })}>
@@ -66,11 +60,8 @@ const ServicesFilters = ({ categories, initial, errors }: ServicesFiltersProps) 
             <SelectContent><SelectItem value="all">Default order</SelectItem><SelectItem value="desc">High to low</SelectItem><SelectItem value="asc">Low to high</SelectItem></SelectContent>
           </Select>
         </div>
-      </div>
-      <div className="flex items-center gap-3 xl:col-span-2">
-        <Button variant="outline" onClick={() => { paramsRef.current = new URLSearchParams(); startTransition(() => router.push("/services")); }}>Clear filters</Button>
-        <span role="status" className="text-xs text-muted-foreground">{pending ? "Updating results…" : ""}</span>
-      </div>
+        <Button className="mt-4 justify-self-start" variant="outline" onClick={() => { paramsRef.current = new URLSearchParams(); startTransition(() => router.push("/services")); }}>Clear filters</Button>
+        <span role="status" className="sr-only">{pending ? "Updating results…" : ""}</span>
     </div>
   );
 };

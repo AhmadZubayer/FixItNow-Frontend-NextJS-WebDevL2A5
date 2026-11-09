@@ -262,3 +262,9 @@ Append a short entry whenever a session ends or a usage limit approaches:
 - Current task: list real service titles in the discovery sidebar, remove black selection borders, add removable lime pills, and remove the marked profile skills and helper text.
 - Resume checkpoint: verify exact service-title filtering and preselection, then run frontend and backend checks and push backend first.
 - Verified: frontend lint, production build, and services and booking Chrome suites passed. Backend build, typecheck, and four regression tests passed. Main database exact-title query found ten matching technicians. No migration was needed. Backend main 6fa0753 pushed first. Checklist remains 85 / 85 (100%).
+
+## Services navbar follow-up (2026-11-10)
+
+- Current task: place a compact search field in the Services navbar, move navigation links beside the account controls, and align Clear filters after Rating.
+- Scope: Services navbar only to preserve the reference-based landing navigation. Validate search, filter placement, and mobile width before pushing.
+- Verified frontend lint, production build, and Services and dashboard browser suites. The Services suite checks compact search dimensions, navigation beside the account controls, inline Clear filters, search submission, and mobile width. No backend changes. Checklist remains 85 / 85 (100%).
