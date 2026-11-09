@@ -68,6 +68,7 @@ const backend = createHttpServer((request, response) => {
     if (url.searchParams.has("location")) matches = matches.filter((technician) => technician.location.toLowerCase().includes(url.searchParams.get("location").toLowerCase()));
     if (url.searchParams.has("minPrice")) matches = matches.filter((technician) => Number(technician.services[0].price) >= Number(url.searchParams.get("minPrice")));
     if (url.searchParams.has("maxPrice")) matches = matches.filter((technician) => Number(technician.services[0].price) <= Number(url.searchParams.get("maxPrice")));
+    if (url.searchParams.has("minRating")) matches = matches.filter((technician) => technician.averageRating >= Number(url.searchParams.get("minRating")));
     if (url.searchParams.get("priceSort") === "asc") matches.sort((a, b) => Number(a.services[0].price) - Number(b.services[0].price));
     if (url.searchParams.get("priceSort") === "desc") matches.sort((a, b) => Number(b.services[0].price) - Number(a.services[0].price));
     if (url.searchParams.get("ratingSort") === "asc") matches.sort((a, b) => a.averageRating - b.averageRating);
@@ -176,6 +177,15 @@ try {
     url.searchParams.get("location") === "Dhaka" && url.searchParams.get("minPrice") === "150" &&
     url.searchParams.get("priceSort") === "desc" && url.searchParams.get("page") === "1" && url.searchParams.get("limit") === "9"));
   assert.equal(await page.getByLabel("Price", { exact: true }).innerText(), "High to low");
+
+  await page.getByLabel("Minimum rating").click();
+  await page.getByRole("option", { name: "4+ stars" }).click();
+  await page.waitForURL((url) => url.searchParams.get("minRating") === "4");
+  assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("minRating") === "4"));
+
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await page.waitForURL((url) => !url.searchParams.has("q") && !url.searchParams.has("minPrice") && !url.searchParams.has("minRating"));
+  assert.equal(await technicianCards.count(), 9);
 
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-services-current.png"), fullPage: true });
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
