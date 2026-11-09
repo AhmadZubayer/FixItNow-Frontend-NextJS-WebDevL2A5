@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 29 / 85 |
 | Remaining tasks | 56 |
-| Overall state | S05-T02 validated; push pending |
-| Current task | S05-T02 full-screen auth background image |
+| Overall state | S05-T02 pushed; S05-T03 next |
+| Current task | S05-T03 password eye toggles |
 | Last completed task | S05-T02 full-screen auth background image |
 | Next task | S05-T03 password eye toggles |
-| Last successful GitHub push | Frontend main 6fbd55c (S05-T01); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 4bc6666 (S05-T02); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S05-T02 |
-| Task description | Use public/register-bg.png as full-screen background on login and sign-up |
-| State | Validated; commit and push pending |
+| Task ID | S05-T03 |
+| Task description | Add accessible eye icon show/hide toggle to both password inputs |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/globals.css, both auth page files, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Auth routes mark their main; body gets the public image at cover size across the viewport, and breadcrumb has an opaque backing. |
-| Work still to do | Commit and push S05-T02, record hash, then start S05-T03. |
-| Tests / commands run | Frontend lint/build; services browser verified both computed backgrounds, asset 200 response and card fills; inspected mobile login screenshot. |
-| Results / errors | All checks passed; mobile screenshot showed readable card and breadcrumb over the image. |
-| Changes only on local machine | S05-T02 styling, route markers, test, checklist and progress update. |
-| Commits awaiting push | S05-T02 task commit. |
-| **Exact next action** | Stage only S05-T02 files, commit and push frontend main. |
+| Files changed | None yet for S05-T03 |
+| Work already implemented | S05-T02 full-screen auth image and breadcrumb backing pushed as 4bc6666. |
+| Work still to do | Inspect password inputs, add accessible eye toggles, verify form values and behavior, then push. |
+| Tests / commands run | S05-T02 lint/build and services browser image/card checks passed; mobile screenshot inspected. |
+| Results / errors | S05-T02 pushed; no real-backend E2E because it writes DB data. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then edit the two auth password controls. |
 
 ## Verified task completion history
 
@@ -81,6 +81,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S04-T07 | Keep signed-out Sign in button | Link label aligned with checklist and browser followed it to /auth/login; lint/build passed; 26 of 85 checked | `01aba14` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T08 | Refresh auth and mobile navbar state | Route-specific session suppresses stale user; browser checked three roles at 375px, login redirect, logout cookie and Sign in restoration; lint/build passed; 27 of 85 checked | `86b438c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S05-T01 | Wrap auth forms in shadcn Cards | Both auth headings/forms inside Cards with #EFEFEF fill; browser, lint/build and diff checks passed; 28 of 85 checked | `6fbd55c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S05-T02 | Add full-screen auth background | Both routes use public/register-bg.png with cover size; mobile screenshot showed readable card/breadcrumb; browser and lint/build passed; 29 of 85 checked | `4bc6666` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
