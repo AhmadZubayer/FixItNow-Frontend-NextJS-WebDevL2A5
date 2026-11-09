@@ -1,4 +1,4 @@
-Completion Progress: [45]%
+Completion Progress: [46]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 38 / 85 |
-| Remaining tasks | 47 |
-| Overall state | S06-T05 validated; commit and push pending |
-| Current task | S06-T05 responsive services reference layout |
-| Last completed task | S06-T05 responsive services reference layout |
-| Next task | S06-T06 search on Enter connected to backend |
-| Last successful GitHub push | Frontend main 11033dd (S06-T04); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 39 / 85 |
+| Remaining tasks | 46 |
+| Overall state | S06-T06 validated; commit and push pending |
+| Current task | S06-T06 connect search field to backend on Enter |
+| Last completed task | S06-T06 connect search field to backend on Enter |
+| Next task | S06-T07 automatic sort updates without submit button |
+| Last successful GitHub push | Frontend main 0d7146b (S06-T05); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S06-T05 |
-| Task description | Make the services page responsive and visually consistent with the reference |
+| Task ID | S06-T06 |
+| Task description | Connect search field to backend on Enter to refresh results |
 | State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Browser test updated with viewport checks across mobile (375px), tablet (768px), and desktop (1280px) confirming zero horizontal overflow, proper layout reflow, and visual alignment with reference screenshot. |
-| Work still to do | Commit and push S06-T05, record hash, then begin S06-T06. |
-| Tests / commands run | `npm run lint`, `node tests/services-browser.mjs`, `npm run build` passed. |
-| Results / errors | All responsive assertions and visual comparisons verified without errors. |
-| Changes only on local machine | S06-T05 test updates, TASKS.md and PROGRESS.md. |
-| Commits awaiting push | S06-T05 task commit. |
-| **Exact next action** | Stage only S06-T05 files, commit and push frontend main. |
+| Work already implemented | Verified search input on Enter submits query parameter q to both /api/technicians and /api/services, refreshing matching service cards and technician results. |
+| Work still to do | Commit and push S06-T06, record hash, then begin S06-T07. |
+| Tests / commands run | `npm run lint`, `node tests/services-browser.mjs` passed. |
+| Results / errors | Browser test confirmed /api/technicians and /api/services query parameters and results refresh. |
+| Changes only on local machine | S06-T06 browser assertion, TASKS.md and PROGRESS.md. |
+| Commits awaiting push | S06-T06 task commit. |
+| **Exact next action** | Stage only S06-T06 files, commit and push frontend main. |
 
 ## Verified task completion history
 
@@ -90,6 +90,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S06-T02 | Verify services Back/breadcrumb | Browser checked #9AE600 transparent Back and both links navigating to root; lint passed; 35 of 85 checked | `3c445b0` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T03 | Distinguish page and card colors | Browser confirmed white main and #EFEFEF service/technician cards; screenshot reviewed; 36 of 85 checked | `b22be1c` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S06-T04 | Verify card hover borders | Browser confirmed black hover borders on service and technician cards; lint and browser tests passed; 37 of 85 checked | `11033dd` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S06-T05 | Verify responsive layout | Browser test confirmed 375px mobile, 768px tablet, and 1280px desktop layouts without overflow, aligning with reference; 38 of 85 checked | `0d7146b` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

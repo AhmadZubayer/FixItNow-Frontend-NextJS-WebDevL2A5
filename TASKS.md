@@ -67,7 +67,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Make the page responsive and visually consistent with the reference.
 
 ### Search, filters, sorting, and data
-- [ ] Connect the search field to the backend: when the user types a query and presses **Enter**, send it as an API query and refresh the results.
+- [x] Connect the search field to the backend: when the user types a query and presses **Enter**, send it as an API query and refresh the results.
 - [ ] When any sort option is selected, send the relevant query parameters to the backend and update the results automatically; no extra submit button should be required.
 - [ ] When a service card is selected, filter the displayed technicians to that service automatically.
 - [ ] Ensure every filter/sort control updates the displayed results as soon as its selection changes.

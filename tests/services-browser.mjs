@@ -140,6 +140,7 @@ try {
   await page.waitForURL("**/services?q=Fan");
   assert.equal(await technicianCards.count(), 9);
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("q") === "Fan" && url.searchParams.get("page") === "1"));
+  assert(observed.some((url) => url.pathname === "/api/services" && url.searchParams.get("q") === "Fan"));
 
   await page.getByLabel("Price", { exact: true }).click();
   await page.getByRole("option", { name: "High to low" }).click();
