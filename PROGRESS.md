@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 16 / 85 |
 | Remaining tasks | 69 |
-| Overall state | S03-T04 validated; frontend push pending |
-| Current task | S03-T04 back button color and behavior |
-| Last completed task | S03-T03 breadcrumbs on every page |
+| Overall state | S03-T04 pushed; S03-T05 next |
+| Current task | S03-T04 complete; S03-T05 next |
+| Last completed task | S03-T04 transparent green back links |
 | Next task | S03-T05 distinct page backgrounds |
-| Last successful GitHub push | Frontend main 4635dbe (S03-T03); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main dc6da12 (S03-T04); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S03-T04 |
 | Task description | Make every back button text/icon #9AE600 without fill and preserve correct navigation |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | components/back-link.tsx, services/profile/payment/review pages, two browser tests, TASKS.md, PROGRESS.md |
 | Work already implemented | Shared BackLink uses #9AE600 text/icon and transparent fill. Four page back links retain deterministic in-app parent destinations. |
-| Work still to do | Commit and push frontend task files, then begin S03-T05. |
+| Work still to do | S03-T04 delivered. Begin S03-T05 after this progress update is pushed. |
 | Tests / commands run | Frontend tsc, lint and build; services and booking browser tests with computed link/icon color, transparent background and href assertions. |
 | Results / errors | All checks passed. Back destinations are Home, Services, or customer dashboard according to page. |
-| Changes only on local machine | S03-T04 source, browser tests and tracking updates pending commit/push. |
-| Commits awaiting push | S03-T04 frontend commit to create and push. |
-| **Exact next action** | Stage S03-T04 frontend files, commit/push main, record hash, then begin S03-T05. |
+| Changes only on local machine | This S03-T04 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S03-T05 by checking page and card surface contrast. |
 
 ## Verified task completion history
 
@@ -68,7 +68,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T01 | Set every card fill to #EFEFEF | Updated shared card token and manual card wrappers; computed color assertions on services, profile and dashboard cards, screenshot inspection, lint and build passed; 13 of 85 checked | `6fc467e` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T02 | Add shared footer | Root layout renders semantic #EFEFEF footer; browser tests checked public, auth and dashboard routes; lint/build passed; 14 of 85 checked | `332cd72` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T03 | Show breadcrumbs on all pages | Added root route-aware breadcrumb and removed duplicate locals; build, lint/type and browser link checks passed; 15 of 85 checked | `4635dbe` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S03-T04 | Style and preserve back navigation | Shared transparent back link uses #9AE600 text/icon on four pages; browser href/color assertions and lint/build passed; 16 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S03-T04 | Style and preserve back navigation | Shared transparent back link uses #9AE600 text/icon on four pages; browser href/color assertions and lint/build passed; 16 of 85 checked | `dc6da12` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
