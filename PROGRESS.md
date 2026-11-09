@@ -1,4 +1,4 @@
-Completion Progress: [87]%
+Completion Progress: [88]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 87% |
+| Completion Progress | 88% |
 | Last Working Agent | Codex |
-| Completed tasks | 74 / 85 |
-| Remaining tasks | 11 |
-| Overall state | S10-T03 README content and route inventory passed; tracking update awaits push |
-| Last completed task | S10-T03 Document project purpose, features, prerequisites, setup, environment variable names, commands, and routes |
-| Current unfinished task | S10-T04 Include `/technicians/[id]` in the README route and feature overview |
-| Next task for Codex | Confirm `/technicians/[id]` is explicitly documented and points to the actual dynamic profile page |
-| Latest commit hashes | Frontend `main`: `fdc9af8` (S10-T02 tracking); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `fdc9af8` (S10-T02 tone review); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 75 / 85 |
+| Remaining tasks | 10 |
+| Overall state | S10-T04 technician profile route verification passed; tracking update awaits push |
+| Last completed task | S10-T04 Include `/technicians/[id]` in the README route and feature overview |
+| Current unfinished task | S10-T05 Ensure README documentation matches the implementation and package scripts |
+| Next task for Codex | Audit README claims and commands against source files, package scripts, and environment usage |
+| Latest commit hashes | Frontend `main`: `f36f0e4` (S10-T03 tracking); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `f36f0e4` (S10-T03 README content verification); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S10-T04 |
-| Task description | Include `/technicians/[id]` in the README route and feature overview |
-| State | S10-T03 README content review passed; checklist/progress commit pending push |
+| Task ID | S10-T05 |
+| Task description | Ensure README documentation matches the implementation and package scripts |
+| State | S10-T04 technician profile path and page functionality verified; checklist/progress commit pending push |
 | Last Working Agent | Codex |
 | Current unfinished task | S10-T04 |
 | Repositories affected | Frontend only; backend unchanged |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `bb43066`); backend `main` → `origin/main` (commit `7ce0891`) |
-| Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S09-T05 reviewed S09-T03/S09-T04 implementation files; no unrelated code edits were made. |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `f36f0e4`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S10-T03 and S10-T04: README and checklist/progress verification only. |
 | Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
-| Work still to do | Verify the explicitly listed technician profile route and its route file. |
-| Tests / commands run | README inventory check confirmed every `package.json` command, `API_BASE_URL`, and all 16 documented routes correspond to existing route files; `git diff --check` passed. No runtime changes were made. |
+| Work still to do | Audit all README features, setup notes, environment names, commands, and routes against the implementation and package scripts. |
+| Tests / commands run | Verified README contains `/technicians/[id]`, its source exists at `app/technicians/[id]/page.tsx`, and the page loads technician details, reviews, services, and `BookingForm`. S10-T03 inventory check matched all package commands and 16 routes. |
 | Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
-| Changes only on local machine | S10-T03 checklist/progress update pending commit. |
-| Commits awaiting push | S10-T03 tracking commit pending. |
+| Changes only on local machine | S10-T04 checklist/progress update pending commit. |
+| Commits awaiting push | S10-T04 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Verify the documented `/technicians/[id]` entry maps to `app/technicians/[id]/page.tsx` and clearly names the profile content. |
+| **Exact next action** | Reconcile the README route list, feature statements, setup instructions, and every command with source and `package.json`; then complete S10-T05. |
 
 ## Verified task completion history
 
@@ -133,7 +133,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S09-T05 | Avoid unrelated refactoring or breaking changes | Reviewed scoped S09-T03/S09-T04 diffs; `git diff --check` and marketplace, dashboard/session, and booking browser tests passed; 71 of 85 checked | `c3675fd` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S10-T01 | Create or update a simple, professional, formal frontend README | Replaced the framework template with a project README; reviewed structure and ran `git diff --check`; 72 of 85 checked | `e983589` / `main` | No changes | Pushed to `origin/main` (tracking `bb43066`) | 2026-11-09 |
 | S10-T02 | Use clear, natural, non-complex README language | Compared wording and detail with the backend README; no edits were needed; confirmed instructions are frontend-specific and concise; 73 of 85 checked | `fdc9af8` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
-| S10-T03 | Document project purpose, features, setup, commands, environment, and routes | Verified README content, package scripts, `API_BASE_URL`, and all 16 documented routes against source; 74 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S10-T03 | Document project purpose, features, setup, commands, environment, and routes | Verified README content, package scripts, `API_BASE_URL`, and all 16 documented routes against source; 74 of 85 checked | `f36f0e4` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S10-T04 | Include the technician profile route in the README overview | Confirmed `/technicians/[id]` is listed and resolves to the dynamic page with profile, reviews, services, and booking form; 75 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
