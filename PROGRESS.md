@@ -1,4 +1,4 @@
-Completion Progress: [86]%
+Completion Progress: [87]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 86% |
+| Completion Progress | 87% |
 | Last Working Agent | Codex |
-| Completed tasks | 73 / 85 |
-| Remaining tasks | 12 |
-| Overall state | S10-T02 tone review passed; tracking update awaits push |
-| Last completed task | S10-T02 Keep README language clear, natural, and consistent with backend documentation tone |
-| Current unfinished task | S10-T03 Document project purpose, features, prerequisites, setup, environment variable names, commands, and routes |
-| Next task for Codex | Verify each README content requirement against the actual frontend and package configuration |
-| Latest commit hashes | Frontend `main`: `bb43066` (S10-T01 tracking); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `bb43066` (S10-T01 README update); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 74 / 85 |
+| Remaining tasks | 11 |
+| Overall state | S10-T03 README content and route inventory passed; tracking update awaits push |
+| Last completed task | S10-T03 Document project purpose, features, prerequisites, setup, environment variable names, commands, and routes |
+| Current unfinished task | S10-T04 Include `/technicians/[id]` in the README route and feature overview |
+| Next task for Codex | Confirm `/technicians/[id]` is explicitly documented and points to the actual dynamic profile page |
+| Latest commit hashes | Frontend `main`: `fdc9af8` (S10-T02 tracking); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `fdc9af8` (S10-T02 tone review); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S10-T03 |
-| Task description | Document project purpose, features, prerequisites, setup, environment variable names, commands, and routes |
-| State | S10-T02 README tone review passed; checklist/progress commit pending push |
+| Task ID | S10-T04 |
+| Task description | Include `/technicians/[id]` in the README route and feature overview |
+| State | S10-T03 README content review passed; checklist/progress commit pending push |
 | Last Working Agent | Codex |
-| Current unfinished task | S10-T02 |
+| Current unfinished task | S10-T04 |
 | Repositories affected | Frontend only; backend unchanged |
 | Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `bb43066`); backend `main` → `origin/main` (commit `7ce0891`) |
 | Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S09-T05 reviewed S09-T03/S09-T04 implementation files; no unrelated code edits were made. |
 | Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
-| Work still to do | Verify the README's purpose, feature list, prerequisites, setup instructions, environment variable names, commands, and route overview against source and package configuration. |
-| Tests / commands run | Compared the README's wording, headings, sentence length, and content style against the backend README and the task instructions; language was clear and direct with no backend-only setup copied. No runtime changes were made. |
+| Work still to do | Verify the explicitly listed technician profile route and its route file. |
+| Tests / commands run | README inventory check confirmed every `package.json` command, `API_BASE_URL`, and all 16 documented routes correspond to existing route files; `git diff --check` passed. No runtime changes were made. |
 | Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
-| Changes only on local machine | S10-T02 checklist/progress update pending commit. |
-| Commits awaiting push | S10-T02 tracking commit pending. |
+| Changes only on local machine | S10-T03 checklist/progress update pending commit. |
+| Commits awaiting push | S10-T03 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Verify the project overview against app pages, check requirements/setup against package and environment usage, confirm scripts against `package.json`, and confirm every documented route exists. |
+| **Exact next action** | Verify the documented `/technicians/[id]` entry maps to `app/technicians/[id]/page.tsx` and clearly names the profile content. |
 
 ## Verified task completion history
 
@@ -131,8 +131,9 @@ Add **one row per verified task** after implementation and validation; include a
 | S09-T03 | Align API contracts, validation, marketplace queries, and role gates | Audited frontend/backend request and response contracts, validators, pagination metadata, session refresh and backend roles; normalized blank search terms; lint, production build, services browser test, and dashboard role/payment test passed; 69 of 85 checked | `6388b54` / `main` | No changes | Pushed to `origin/main` (tracking `866cb94`) | 2026-11-09 |
 | S09-T04 | Verify synchronized auth/session handling and role routing | Fixed session cookie expiry across root and `/api/session` paths; targeted lint/build, dashboard role/login/logout/refresh test, and booking-slots test passed; 70 of 85 checked | `6079b3a` / `main` | No changes | Pushed to `origin/main` (tracking `c445ef4`) | 2026-11-09 |
 | S09-T05 | Avoid unrelated refactoring or breaking changes | Reviewed scoped S09-T03/S09-T04 diffs; `git diff --check` and marketplace, dashboard/session, and booking browser tests passed; 71 of 85 checked | `c3675fd` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
-| S10-T01 | Create or update a simple, professional, formal frontend README | Replaced the framework template with a project README; reviewed structure and ran `git diff --check`; 72 of 85 checked | `e983589` / `main` | No changes | Pending push with tracking commit | 2026-11-09 |
-| S10-T02 | Use clear, natural, non-complex README language | Compared wording and detail with the backend README; no edits were needed; confirmed instructions are frontend-specific and concise; 73 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S10-T01 | Create or update a simple, professional, formal frontend README | Replaced the framework template with a project README; reviewed structure and ran `git diff --check`; 72 of 85 checked | `e983589` / `main` | No changes | Pushed to `origin/main` (tracking `bb43066`) | 2026-11-09 |
+| S10-T02 | Use clear, natural, non-complex README language | Compared wording and detail with the backend README; no edits were needed; confirmed instructions are frontend-specific and concise; 73 of 85 checked | `fdc9af8` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S10-T03 | Document project purpose, features, setup, commands, environment, and routes | Verified README content, package scripts, `API_BASE_URL`, and all 16 documented routes against source; 74 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
