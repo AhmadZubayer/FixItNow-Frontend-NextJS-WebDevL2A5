@@ -60,7 +60,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 
 ## 6. Services listing — `/services`
 ### Layout and visual fidelity
-- [ ] Recreate the layout and styling shown in `ui_references/services-ui-ref.png` while applying the global UI requirements.
+- [x] Recreate the layout and styling shown in `ui_references/services-ui-ref.png` while applying the global UI requirements.
 - [ ] Add the standard back button (text/icon `#9AE600`, no fill) and functioning breadcrumbs.
 - [ ] Clearly distinguish the white page background from `#EFEFEF` service/technician cards.
 - [ ] Add a **black border effect on hover** for both service cards and technician cards.

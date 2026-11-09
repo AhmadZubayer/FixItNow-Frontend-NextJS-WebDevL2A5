@@ -49,28 +49,28 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
   };
 
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 space-y-6 bg-white px-4 py-8 sm:px-6">
+    <main className="mx-auto w-full max-w-[100rem] flex-1 space-y-6 bg-white px-4 py-8 sm:px-6">
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <BackLink href="/" />
         </div>
-      <div className="grid gap-8 lg:grid-cols-[14rem_minmax(0,1fr)]">
+      <div className="grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)]">
         <aside className="space-y-4 border-b pb-5 lg:border-r lg:border-b-0 lg:pr-6" aria-label="Service categories">
           <h2 className="text-lg font-semibold">Services</h2>
           <nav className="flex gap-1 overflow-x-auto lg:flex-col" aria-label="Filter by category">
-            <Link href={hrefWith({ categoryId: "", serviceId: "", page: "" })} aria-current={!filters?.categoryId ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap hover:bg-[#EFEFEF] ${!filters?.categoryId ? "bg-[#9AE600]/30 font-semibold" : ""}`}>All</Link>
+            <Link href={hrefWith({ categoryId: "", serviceId: "", page: "" })} aria-current={!filters?.categoryId ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap ${!filters?.categoryId ? "bg-[#9AE600]/30 font-semibold hover:bg-[#9AE600]/40" : "hover:bg-[#EFEFEF]"}`}>All</Link>
             {categories.map((category) => (
-              <Link key={category.id} href={hrefWith({ categoryId: category.id, serviceId: "", page: "" })} aria-current={filters?.categoryId === category.id ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap hover:bg-[#EFEFEF] ${filters?.categoryId === category.id ? "bg-[#9AE600]/30 font-semibold" : ""}`}>{category.name}</Link>
+              <Link key={category.id} href={hrefWith({ categoryId: category.id, serviceId: "", page: "" })} aria-current={filters?.categoryId === category.id ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap ${filters?.categoryId === category.id ? "bg-[#9AE600]/30 font-semibold hover:bg-[#9AE600]/40" : "hover:bg-[#EFEFEF]"}`}>{category.name}</Link>
             ))}
           </nav>
         </aside>
-        <div className="min-w-0 space-y-8">
-          <div className="space-y-4">
-            <div><h1 className="text-3xl font-semibold tracking-tight">Technicians</h1><p className="mt-1 text-sm text-muted-foreground">Browse services and find an available professional.</p></div>
+        <div className="min-w-0 space-y-10">
+          <div className="grid gap-4 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
+            <div><h1 className="text-3xl font-semibold tracking-tight">Technicians</h1><p className="sr-only">Browse services and find an available professional.</p></div>
             <ServicesFilters key={new URLSearchParams(initial).toString()} categories={categories} initial={initial} errors={errors} />
-            {!result.success && <p role="alert" className="text-sm text-destructive">Check the highlighted filters and try again.</p>}
+            {!result.success && <p role="alert" className="text-sm text-destructive xl:col-span-2">Check the highlighted filters and try again.</p>}
           </div>
           <section className="space-y-3" aria-labelledby="service-results">
-            <div className="flex items-baseline justify-between"><h2 id="service-results" className="text-lg font-semibold">Services</h2><span className="text-xs text-muted-foreground">{services.length} results</span></div>
+            <div className="flex items-baseline justify-between"><h2 id="service-results" className="sr-only">Services</h2><span className="text-xs text-muted-foreground">{services.length} services</span></div>
             {services.length ? <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{services.map((service) => <ServiceCard key={service.id} service={service} filterHref={hrefWith({ serviceId: filters?.serviceId === service.id ? "" : service.id, page: "" })} selected={filters?.serviceId === service.id} />)}</div> : <EmptyState title="No services found" description="Try a different search or filter." />}
           </section>
           <section className="space-y-3" aria-labelledby="technician-results">

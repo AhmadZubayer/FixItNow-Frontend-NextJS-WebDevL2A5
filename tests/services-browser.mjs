@@ -102,6 +102,9 @@ try {
   const headerBounds = await page.locator("header").boundingBox();
   const navigationBounds = await mainNavigation.boundingBox();
   assert(Math.abs(navigationBounds.x + navigationBounds.width / 2 - (headerBounds.x + headerBounds.width / 2)) < 2);
+  const pageTitle = page.getByRole("heading", { name: "Technicians", level: 1 });
+  const searchField = page.getByLabel("Search services or technicians");
+  assert(Math.abs((await pageTitle.boundingBox()).y - (await searchField.boundingBox()).y) < 35);
   const back = page.getByRole("link", { name: "Back", exact: true });
   assert.equal(await back.getAttribute("href"), "/");
   assert.equal(await back.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
@@ -118,6 +121,9 @@ try {
   assert.equal(pageBackground, "rgb(255, 255, 255)");
   assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await page.locator('[data-slot="card"]').first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  const firstServiceCard = page.locator("section[aria-labelledby='service-results'] [data-slot='card']").first();
+  assert((await firstServiceCard.boundingBox()).height >= 200);
+  assert.equal(await firstServiceCard.getByText("Show technicians").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
   assert.equal(await technicianCards.count(), 9);
   await page.getByRole("button", { name: "Go to next page" }).click();
   await page.waitForURL("**/services?page=2");

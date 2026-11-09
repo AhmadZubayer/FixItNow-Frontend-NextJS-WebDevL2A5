@@ -1,4 +1,4 @@
-Completion Progress: [39]%
+Completion Progress: [40]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 33 / 85 |
-| Remaining tasks | 52 |
-| Overall state | S05-T06 pushed; S06-T01 next |
+| Completed tasks | 34 / 85 |
+| Remaining tasks | 51 |
+| Overall state | S06-T01 validated; push pending |
 | Current task | S06-T01 services visual reference layout |
-| Last completed task | S05-T06 auth page breadcrumbs |
-| Next task | S06-T01 services visual reference layout |
+| Last completed task | S06-T01 services visual reference layout |
+| Next task | S06-T02 services back link and breadcrumbs |
 | Last successful GitHub push | Frontend main 8e2095d (S05-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S06-T01 |
 | Task description | Recreate services listing layout and styling from ui_references/services-ui-ref.png |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S06-T01 |
-| Work already implemented | S05-T06 breadcrumb verification pushed as 8e2095d. Services UI already has category rail, filters, service/technician cards and pagination from earlier functional work. |
-| Work still to do | Compare actual services screenshot to ui_references/services-ui-ref.png, adjust layout/styling while preserving behavior, validate and push. |
-| Tests / commands run | S05-T06 services browser and lint passed; prior build covers unchanged source. |
-| Results / errors | S05-T06 pushed; no live database affected. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then view reference and current services screenshots and inspect components. |
+| Files changed | app/services/page.tsx, components/services/filters.tsx, components/service-card.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Wider content and category rail; desktop title aligns with search/primary selects; larger service cards with prominent green selection action; active category retains green hover. Extra filters and technician section remain for required journeys. |
+| Work still to do | Commit and push S06-T01, record hash, then start S06-T02. |
+| Tests / commands run | Frontend lint/build, services browser filters/pagination/mobile and card layout assertions, screenshot comparison. |
+| Results / errors | All checks passed. Screenshot is closer to reference hierarchy; extra filters and technician cards remain visible as required by functional flows. |
+| Changes only on local machine | S06-T01 styling, test, checklist and progress update. |
+| Commits awaiting push | S06-T01 task commit. |
+| **Exact next action** | Stage only S06-T01 files, commit and push frontend main. |
 
 ## Verified task completion history
 
