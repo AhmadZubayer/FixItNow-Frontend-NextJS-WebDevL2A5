@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 20 / 85 |
 | Remaining tasks | 65 |
-| Overall state | S04-T01 validated; frontend push pending |
-| Current task | S04-T01 sticky global navbar |
-| Last completed task | S03-T07 shared layout and styling reuse |
+| Overall state | S04-T01 pushed; S04-T02 next |
+| Current task | S04-T01 complete; S04-T02 next |
+| Last completed task | S04-T01 sticky global navbar |
 | Next task | S04-T02 translucent acrylic navbar |
-| Last successful GitHub push | Frontend main 59db30a (S03-T07); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 08a1c29 (S04-T01); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S04-T01 |
 | Task description | Make the global navbar sticky |
-| State | Validated; frontend commit and push pending |
+| State | Completed, validated, committed and pushed |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
 | Files changed | components/site-header.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
 | Work already implemented | SiteHeader is sticky at top with z-40 stacking context. |
-| Work still to do | Commit and push frontend task files, then begin S04-T02 glass appearance. |
+| Work still to do | S04-T01 delivered. Begin S04-T02 after this progress update is pushed. |
 | Tests / commands run | Frontend lint/build and services browser test with bottom-of-page scroll asserting header bounding top remains 0. |
 | Results / errors | All checks passed; header remains visible after scroll. |
-| Changes only on local machine | S04-T01 source, browser test and tracking updates pending commit/push. |
-| Commits awaiting push | S04-T01 frontend commit to create and push. |
-| **Exact next action** | Stage S04-T01 frontend files, commit/push main, record hash, then begin S04-T02. |
+| Changes only on local machine | This S04-T01 hash tracking update only. |
+| Commits awaiting push | This progress tracking commit only. |
+| **Exact next action** | Push this progress record, then begin S04-T02 by applying subtle translucent blur to the sticky header. |
 
 ## Verified task completion history
 
@@ -72,7 +72,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T05 | Keep card and page surfaces distinct | Browser confirmed /services white page against #EFEFEF cards and prior screenshot inspection; 17 of 85 checked | `538190d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T06 | Align spacing and keyboard focus | Aligned header with content/footer; added skip link, focus target and anchor outline; keyboard/mobile test, screenshot, lint/build passed; 18 of 85 checked | `3cafc17` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T07 | Reuse shared layout and styling | Audited shared footer, breadcrumb, back link, skeleton/empty components and card token; no source change needed; 19 of 85 checked | `59db30a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
-| S04-T01 | Make navbar sticky | Root SiteHeader uses sticky top/z-index; browser scroll assertion, lint and build passed; 20 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
+| S04-T01 | Make navbar sticky | Root SiteHeader uses sticky top/z-index; browser scroll assertion, lint and build passed; 20 of 85 checked | `08a1c29` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
