@@ -1,4 +1,4 @@
-Completion Progress: [96]%
+Completion Progress: [98]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,14 +8,14 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 96% |
+| Completion Progress | 98% |
 | Last Working Agent | Codex |
-| Completed tasks | 82 / 85 |
-| Remaining tasks | 3 |
-| Overall state | S11-T06 dashboard behavior passed; tracking update pending push |
-| Last completed task | S11-T06 Verify dashboard tabs, role restrictions, breadcrumbs, cards, and data display |
-| Current unfinished task | S11-T07 Verify breadcrumbs, back-button colors, footer, card backgrounds, and responsive layout across every route |
-| Next task for Codex | Audit global shell coverage across public, auth, profile, dashboard, and payment pages and fill any browser-test gaps |
+| Completed tasks | 83 / 85 |
+| Remaining tasks | 2 |
+| Overall state | S11-T07 route shell/responsive checks passed; tracking update pending push |
+| Last completed task | S11-T07 Verify global shell styling and responsive layout across every route |
+| Current unfinished task | S11-T08 Run available lint, type checks, builds, and relevant tests; address regressions |
+| Next task for Codex | Run frontend lint, production build/type validation, and all relevant mock-backed browser tests |
 | Latest commit hashes | Frontend `main`: `40c0e07` (S11-T05 tracking); Backend `main`: `7ce0891` |
 | Last successful GitHub push | Frontend main `40c0e07` (S11-T05 profile verification); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S11-T07 |
-| Task description | Verify global shell styling and responsive layout across every route |
-| State | S11-T06 dashboard browser checks passed; checklist/progress commit pending push |
+| Task ID | S11-T08 |
+| Task description | Run available lint, type checks, builds, and relevant tests; address regressions |
+| State | S11-T07 route-shell checks passed; checklist/progress commit pending push |
 | Last Working Agent | Codex |
-| Current unfinished task | S11-T07 |
+| Current unfinished task | S11-T08 |
 | Repositories affected | Frontend only; backend unchanged |
 | Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `40c0e07`); backend `main` → `origin/main` (commit `7ce0891`) |
 | Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S10-T03 and S10-T04: README and checklist/progress verification only. |
 | Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
-| Work still to do | Verify shared breadcrumbs, back controls, footer, card colors, and responsive width across every page route. |
-| Tests / commands run | `node tests/dashboard-role-payments.mjs` passed all role/path access combinations, role-specific tab destinations and labels, breadcrumbs, main-card containment, admin data, and role-specific dashboards. |
-| Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
-| Changes only on local machine | S11-T06 checklist/progress update pending commit. |
-| Commits awaiting push | S11-T06 tracking commit pending. |
+| Work still to do | Run final repository lint/build and relevant browser tests. |
+| Tests / commands run | Dashboard suite now covers role dashboard routes plus accepted booking payment, payment success, and cancellation pages; checks footer/card color, pay-back green, and 375px width. Combined with services and booking suites, the browser tests cover all 16 documented page routes. `npm run lint` for the extended test passed. |
+| Results / errors | First assertion assumed `main` had a white fill; actual design leaves it transparent, so the test now targets the content card. A selector matched both the wrapper and content card; `.last()` now selects the content card. Final browser run passed. Backend retains pre-existing unrelated worktree items; these remain untouched. |
+| Changes only on local machine | S11-T07 checklist/progress and dashboard test additions pending commit. |
+| Commits awaiting push | S11-T07 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Map all page routes to existing browser tests; check payment return and checkout routes for shell/responsive coverage, adding focused mock-backed checks if needed. |
+| **Exact next action** | Run full `npm run lint`, `npm run build`, then the services, dashboard/session/payment, and booking-slots browser tests; review final Git diffs and status. |
 
 ## Verified task completion history
 
@@ -141,7 +141,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S11-T03 | Verify auth layout, password visibility, and redirects | Dashboard and services browser tests passed login/register layouts, toggle behavior, validation feedback, customer login redirect, and registration redirect; 79 of 85 checked | `64ecf7c` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S11-T04 | Verify marketplace search, sort, filters, hover, and pagination | Services browser test passed Enter search, sorting, combined filters, hover styles, and 9/3 result pagination; 80 of 85 checked | `3b0af12` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S11-T05 | Verify technician profile layout and booking functions | Compared to the profile reference and passed browser checks for desktop/mobile layout, service selection, slots, booking, role access, and reviews; 81 of 85 checked | `40c0e07` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
-| S11-T06 | Verify dashboard tabs, role restrictions, breadcrumbs, cards, and data | Dashboard browser test passed role/path matrix, tab destinations/labels, breadcrumbs, card containment, admin data, and payment overview; 82 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S11-T06 | Verify dashboard tabs, role restrictions, breadcrumbs, cards, and data | Dashboard browser test passed role/path matrix, tab destinations/labels, breadcrumbs, card containment, admin data, and payment overview; 82 of 85 checked | `c08e0dd` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S11-T07 | Verify shared shell and responsive styling across every route | Extended browser coverage to pay, success, and cancel pages; checked colors, back-link, and 375px width; combined browser suites cover the 16 documented page routes; 83 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

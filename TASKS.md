@@ -123,7 +123,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Verify `/services` search on Enter, sort-change fetching, service filtering, combined filters, hover states, and **9-per-page** pagination.
 - [x] Verify technician profile layout and functions against the screenshot and requirements.
 - [x] Verify all dashboard tabs, role restrictions, breadcrumbs, cards, and data display.
-- [ ] Verify breadcrumbs, back-button colors, footer, card backgrounds, and responsive layout across **every route**.
+- [x] Verify breadcrumbs, back-button colors, footer, card backgrounds, and responsive layout across **every route**.
 - [ ] Run available lint, type checks, builds, and relevant tests; address regressions introduced by the work.
 - [ ] Mark each finished task `[x]` only after validating it. Report any blocked items, assumptions, migrations, or remaining issues.
 

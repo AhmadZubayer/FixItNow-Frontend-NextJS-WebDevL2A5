@@ -34,6 +34,8 @@ const adminBookings = [{
   customer: { name: "Customer One" },
   service: { title: "Fan Repair", technicianProfile: { user: { name: "Technician One" } } },
 }];
+const acceptedBookingId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const completedPaymentId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 
 const send = (response, status, data) => {
   response.writeHead(status, { "content-type": "application/json" });
@@ -171,6 +173,10 @@ const backend = createHttpServer((request, response) => {
     send(response, 200, { data: adminBookings });
   } else if (request.url === "/api/admin/categories" && role === "ADMIN") {
     send(response, 200, { data: [{ id: "11111111-1111-4111-8111-111111111111", name: "Electrical", slug: "electrical", description: "Electrical work", isActive: true }] });
+  } else if (request.url === `/api/bookings/${acceptedBookingId}` && role === "CUSTOMER") {
+    send(response, 200, { data: { id: acceptedBookingId, status: "ACCEPTED", priceAtBooking: "100.00", service: { title: "Fan Repair" } } });
+  } else if (request.url === `/api/payments/${completedPaymentId}` && role === "CUSTOMER") {
+    send(response, 200, { data: { id: completedPaymentId, bookingId: acceptedBookingId, amount: "100.00", status: "COMPLETED", booking: { status: "PAID", service: { title: "Fan Repair" } } } });
   } else if (request.url?.startsWith("/api/admin/users/") && request.method === "PATCH" && role === "ADMIN") {
     let body = "";
     request.on("data", (chunk) => { body += chunk; });
@@ -503,6 +509,31 @@ try {
     });
     await nestedContext.close();
   }
+
+  const paymentContext = await browser.newContext();
+  await paymentContext.addCookies([{ name: "accessToken", value: "valid-customer", url: base }]);
+  const paymentPage = await paymentContext.newPage();
+  await paymentPage.goto(`${base}/dashboard/customer/bookings/${acceptedBookingId}/pay`);
+  await paymentPage.getByRole("heading", { name: "Pay for booking" }).waitFor();
+  await paymentPage.getByRole("button", { name: "Continue to Stripe" }).waitFor();
+  assert.equal(await paymentPage.getByText("Fan Repair").count(), 1);
+  assert.equal(await paymentPage.getByRole("link", { name: "Back to bookings" }).evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
+  assert.equal(await paymentPage.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  await paymentPage.setViewportSize({ width: 375, height: 812 });
+  assert.equal(await paymentPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+
+  await paymentPage.goto(`${base}/payment/success?paymentId=${completedPaymentId}`);
+  await paymentPage.getByText("Stripe payment confirmed by the server.").waitFor();
+  assert.equal(await paymentPage.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await paymentPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+
+  await paymentPage.goto(`${base}/payment/cancel`);
+  await paymentPage.getByRole("heading", { name: "Checkout cancelled" }).waitFor();
+  assert.equal(await paymentPage.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
+  assert.equal(await paymentPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await paymentContext.close();
 
   console.log("PASS dashboard roles, admin views, and consistent page structure");
 } finally {
