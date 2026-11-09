@@ -69,6 +69,10 @@ try {
   const page = await context.newPage();
   await page.goto(`${base}/technicians/${profileId}?serviceId=${chosenService}`);
   await page.getByRole("heading", { name: "Request a booking" }).waitFor();
+  const profileBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
+  await profileBreadcrumb.waitFor();
+  assert.equal(await profileBreadcrumb.count(), 1);
+  assert.equal(await profileBreadcrumb.getByRole("link", { name: "Services & Technicians" }).getAttribute("href"), "/services");
   const serviceCard = page.getByRole("heading", { name: "Services and prices" }).locator("..").locator("div.rounded-lg.border").first();
   assert.equal(await serviceCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await page.setViewportSize({ width: 375, height: 812 });
@@ -85,6 +89,7 @@ try {
   await page.waitForURL("**/dashboard/customer");
   assert.deepEqual(bookings, [{ serviceId: chosenService, availabilitySlotId: openSlot }]);
   await page.goto(`${base}/auth/register`);
+  await page.getByRole("navigation", { name: "breadcrumb" }).getByText("Create account").waitFor();
   assert.equal(await page.locator("footer").count(), 1);
   const accountType = page.getByRole("combobox", { name: "Account type" });
   await accountType.click();
@@ -95,6 +100,7 @@ try {
     await route.continue();
   });
   await page.goto(`${base}/dashboard/customer/bookings/${completedBooking}/review`);
+  assert.equal(await page.getByRole("navigation", { name: "breadcrumb" }).getByRole("link", { name: "Customer workspace" }).getAttribute("href"), "/dashboard/customer");
   await page.getByRole("status", { name: "Loading booking" }).waitFor();
   const rating = page.getByRole("combobox", { name: "Rating" });
   await rating.waitFor();

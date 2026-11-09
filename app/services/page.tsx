@@ -3,7 +3,6 @@ import Link from "next/link";
 import { connection } from "next/server";
 
 import EmptyState from "@/components/empty-state";
-import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import ServiceCard from "@/components/service-card";
 import ServicesFilters from "@/components/services/filters";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
@@ -52,8 +51,7 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
     <main className="mx-auto w-full max-w-7xl flex-1 space-y-6 bg-white px-4 py-8 sm:px-6">
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <Link href="/" className="font-medium text-[#9AE600] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2">← Back</Link>
-        <PageBreadcrumbs items={[{ label: "Home", href: "/" }, { label: "Services & Technicians" }]} />
-      </div>
+        </div>
       <div className="grid gap-8 lg:grid-cols-[14rem_minmax(0,1fr)]">
         <aside className="space-y-4 border-b pb-5 lg:border-r lg:border-b-0 lg:pr-6" aria-label="Service categories">
           <h2 className="text-lg font-semibold">Services</h2>

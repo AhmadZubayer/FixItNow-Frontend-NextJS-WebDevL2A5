@@ -31,7 +31,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 ## 3. Global UI and layout
 - [x] Set the fill/background of **every card** across the project to `#EFEFEF`, including dashboard cards and nested cards, while maintaining readable contrast.
 - [x] Add a simple shared **footer** with background `#EFEFEF` and display it on **every page**.
-- [ ] Display **breadcrumbs on every page**, including the services listing, individual technician profiles, individual service pages, auth pages, and all dashboard views. Make ancestor links functional.
+- [x] Display **breadcrumbs on every page**, including the services listing, individual technician profiles, individual service pages, auth pages, and all dashboard views. Make ancestor links functional.
 - [ ] Make **all back buttons** use text/icon color `#9AE600` with **no fill/background color**. Ensure back navigation behaves correctly.
 - [ ] Keep page backgrounds visually distinct from `#EFEFEF` cards, especially on `/services`.
 - [ ] Apply consistent responsive spacing, typography, hover/focus states, and accessible interaction patterns.

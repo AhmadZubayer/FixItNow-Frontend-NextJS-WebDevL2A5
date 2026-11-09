@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import EmptyState from "@/components/empty-state";
-import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import PageSkeleton from "@/components/page-skeleton";
 import PendingButton from "@/components/pending-button";
 import SearchField from "@/components/search-field";
@@ -82,7 +81,6 @@ const AdminTechniciansPage = () => {
 
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6">
-      <PageBreadcrumbs items={[{ label: "Admin workspace", href: "/dashboard/admin" }, { label: "Technicians" }]} />
       <div><h1 className="text-2xl font-semibold tracking-tight">Technician management</h1><p className="mt-1 text-sm text-muted-foreground">Search technician accounts and manage access.</p></div>
       <form onSubmit={search} className="flex max-w-lg items-end gap-2" noValidate>
         <div className="min-w-0 flex-1"><SearchField id="admin-technician-search" label="Search technicians" value={queryInput} onChange={(event) => setQueryInput(event.target.value)} placeholder="Name or email" error={queryError} /></div>

@@ -1,4 +1,4 @@
-Completion Progress: [16]%
+Completion Progress: [18]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 14 / 85 |
-| Remaining tasks | 71 |
-| Overall state | S03-T02 pushed; S03-T03 next |
-| Current task | S03-T02 complete; S03-T03 next |
+| Completed tasks | 15 / 85 |
+| Remaining tasks | 70 |
+| Overall state | S03-T03 validated; frontend push pending |
+| Current task | S03-T03 breadcrumbs on every page |
 | Last completed task | S03-T02 shared footer |
-| Next task | S03-T03 breadcrumbs on every page |
+| Next task | S03-T04 back button color and behavior |
 | Last successful GitHub push | Frontend main 332cd72 (S03-T02); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S03-T02 |
-| Task description | Add a simple shared footer with #EFEFEF background on every page |
-| State | Completed, validated, committed and pushed |
+| Task ID | S03-T03 |
+| Task description | Display breadcrumbs on every page with functional ancestor links |
+| State | Validated; frontend commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | components/site-footer.tsx, app/layout.tsx, three browser tests, TASKS.md, PROGRESS.md |
-| Work already implemented | Added a semantic shared footer with Home/Services links and #EFEFEF fill to the only root layout, after page content. |
-| Work still to do | S03-T02 delivered. Begin S03-T03 after this progress update is pushed. |
-| Tests / commands run | Frontend lint and build; services, booking, and admin browser tests verifying footer presence on public, auth and dashboard pages and computed rgb(239, 239, 239) on services. |
-| Results / errors | All checks passed. Root layout is the sole layout, so footer covers every route unless a route bypasses the app root. |
-| Changes only on local machine | This S03-T02 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S03-T03 by inventorying route breadcrumb coverage. |
+| Files changed | components/route-breadcrumbs.tsx, app/layout.tsx, five pages with duplicate local breadcrumbs, three browser tests, TASKS.md, PROGRESS.md |
+| Work already implemented | Root layout renders route-derived breadcrumbs in Suspense; dynamic and static routes have functional ancestor links. Removed five local breadcrumb instances to leave one semantic navigation per page. Mapping covers current routes and future service detail path. |
+| Work still to do | Commit and push frontend task files, then begin S03-T04. |
+| Tests / commands run | Frontend tsc, lint and production build; three browser tests checking breadcrumb count and links on services, auth, profile, review and admin routes. |
+| Results / errors | All final checks passed. Initial build identified usePathname outside Suspense on a prerendered dynamic page; root Suspense boundary fixed it and the build was rerun successfully. |
+| Changes only on local machine | S03-T03 source, tests and tracking updates pending commit/push. |
+| Commits awaiting push | S03-T03 frontend commit to create and push. |
+| **Exact next action** | Stage S03-T03 frontend files, commit/push main, record hash, then begin S03-T04. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S03-T02 |
+| Task ID | S03-T03 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -67,6 +67,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S02-T06 | Improve loading and error states | Added shared booking detail skeleton and review alert; delayed browser response verified loading status and missing booking error; lint/build passed; 12 of 85 checked | `f231ab1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T01 | Set every card fill to #EFEFEF | Updated shared card token and manual card wrappers; computed color assertions on services, profile and dashboard cards, screenshot inspection, lint and build passed; 13 of 85 checked | `6fc467e` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T02 | Add shared footer | Root layout renders semantic #EFEFEF footer; browser tests checked public, auth and dashboard routes; lint/build passed; 14 of 85 checked | `332cd72` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S03-T03 | Show breadcrumbs on all pages | Added root route-aware breadcrumb and removed duplicate locals; build, lint/type and browser link checks passed; 15 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

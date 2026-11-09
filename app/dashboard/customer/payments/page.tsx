@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import { useEffect, useState } from "react";
 
 import EmptyState from "@/components/empty-state";
@@ -30,7 +29,7 @@ const PaymentsPage = () => {
     return () => { active = false; };
   }, [retry]);
 
-  return <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6"><div><PageBreadcrumbs items={[{ label: "Bookings", href: "/dashboard/customer" }, { label: "Payments" }]} /><h1 className="mt-3 text-2xl font-semibold tracking-tight">Payment history</h1></div>{loading ? <PageSkeleton /> : error ? <p role="alert" className="text-sm text-destructive">{error} <Button variant="link" type="button" className="underline underline-offset-4" onClick={() => { setLoading(true); setError(""); setRetry((value) => value + 1); }}>Retry</Button></p> : payments.length ? <Table><TableHeader><TableRow><TableHead>Service</TableHead><TableHead>Amount</TableHead><TableHead>Provider</TableHead><TableHead>Status</TableHead><TableHead>Date</TableHead></TableRow></TableHeader><TableBody>{payments.map((payment) => <TableRow key={payment.id}><TableCell>{payment.booking.service.title}</TableCell><TableCell>৳{payment.amount}</TableCell><TableCell>{payment.provider}</TableCell><TableCell><Badge variant={payment.status === "COMPLETED" ? "default" : payment.status === "PENDING" ? "secondary" : "destructive"}>{payment.status.replaceAll("_", " ")}</Badge></TableCell><TableCell>{new Date(payment.createdAt).toLocaleDateString("en-BD", { timeZone: "Asia/Dhaka" })}</TableCell></TableRow>)}</TableBody></Table> : <EmptyState title="No payments yet" description="Payments will appear here after you start Stripe Checkout." />}</main>;
+  return <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6"><div><h1 className="mt-3 text-2xl font-semibold tracking-tight">Payment history</h1></div>{loading ? <PageSkeleton /> : error ? <p role="alert" className="text-sm text-destructive">{error} <Button variant="link" type="button" className="underline underline-offset-4" onClick={() => { setLoading(true); setError(""); setRetry((value) => value + 1); }}>Retry</Button></p> : payments.length ? <Table><TableHeader><TableRow><TableHead>Service</TableHead><TableHead>Amount</TableHead><TableHead>Provider</TableHead><TableHead>Status</TableHead><TableHead>Date</TableHead></TableRow></TableHeader><TableBody>{payments.map((payment) => <TableRow key={payment.id}><TableCell>{payment.booking.service.title}</TableCell><TableCell>৳{payment.amount}</TableCell><TableCell>{payment.provider}</TableCell><TableCell><Badge variant={payment.status === "COMPLETED" ? "default" : payment.status === "PENDING" ? "secondary" : "destructive"}>{payment.status.replaceAll("_", " ")}</Badge></TableCell><TableCell>{new Date(payment.createdAt).toLocaleDateString("en-BD", { timeZone: "Asia/Dhaka" })}</TableCell></TableRow>)}</TableBody></Table> : <EmptyState title="No payments yet" description="Payments will appear here after you start Stripe Checkout." />}</main>;
 };
 
 export default PaymentsPage;

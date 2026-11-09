@@ -132,6 +132,10 @@ try {
   const page = await context.newPage();
   await page.goto(`${base}/dashboard/admin/technicians`);
   await page.getByRole("heading", { name: "Technician management" }).waitFor();
+  const technicianBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
+  await technicianBreadcrumb.waitFor();
+  assert.equal(await technicianBreadcrumb.count(), 1);
+  assert.equal(await technicianBreadcrumb.getByRole("link", { name: "Admin workspace" }).getAttribute("href"), "/dashboard/admin");
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.setViewportSize({ width: 1280, height: 800 });

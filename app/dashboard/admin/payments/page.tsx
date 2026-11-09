@@ -4,7 +4,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import EmptyState from "@/components/empty-state";
-import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import PageSkeleton from "@/components/page-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -51,7 +50,6 @@ const AdminPaymentsPage = () => {
 
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-8 sm:px-6">
-      <PageBreadcrumbs items={[{ label: "Admin workspace", href: "/dashboard/admin" }, { label: "Payments" }]} />
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Platform payment history</h1>
         <p className="mt-1 text-sm text-muted-foreground">Completed payments show the 85% technician share and 15% platform share. Other payment states show no realized earnings.</p>

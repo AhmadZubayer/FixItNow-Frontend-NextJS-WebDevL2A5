@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import RouteBreadcrumbs from "@/components/route-breadcrumbs";
 import { Toaster } from "sonner";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
@@ -31,6 +33,9 @@ const RootLayout = ({ children }: LayoutProps<"/">) => {
     >
       <body className="min-h-full flex flex-col">
         <SiteHeader />
+        <Suspense fallback={<div className="mx-auto h-7 w-full max-w-7xl px-4 pt-4 sm:px-6" />}>
+          <RouteBreadcrumbs />
+        </Suspense>
         {children}
         <SiteFooter />
         <Toaster richColors={false} position="bottom-right" />
