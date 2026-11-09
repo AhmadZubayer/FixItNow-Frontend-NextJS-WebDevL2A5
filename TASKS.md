@@ -120,7 +120,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Check that customer, technician, and admin journeys still match `/REQUIREMENTS.md`.
 - [x] Verify navbar behavior for both signed-in and signed-out users and for all three roles.
 - [x] Verify login/sign-up layout, password visibility toggle, and auth redirects.
-- [ ] Verify `/services` search on Enter, sort-change fetching, service filtering, combined filters, hover states, and **9-per-page** pagination.
+- [x] Verify `/services` search on Enter, sort-change fetching, service filtering, combined filters, hover states, and **9-per-page** pagination.
 - [ ] Verify technician profile layout and functions against the screenshot and requirements.
 - [ ] Verify all dashboard tabs, role restrictions, breadcrumbs, cards, and data display.
 - [ ] Verify breadcrumbs, back-button colors, footer, card backgrounds, and responsive layout across **every route**.
