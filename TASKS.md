@@ -64,7 +64,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Add the standard back button (text/icon `#9AE600`, no fill) and functioning breadcrumbs.
 - [x] Clearly distinguish the white page background from `#EFEFEF` service/technician cards.
 - [x] Add a **black border effect on hover** for both service cards and technician cards.
-- [ ] Make the page responsive and visually consistent with the reference.
+- [x] Make the page responsive and visually consistent with the reference.
 
 ### Search, filters, sorting, and data
 - [ ] Connect the search field to the backend: when the user types a query and presses **Enter**, send it as an API query and refresh the results.

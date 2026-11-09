@@ -177,6 +177,10 @@ try {
   await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Plumbing" }).click();
   await page.waitForURL((url) => url.searchParams.get("categoryId") === plumbingId);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.setViewportSize({ width: 768, height: 1024 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.goto(`${base}/services`);
   await page.keyboard.press("Tab");
   assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "Skip to content");
