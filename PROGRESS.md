@@ -1,4 +1,4 @@
-Completion Progress: [21]%
+Completion Progress: [22]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 18 / 85 |
-| Remaining tasks | 67 |
-| Overall state | S03-T06 pushed; S03-T07 next |
-| Current task | S03-T06 complete; S03-T07 next |
+| Completed tasks | 19 / 85 |
+| Remaining tasks | 66 |
+| Overall state | S03-T07 validated; frontend push pending |
+| Current task | S03-T07 shared layout and styling reuse |
 | Last completed task | S03-T06 spacing and keyboard focus |
-| Next task | S03-T07 shared layout and styling solutions |
+| Next task | S04-T01 sticky global navbar |
 | Last successful GitHub push | Frontend main 3cafc17 (S03-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S03-T06 |
-| Task description | Apply consistent responsive spacing, typography, hover/focus states and accessible interactions |
-| State | Completed, validated, committed and pushed |
+| Task ID | S03-T07 |
+| Task description | Use shared layout and styling solutions instead of repeating page-by-page implementations |
+| State | Review complete; tracking push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | app/layout.tsx, components/site-header.tsx, app/globals.css, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Header now shares max-w-7xl alignment with breadcrumb/footer/services. Root skip link and main-content target support keyboard navigation; anchors get consistent focus outline. Existing responsive spacing and reduced-motion rule remain. |
-| Work still to do | S03-T06 delivered. Begin S03-T07 after this progress update is pushed. |
-| Tests / commands run | Frontend lint/build; services browser test at desktop and 375 px with keyboard Tab/Enter skip-link focus; inspected updated services screenshot. |
-| Results / errors | All checks passed. Screenshot shows aligned header, breadcrumb, content and footer; no mobile overflow. |
-| Changes only on local machine | This S03-T06 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S03-T07 by reviewing shared layout/styling reuse. |
+| Files changed | TASKS.md and PROGRESS.md tracking only |
+| Work already implemented | Audited reused SiteFooter, RouteBreadcrumbs, BackLink, PageSkeleton, BookingDetailSkeleton, EmptyState and shared bg-card token. Root layout provides shared site chrome; multiple routes consume these components. No further refactor needed for this item. |
+| Work still to do | Mark S03-T07, update count and push tracking commit, then start navbar section. |
+| Tests / commands run | Read-only reuse audit via rg and clean Git status. S03-T06 lint/build/browser tests passed and no source changed since. |
+| Results / errors | Shared site layout and styling patterns cover the touched flows; no code change needed. |
+| Changes only on local machine | S03-T07 tracking update pending commit/push. |
+| Commits awaiting push | S03-T07 tracking commit to create and push. |
+| **Exact next action** | Commit and push S03-T07 tracking files, record hash, then start S04-T01. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S03-T06 |
+| Task ID | S03-T07 |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
@@ -71,6 +71,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S03-T04 | Style and preserve back navigation | Shared transparent back link uses #9AE600 text/icon on four pages; browser href/color assertions and lint/build passed; 16 of 85 checked | `dc6da12` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T05 | Keep card and page surfaces distinct | Browser confirmed /services white page against #EFEFEF cards and prior screenshot inspection; 17 of 85 checked | `538190d` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S03-T06 | Align spacing and keyboard focus | Aligned header with content/footer; added skip link, focus target and anchor outline; keyboard/mobile test, screenshot, lint/build passed; 18 of 85 checked | `3cafc17` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S03-T07 | Reuse shared layout and styling | Audited shared footer, breadcrumb, back link, skeleton/empty components and card token; no source change needed; 19 of 85 checked | Pending frontend commit / `main` | No changes | Frontend push pending | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

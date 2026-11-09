@@ -35,7 +35,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Make **all back buttons** use text/icon color `#9AE600` with **no fill/background color**. Ensure back navigation behaves correctly.
 - [x] Keep page backgrounds visually distinct from `#EFEFEF` cards, especially on `/services`.
 - [x] Apply consistent responsive spacing, typography, hover/focus states, and accessible interaction patterns.
-- [ ] Use shared layout and styling solutions rather than repeating page-by-page implementations.
+- [x] Use shared layout and styling solutions rather than repeating page-by-page implementations.
 
 ## 4. Navigation bar
 - [ ] Make the global navbar **sticky**.
