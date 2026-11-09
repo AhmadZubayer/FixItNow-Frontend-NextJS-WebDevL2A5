@@ -1,4 +1,4 @@
-Completion Progress: [27]%
+Completion Progress: [28]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 23 / 85 |
-| Remaining tasks | 62 |
-| Overall state | S04-T04 pushed; S04-T05 next |
-| Current task | S04-T04 complete; S04-T05 next |
-| Last completed task | S04-T04 centered Services & Technicians link |
-| Next task | S04-T05 authenticated center Dashboard link |
+| Completed tasks | 24 / 85 |
+| Remaining tasks | 61 |
+| Overall state | S04-T05 validated; push pending |
+| Current task | S04-T05 authenticated center Dashboard link |
+| Last completed task | S04-T05 authenticated center Dashboard link |
+| Next task | S04-T06 authenticated name dropdown |
 | Last successful GitHub push | Frontend main fbc2929 (S04-T04); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -33,25 +33,25 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S04-T04 |
-| Task description | Show Services & Technicians in navbar center linking to /services |
-| State | Completed, validated, committed and pushed |
+| Task ID | S04-T05 |
+| Task description | Show Dashboard in navbar center only when authenticated, routed by customer/technician/admin role |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | components/site-header.tsx, tests/services-browser.mjs, tests/e2e-local.mjs selector, TASKS.md, PROGRESS.md |
-| Work already implemented | Header has left logo, centered Services & Technicians link to /services, and right account controls. Mobile center nav moves to its own row. |
-| Work still to do | S04-T04 delivered. Begin S04-T05 after this progress update is pushed. |
-| Tests / commands run | Frontend lint/build, services browser link/href/center geometry and mobile width checks, screenshot inspection. Existing real-backend E2E selector updated but E2E not run because it writes DB data. |
-| Results / errors | All run checks passed; screenshot shows centered link and readable left/right controls. |
-| Changes only on local machine | This S04-T04 hash tracking update only. |
-| Commits awaiting push | This progress tracking commit only. |
-| **Exact next action** | Push this progress record, then begin S04-T05 by moving role Dashboard navigation into the center. |
+| Files changed | components/site-header.tsx, components/session-actions.tsx, tests/services-browser.mjs, tests/dashboard-role-payments.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | SessionActions renders center navigation and right account controls from one session state. Dashboard is absent anonymously and links to the matching customer, technician or admin route when authenticated. Services remains visible during loading. |
+| Work still to do | Commit and push validated task; record commit hash and push status; then start S04-T06. |
+| Tests / commands run | Frontend lint, build (includes TypeScript), services browser and dashboard role browser tests, git diff --check. |
+| Results / errors | All checks passed. Browser asserted anonymous Dashboard omission and each of three role-specific hrefs. Real-backend E2E not run because it writes DB data. |
+| Changes only on local machine | S04-T05 source, tests, checklist and progress update. |
+| Commits awaiting push | S04-T05 task commit. |
+| **Exact next action** | Stage only S04-T05 files, commit and push frontend main to its existing upstream. |
 
 ## Verified task completion history
 
 Add **one row per verified task** after implementation and validation; include any subsequent push failures in the notes. Use the IDs derived from section and checklist position (the tasks do not need to be renamed in `TASKS.md`).
 
-| Task ID | S04-T04 |
+| Task ID | Task | Validation / completion | Frontend commit / branch | Backend commit / branch | Push status | Date |
 | --- | --- | --- | --- | --- | --- | --- |
 | S01-T01 | Read requirements and role journeys | Read full `REQUIREMENTS.md`; verified customer booking/payment/review flow, technician service/availability/job flow, admin oversight, status actions, and 85/15 split; 1 of 85 checkboxes checked | `38c35de` / `main` | — | Pushed to `origin/main` | 2026-11-08 |
 | S01-T02 | Review implementation inventory | Inspected route files, API calls, auth, role checks, backend endpoints, 8 Prisma models, 4 migrations, and frontend browser tests; 2 of 85 checked | `988aeab` / `main` | — | Pushed to `origin/main` | 2026-11-08 |

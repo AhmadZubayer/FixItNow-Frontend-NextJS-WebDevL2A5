@@ -98,6 +98,7 @@ try {
   assert((await logo.boundingBox()).x < (await page.getByRole("navigation", { name: "Main navigation" }).boundingBox()).x);
   const mainNavigation = page.getByRole("navigation", { name: "Main navigation" });
   assert.equal(await mainNavigation.getByRole("link", { name: "Services & Technicians" }).getAttribute("href"), "/services");
+  assert.equal(await mainNavigation.getByRole("link", { name: "Dashboard" }).count(), 0);
   const headerBounds = await page.locator("header").boundingBox();
   const navigationBounds = await mainNavigation.boundingBox();
   assert(Math.abs(navigationBounds.x + navigationBounds.width / 2 - (headerBounds.x + headerBounds.width / 2)) < 2);

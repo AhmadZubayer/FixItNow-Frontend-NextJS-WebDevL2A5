@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 type User = { name: string; role: "CUSTOMER" | "TECHNICIAN" | "ADMIN" };
 
-export default function SessionActions() {
+const SessionActions = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -29,7 +29,7 @@ export default function SessionActions() {
     return () => { active = false; };
   }, [pathname]);
 
-  async function logout() {
+  const logout = async () => {
     if (pending) return;
     setPending(true);
     try {
@@ -43,11 +43,17 @@ export default function SessionActions() {
     } finally {
       setPending(false);
     }
-  }
+  };
 
-  if (!loaded) return <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" />;
+  return <>
+    <nav aria-label="Main navigation" className="col-span-2 row-start-2 flex items-center justify-center gap-1 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-2">
+      <Button variant="ghost" render={<Link href="/services" />}>Services &amp; Technicians</Button>
+      {loaded && user && <Button variant="ghost" render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}>Dashboard</Button>}
+    </nav>
+    <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3">
+      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <><Button variant="ghost" render={<Link href="/auth/login" />}>Log in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></> : <Button variant="outline" onClick={logout} disabled={pending}>{pending ? "Logging out" : "Log out"}</Button>}
+    </div>
+  </>;
+};
 
-  if (!user) return <><Button variant="ghost" render={<Link href="/auth/login" />}>Log in</Button><Button render={<Link href="/auth/register" />}>Sign up</Button></>;
-
-  return <><Button variant="ghost" render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}>Dashboard</Button><Button variant="outline" onClick={logout} disabled={pending}>{pending ? "Logging out" : "Log out"}</Button></>;
-}
+export default SessionActions;

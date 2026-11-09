@@ -11,12 +11,12 @@ const SiteHeader = () => {
         <Link href="/" className="col-start-1 row-start-1 text-base font-semibold tracking-tight focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
           FixItNow
         </Link>
-        <nav aria-label="Main navigation" className="col-span-2 row-start-2 flex items-center justify-center gap-1 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-2">
-          <Button variant="ghost" render={<Link href="/services" />}>Services &amp; Technicians</Button>
-        </nav>
-        <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3">
-          <Suspense fallback={<div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" />}><SessionActions /></Suspense>
-        </div>
+        <Suspense fallback={<>
+          <nav aria-label="Main navigation" className="col-span-2 row-start-2 flex items-center justify-center gap-1 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-2">
+            <Button variant="ghost" render={<Link href="/services" />}>Services &amp; Technicians</Button>
+          </nav>
+          <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3"><div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /></div>
+        </>}><SessionActions /></Suspense>
       </div>
     </header>
   );

@@ -127,6 +127,18 @@ try {
   assert.equal(customerTechnicians.status, 307);
 
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--no-sandbox"] });
+  for (const role of ["customer", "technician", "admin"]) {
+    const roleContext = await browser.newContext();
+    await roleContext.addCookies([{ name: "accessToken", value: `valid-${role}`, url: base }]);
+    const rolePage = await roleContext.newPage();
+    await rolePage.goto(`${base}/auth/login`);
+    const mainNavigation = rolePage.getByRole("navigation", { name: "Main navigation" });
+    const dashboardLink = mainNavigation.getByRole("link", { name: "Dashboard" });
+    await dashboardLink.waitFor();
+    assert.equal(await dashboardLink.getAttribute("href"), `/dashboard/${role}`);
+    assert.equal(await dashboardLink.count(), 1);
+    await roleContext.close();
+  }
   const context = await browser.newContext();
   await context.addCookies([{ name: "accessToken", value: "valid-admin", url: base }]);
   const page = await context.newPage();
