@@ -118,7 +118,7 @@ Fix and improve the existing FixItNow project while preserving the complete work
 
 ## 11. Validation and completion
 - [x] Check that customer, technician, and admin journeys still match `/REQUIREMENTS.md`.
-- [ ] Verify navbar behavior for both signed-in and signed-out users and for all three roles.
+- [x] Verify navbar behavior for both signed-in and signed-out users and for all three roles.
 - [ ] Verify login/sign-up layout, password visibility toggle, and auth redirects.
 - [ ] Verify `/services` search on Enter, sort-change fetching, service filtering, combined filters, hover states, and **9-per-page** pagination.
 - [ ] Verify technician profile layout and functions against the screenshot and requirements.

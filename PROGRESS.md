@@ -1,4 +1,4 @@
-Completion Progress: [91]%
+Completion Progress: [92]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 91% |
+| Completion Progress | 92% |
 | Last Working Agent | Codex |
-| Completed tasks | 77 / 85 |
-| Remaining tasks | 8 |
-| Overall state | S11-T01 role journeys passed mock-backed validation; tracking update pending push |
-| Last completed task | S11-T01 Check customer, technician, and admin journeys against the requirements |
-| Current unfinished task | S11-T02 Verify navbar behavior for signed-in and signed-out users across all three roles |
-| Next task for Codex | Check header account, sign-in, and dashboard behavior for anonymous, customer, technician, and admin sessions |
-| Latest commit hashes | Frontend `main`: `cabc3a8` (S10-T05 tracking); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `cabc3a8` (S10 README consistency audit); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 78 / 85 |
+| Remaining tasks | 7 |
+| Overall state | S11-T02 navbar behavior passed for signed-out and all roles; tracking update pending push |
+| Last completed task | S11-T02 Verify navbar behavior for signed-in and signed-out users across all three roles |
+| Current unfinished task | S11-T03 Verify login/sign-up layout, password visibility toggle, and auth redirects |
+| Next task for Codex | Run browser assertions for login/register layouts, password visibility controls, validation, and role redirects |
+| Latest commit hashes | Frontend `main`: `e2832ee` (S11-T01); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `e2832ee` (S11-T01 role journeys); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S11-T02 |
-| Task description | Verify navbar behavior for signed-in and signed-out users across all three roles |
-| State | S11-T01 role journeys passed mock-backed checks; checklist/progress commit pending push |
+| Task ID | S11-T03 |
+| Task description | Verify login/sign-up layout, password visibility toggle, and auth redirects |
+| State | S11-T02 navbar review and browser test passed; checklist/progress commit pending push |
 | Last Working Agent | Codex |
-| Current unfinished task | S11-T02 |
+| Current unfinished task | S11-T03 |
 | Repositories affected | Frontend only; backend unchanged |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `cabc3a8`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `e2832ee`); backend `main` → `origin/main` (commit `7ce0891`) |
 | Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S10-T03 and S10-T04: README and checklist/progress verification only. |
 | Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
-| Work still to do | Verify the navbar for anonymous visitors and customer, technician, and admin sessions. |
-| Tests / commands run | Read role requirements and checked the journey-to-UI/API mapping; `node tests/services-browser.mjs`, `node tests/booking-slots-browser.mjs`, and `node tests/dashboard-role-payments.mjs` all passed. These use mock APIs; live Stripe checkout and credentialed database lifecycle tests were not run. |
+| Work still to do | Verify login and registration layouts, validation feedback, password toggles, and redirects into the correct role dashboard. |
+| Tests / commands run | Reviewed `SiteHeader` and `SessionActions`; dashboard browser test passed signed-out links, customer/technician/admin dashboard links, role account menus, logout, and the post-logout signed-out state. |
 | Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
-| Changes only on local machine | S11-T01 checklist/progress update pending commit. |
-| Commits awaiting push | S11-T01 tracking commit pending. |
+| Changes only on local machine | S11-T02 checklist/progress update pending commit. |
+| Commits awaiting push | S11-T02 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Inspect navbar/session-actions and browser assertions for anonymous and each signed-in role, then check off S11-T02 only after all four states are verified. |
+| **Exact next action** | Run `tests/dashboard-role-payments.mjs` and `tests/services-browser.mjs` to verify auth layouts, validation, password toggles, login destination, and registration redirect. |
 
 ## Verified task completion history
 
@@ -136,7 +136,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S10-T03 | Document project purpose, features, setup, commands, environment, and routes | Verified README content, package scripts, `API_BASE_URL`, and all 16 documented routes against source; 74 of 85 checked | `f36f0e4` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S10-T04 | Include the technician profile route in the README overview | Confirmed `/technicians/[id]` is listed and resolves to the dynamic page with profile, reviews, services, and booking form; 75 of 85 checked | `4d69a55` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S10-T05 | Ensure README matches implementation and package scripts | Verified all documented commands, environment names, 16 routes, project claims, and credential-free config against source; 76 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
-| S11-T01 | Check customer, technician, and admin journeys against the requirements | Reviewed the customer booking/payment/review, technician setup/availability/job, and admin oversight flows; marketplace, booking-slots, and dashboard role/payment browser tests passed; 77 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S11-T01 | Check customer, technician, and admin journeys against the requirements | Reviewed the customer booking/payment/review, technician setup/availability/job, and admin oversight flows; marketplace, booking-slots, and dashboard role/payment browser tests passed; 77 of 85 checked | `e2832ee` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S11-T02 | Verify navbar for signed-in, signed-out, and all roles | Source review and browser assertions confirmed anonymous controls and role-specific dashboard/account menus for customer, technician, and admin; 78 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
