@@ -186,6 +186,12 @@ try {
   assert.equal(await loginPassword.inputValue(), "sample-password");
   await loginCard.getByRole("button", { name: "Hide password" }).click();
   assert.equal(await loginPassword.getAttribute("type"), "password");
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  assert.equal(await loginCard.getByRole("heading", { name: "Log in" }).isVisible(), true);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  assert.equal(await loginPassword.isVisible(), true);
+  await page.setViewportSize({ width: 375, height: 812 });
   assert.match(await page.evaluate(() => getComputedStyle(document.body).backgroundImage), /register-bg\.png/);
   assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
   await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-login-current.png"), fullPage: true });
@@ -200,6 +206,13 @@ try {
   assert.equal(await registerPassword.inputValue(), "sample-password");
   await registerCard.getByRole("button", { name: "Hide password" }).click();
   assert.equal(await registerPassword.getAttribute("type"), "password");
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  assert.equal(await registerCard.getByRole("heading", { name: "Create an account" }).isVisible(), true);
+  await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-register-current.png"), fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 800 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  assert.equal(await registerPassword.isVisible(), true);
+  await page.screenshot({ path: resolve(tmpdir(), "fixitnow-auth-register-desktop-current.png"), fullPage: true });
   assert.match(await page.evaluate(() => getComputedStyle(document.body).backgroundImage), /register-bg\.png/);
   assert.equal(await page.evaluate(() => getComputedStyle(document.body).backgroundSize), "cover");
   assert.equal((await page.request.get(`${base}/register-bg.png`)).status(), 200);

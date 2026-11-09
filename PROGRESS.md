@@ -1,4 +1,4 @@
-Completion Progress: [36]%
+Completion Progress: [38]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,12 +8,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 31 / 85 |
-| Remaining tasks | 54 |
-| Overall state | S05-T04 pushed; S05-T05 next |
+| Completed tasks | 32 / 85 |
+| Remaining tasks | 53 |
+| Overall state | S05-T05 validated; push pending |
 | Current task | S05-T05 responsive readable auth pages |
-| Last completed task | S05-T04 preserve auth validation and redirects |
-| Next task | S05-T05 responsive readable auth pages |
+| Last completed task | S05-T05 responsive readable auth pages |
+| Next task | S05-T06 auth page breadcrumbs |
 | Last successful GitHub push | Frontend main bb5d637 (S05-T04); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
@@ -35,17 +35,17 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Task ID | S05-T05 |
 | Task description | Ensure login/register pages are responsive and forms readable over background |
-| State | Ready to start |
+| State | Validated; commit and push pending |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | None yet for S05-T05 |
-| Work already implemented | S05-T04 mock auth validation/error/redirect test pushed as bb5d637. Auth pages have opaque #EFEFEF cards over the full-screen image. |
-| Work still to do | Check login/register at mobile and desktop widths for overflow and readable text/controls, fix if needed, then push. |
-| Tests / commands run | S05-T04 dashboard role browser test and lint passed; prior build covers unchanged source. |
-| Results / errors | S05-T04 pushed; no live database affected. |
-| Changes only on local machine | This progress hash tracking update. |
-| Commits awaiting push | This progress tracking commit. |
-| **Exact next action** | Push tracking commit, then inspect auth pages at mobile and desktop widths. |
+| Files changed | tests/services-browser.mjs, TASKS.md, PROGRESS.md |
+| Work already implemented | Browser test verifies both auth cards and inputs at 375px and 1280px, no horizontal overflow; mobile and desktop registration screenshots inspected. |
+| Work still to do | Commit and push S05-T05, record hash, then start S05-T06. |
+| Tests / commands run | Services browser test and frontend lint passed; S05-T03 build passed with identical application source. |
+| Results / errors | Login and registration forms, card text and breadcrumb visibly readable over the image at both widths. |
+| Changes only on local machine | S05-T05 browser test, checklist and progress update. |
+| Commits awaiting push | S05-T05 task commit. |
+| **Exact next action** | Stage only S05-T05 files, commit and push frontend main. |
 
 ## Verified task completion history
 
