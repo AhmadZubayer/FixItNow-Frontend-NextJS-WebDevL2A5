@@ -124,8 +124,8 @@ Fix and improve the existing FixItNow project while preserving the complete work
 - [x] Verify technician profile layout and functions against the screenshot and requirements.
 - [x] Verify all dashboard tabs, role restrictions, breadcrumbs, cards, and data display.
 - [x] Verify breadcrumbs, back-button colors, footer, card backgrounds, and responsive layout across **every route**.
-- [ ] Run available lint, type checks, builds, and relevant tests; address regressions introduced by the work.
-- [ ] Mark each finished task `[x]` only after validating it. Report any blocked items, assumptions, migrations, or remaining issues.
+- [x] Run available lint, type checks, builds, and relevant tests; address regressions introduced by the work.
+- [x] Mark each finished task `[x]` only after validating it. Report any blocked items, assumptions, migrations, or remaining issues.
 
 ## Execution notes for Codex
 1. Read `/REQUIREMENTS.md` and inspect the reference files **first**.
