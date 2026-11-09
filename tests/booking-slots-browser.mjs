@@ -44,6 +44,9 @@ const send = (response, status, data) => {
 };
 const backend = createHttpServer((request, response) => {
   if (request.url === `/api/technicians/${profileId}`) return send(response, 200, { data: profile });
+  if (request.url === "/api/technicians/missing-id-404") return send(response, 404, { message: "Not found" });
+  if (request.url === "/api/technicians/invalid-id-400") return send(response, 400, { message: "Invalid ID format" });
+  if (request.url === "/api/technicians/error-id-500") return send(response, 500, { message: "Internal server error" });
   if (request.url === "/api/auth/me") {
     if (request.headers.authorization === "Bearer valid-technician") {
       return send(response, 200, { data: { name: "Technician User", role: "TECHNICIAN" } });
@@ -76,6 +79,21 @@ try {
   await anonPage.goto(`${base}/technicians/${profileId}`);
   await anonPage.getByText("Log in as a customer to book.").waitFor();
   assert.equal(await anonPage.getByRole("link", { name: "Log in" }).getAttribute("href"), "/auth/login");
+
+  // Verify missing technician (404)
+  await anonPage.goto(`${base}/technicians/missing-id-404`);
+  await anonPage.getByText("Technician or page not found").waitFor();
+  assert.equal(await anonPage.getByRole("link", { name: "Back to services" }).getAttribute("href"), "/services");
+
+  // Verify invalid technician ID format (400)
+  await anonPage.goto(`${base}/technicians/invalid-id-400`);
+  await anonPage.getByText("Technician or page not found").waitFor();
+
+  // Verify API error boundary (500)
+  await anonPage.goto(`${base}/technicians/error-id-500`);
+  await anonPage.getByText("We could not load this technician profile").waitFor();
+  assert.ok(await anonPage.getByRole("button", { name: "Try again" }).isVisible());
+
   await anonContext.close();
 
   const techContext = await browser.newContext();

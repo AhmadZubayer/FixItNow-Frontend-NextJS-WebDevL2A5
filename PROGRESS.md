@@ -1,4 +1,4 @@
-Completion Progress: [64]%
+Completion Progress: [65]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,13 +8,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completed tasks | 54 / 85 |
-| Remaining tasks | 31 |
-| Overall state | S07-T05 validated; commit and push pending |
-| Current task | S07-T05 preserve required customer-to-technician actions and permissions from /REQUIREMENTS.md |
-| Last completed task | S07-T05 preserve required customer-to-technician actions and permissions from /REQUIREMENTS.md |
-| Next task | S07-T06 handle loading, missing/invalid technician IDs, and API errors gracefully |
-| Last successful GitHub push | Frontend main c9d27d1 (S07-T04); backend main 7ce0891 (S01-T05) |
+| Completed tasks | 55 / 85 |
+| Remaining tasks | 30 |
+| Overall state | S07-T06 validated; commit and push pending |
+| Current task | S07-T06 handle loading, missing/invalid technician IDs, and API errors gracefully |
+| Last completed task | S07-T06 handle loading, missing/invalid technician IDs, and API errors gracefully |
+| Next task | S07-T07 apply global card styling, back-button styling, responsiveness, and footer |
+| Last successful GitHub push | Frontend main 5096a2b (S07-T06); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S07-T05 |
-| Task description | Preserve required customer-to-technician actions and permissions from /REQUIREMENTS.md (do not invent new business flows) |
-| State | Validated; commit and push pending |
+| Task ID | S07-T07 |
+| Task description | Apply global card styling, back-button styling, responsiveness, and footer |
+| State | In progress |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | tests/booking-slots-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Verified customer-to-technician booking journey permissions: anonymous visitor receives login prompt linking to /auth/login; technician user receives role restriction message; customer receives interactive booking with active slot validation and single-service booking model. Validated in automated browser test. |
-| Work still to do | Commit and push S07-T05, record hash, then begin S07-T06. |
-| Tests / commands run | `npm run lint`, `node tests/booking-slots-browser.mjs` passed. |
-| Results / errors | Verified role permission states and customer booking submission. |
-| Changes only on local machine | S07-T05 test updates, TASKS.md and PROGRESS.md. |
-| Commits awaiting push | S07-T05 task commit. |
-| **Exact next action** | Stage only S07-T05 files, commit and push frontend main. |
+| Files changed | app/technicians/[id]/page.tsx, tests/booking-slots-browser.mjs, PROGRESS.md |
+| Work already implemented | S07-T06 completed and validated. Auditing profile cards for #EFEFEF fill, #9AE600 transparent BackLink, 375px mobile responsiveness without horizontal overflow, and shared footer. |
+| Work still to do | Verify all styling constraints and responsive behavior across profile components, update tests if needed, mark S07-T07 complete. |
+| Tests / commands run | `npm run lint`, `npm run build`, `node tests/booking-slots-browser.mjs` passed. |
+| Results / errors | All checks passing. |
+| Changes only on local machine | S07-T07 audit. |
+| Commits awaiting push | None currently pending. |
+| **Exact next action** | Audit card styling, back-button styling, responsiveness, and footer on `/technicians/[id]`. |
 
 ## Verified task completion history
 
@@ -106,6 +106,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S07-T02 | Show functional breadcrumbs above profile content | Browser verified route breadcrumbs with functional ancestor links positioned above profile content; 51 of 85 checked | `8de96e9` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T03 | Match layout and presentation in UI reference | Browser verified two-column layout, customer reviews, provided services cards, and booking form structure; 52 of 85 checked | `492fca0` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S07-T04 | Implement reference interactions and data | Browser verified interactive service selection, real-time price updates, active slot selection, and booking submission; 53 of 85 checked | `c9d27d1` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T05 | Preserve required customer-to-technician actions and permissions | Automated browser test verified visitor login prompt, role restrictions, and active customer booking submission; 54 of 85 checked | `62502b7` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S07-T06 | Handle loading, missing/invalid technician IDs, and API errors gracefully | Automated browser test verified tailored loading skeleton, 404 missing ID, 400 invalid ID, and 500 error boundary; 55 of 85 checked | `5096a2b` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 

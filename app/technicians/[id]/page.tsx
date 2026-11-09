@@ -19,13 +19,24 @@ const TechnicianPage = async ({
   await connection();
   const { id } = await params;
   const { serviceId } = await searchParams;
+
+  if (!id || id === "undefined" || id.trim() === "") {
+    notFound();
+  }
+
   let technician;
 
   try {
     technician = await getTechnician(id);
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 404) notFound();
+    if (axios.isAxiosError(error) && (error.response?.status === 404 || error.response?.status === 400)) {
+      notFound();
+    }
     throw error;
+  }
+
+  if (!technician) {
+    notFound();
   }
 
   return (
