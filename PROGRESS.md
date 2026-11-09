@@ -1,4 +1,4 @@
-Completion Progress: [94]%
+Completion Progress: [95]%
 
 # FixItNow — Implementation Progress & Resume Log
 
@@ -8,16 +8,16 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Current value |
 | --- | --- |
-| Completion Progress | 94% |
+| Completion Progress | 95% |
 | Last Working Agent | Codex |
-| Completed tasks | 80 / 85 |
-| Remaining tasks | 5 |
-| Overall state | S11-T04 marketplace interaction checks passed; tracking update pending push |
-| Last completed task | S11-T04 Verify `/services` search, sorting, filtering, hover, and 9-per-page pagination |
-| Current unfinished task | S11-T05 Verify technician profile layout and functions against the screenshot and requirements |
-| Next task for Codex | Review and rerun the profile/booking browser test against the technician workflow and responsive layout |
-| Latest commit hashes | Frontend `main`: `64ecf7c` (S11-T03 tracking); Backend `main`: `7ce0891` |
-| Last successful GitHub push | Frontend main `64ecf7c` (S11-T03 auth validation); backend main `7ce0891` (S01-T05) |
+| Completed tasks | 81 / 85 |
+| Remaining tasks | 4 |
+| Overall state | S11-T05 profile layout and booking interactions passed; tracking update pending push |
+| Last completed task | S11-T05 Verify technician profile layout and functions against the screenshot and requirements |
+| Current unfinished task | S11-T06 Verify dashboard tabs, role restrictions, breadcrumbs, cards, and data display |
+| Next task for Codex | Rerun the dashboard browser suite and verify all three role dashboards and nested routes |
+| Latest commit hashes | Frontend `main`: `3b0af12` (S11-T04 tracking); Backend `main`: `7ce0891` |
+| Last successful GitHub push | Frontend main `3b0af12` (S11-T04 marketplace validation); backend main `7ce0891` (S01-T05) |
 | Known issues and blockers | None |
 | Last updated | 2026-11-09 |
 
@@ -37,22 +37,22 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S11-T05 |
-| Task description | Verify technician profile layout and functions against the screenshot and requirements |
-| State | S11-T04 marketplace browser assertions passed; checklist/progress commit pending push |
+| Task ID | S11-T06 |
+| Task description | Verify dashboard tabs, role restrictions, breadcrumbs, cards, and data display |
+| State | S11-T05 profile and booking browser checks passed; checklist/progress commit pending push |
 | Last Working Agent | Codex |
-| Current unfinished task | S11-T05 |
+| Current unfinished task | S11-T06 |
 | Repositories affected | Frontend only; backend unchanged |
-| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `64ecf7c`); backend `main` → `origin/main` (commit `7ce0891`) |
+| Branches and remotes | Frontend `main` → `origin/main` (latest pushed commit `3b0af12`); backend `main` → `origin/main` (commit `7ce0891`) |
 | Files changed | S10-T01: `README.md`, `TASKS.md`, `PROGRESS.md`. S10-T03 and S10-T04: README and checklist/progress verification only. |
 | Work already implemented | Replaced the create-next-app template with a FixItNow frontend README describing the project, features, requirements, `API_BASE_URL`, setup, package scripts, testing caveat, main routes, and source folders. The technician profile route is listed. S09 section remains complete and pushed. |
-| Work still to do | Verify the technician profile layout, service selection, available/booked slot states, booking action, role permissions, reviews, and responsive behavior. |
-| Tests / commands run | `node tests/services-browser.mjs` passed, including Enter search, query-triggered sorting, category/service/location/price/rating filters, combined query forwarding, card hover border, 9 results on page one, and 3 on page two. |
+| Work still to do | Verify all dashboard tab destinations, role guards, breadcrumb order, main-card containment, and role-specific data/actions. |
+| Tests / commands run | Viewed the technician profile reference and reran `node tests/booking-slots-browser.mjs`; it passed desktop two-column/mobile stack, profile/reviews/services, service selection and price, booked/available slot states, booking submission, visitor/technician restrictions, and review states. |
 | Results / errors | Frontend has no committed `.env.example`; README documents the custom app variable by name and includes no credentials. Backend retains pre-existing unrelated worktree items; these remain untouched. |
-| Changes only on local machine | S11-T04 checklist/progress update pending commit. |
-| Commits awaiting push | S11-T04 tracking commit pending. |
+| Changes only on local machine | S11-T05 checklist/progress update pending commit. |
+| Commits awaiting push | S11-T05 tracking commit pending. |
 | Known issues / blockers | None. |
-| **Exact next action** | Inspect and rerun `tests/booking-slots-browser.mjs` to validate the profile's layout, booking controls, permission states, and responsive behavior. |
+| **Exact next action** | Rerun `tests/dashboard-role-payments.mjs` and inspect assertions for all role tabs, routes, role guard combinations, breadcrumbs, card containment, and displayed dashboard data. |
 
 ## Verified task completion history
 
@@ -139,7 +139,8 @@ Add **one row per verified task** after implementation and validation; include a
 | S11-T01 | Check customer, technician, and admin journeys against the requirements | Reviewed the customer booking/payment/review, technician setup/availability/job, and admin oversight flows; marketplace, booking-slots, and dashboard role/payment browser tests passed; 77 of 85 checked | `e2832ee` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S11-T02 | Verify navbar for signed-in, signed-out, and all roles | Source review and browser assertions confirmed anonymous controls and role-specific dashboard/account menus for customer, technician, and admin; 78 of 85 checked | `eb7a447` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
 | S11-T03 | Verify auth layout, password visibility, and redirects | Dashboard and services browser tests passed login/register layouts, toggle behavior, validation feedback, customer login redirect, and registration redirect; 79 of 85 checked | `64ecf7c` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
-| S11-T04 | Verify marketplace search, sort, filters, hover, and pagination | Services browser test passed Enter search, sorting, combined filters, hover styles, and 9/3 result pagination; 80 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
+| S11-T04 | Verify marketplace search, sort, filters, hover, and pagination | Services browser test passed Enter search, sorting, combined filters, hover styles, and 9/3 result pagination; 80 of 85 checked | `3b0af12` / `main` | No changes | Pushed to `origin/main` | 2026-11-09 |
+| S11-T05 | Verify technician profile layout and booking functions | Compared to the profile reference and passed browser checks for desktop/mobile layout, service selection, slots, booking, role access, and reviews; 81 of 85 checked | Pending tracking commit / `main` | No changes | Pending push | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
