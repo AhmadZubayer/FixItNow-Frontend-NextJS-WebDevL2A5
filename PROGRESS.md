@@ -10,11 +10,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 | --- | --- |
 | Completed tasks | 26 / 85 |
 | Remaining tasks | 59 |
-| Overall state | S04-T07 validated; push pending |
-| Current task | S04-T07 signed-out Sign in button |
+| Overall state | S04-T07 pushed; S04-T08 next |
+| Current task | S04-T08 auth state, role route, mobile and logout updates |
 | Last completed task | S04-T07 signed-out Sign in button |
 | Next task | S04-T08 auth state, role route, mobile and logout updates |
-| Last successful GitHub push | Frontend main 0ba751a (S04-T06); backend main 7ce0891 (S01-T05) |
+| Last successful GitHub push | Frontend main 01aba14 (S04-T07); backend main 7ce0891 (S01-T05) |
 | Last updated | 2026-11-09 |
 
 **Progress formula:** `round(100 × checked TASKS.md boxes / all TASKS.md boxes)`; initially `0 / 85 = 0%`. Recount if `TASKS.md` changes. Replace the value in the first line with the new integer after every completed task; for example `Completion Progress: [24]%`.
@@ -33,19 +33,19 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 | Field | Details |
 | --- | --- |
-| Task ID | S04-T07 |
-| Task description | Keep existing Sign in button and behavior for signed-out users |
-| State | Validated; commit and push pending |
+| Task ID | S04-T08 |
+| Task description | Ensure navbar auth state, role routing, mobile navigation and logout update without stale UI |
+| State | Ready to start |
 | Repositories affected | Frontend only |
 | Branches and remotes | Frontend `main` → `origin/main`; backend `main` → `origin/main` (3 pre-existing unpushed commits) |
-| Files changed | components/session-actions.tsx, tests/services-browser.mjs, TASKS.md, PROGRESS.md |
-| Work already implemented | Anonymous header button reads Sign in and still links to /auth/login. |
-| Work still to do | Commit and push S04-T07, record hash, then start S04-T08. |
-| Tests / commands run | Frontend lint and build (including TypeScript), services browser navigation test, git diff check next. |
-| Results / errors | Browser followed Sign in to /auth/login and found the login form; all run checks passed. |
-| Changes only on local machine | S04-T07 source, test, checklist and progress update. |
-| Commits awaiting push | S04-T07 task commit. |
-| **Exact next action** | Stage only S04-T07 files, commit and push frontend main. |
+| Files changed | None yet for S04-T08 |
+| Work already implemented | S04-T07 Sign in label and route check pushed as 01aba14. |
+| Work still to do | Inspect login/logout updates and responsive navbar, address stale state, validate all roles and mobile interaction, then push. |
+| Tests / commands run | S04-T07 frontend lint/build and services browser test passed. |
+| Results / errors | S04-T07 pushed; real-backend E2E not run because it writes DB data. |
+| Changes only on local machine | This progress hash tracking update. |
+| Commits awaiting push | This progress tracking commit. |
+| **Exact next action** | Push tracking commit, then inspect session changes around login, logout and responsive header. |
 
 ## Verified task completion history
 
@@ -78,6 +78,7 @@ Add **one row per verified task** after implementation and validation; include a
 | S04-T04 | Center Services & Technicians link | Reflowed header to three zones and mobile second row; browser center/href checks, screenshot, lint/build passed; 23 of 85 checked | `fbc2929` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T05 | Center authenticated Dashboard link | Browser confirmed anonymous omission and customer/technician/admin role hrefs; lint/build and diff checks passed; 24 of 85 checked | `66c9009` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 | S04-T06 | Add full-name account dropdown | Shadcn dropdown exposes Log out; browser confirmed menu and session cookie clearing; lint/build passed; 25 of 85 checked | `0ba751a` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
+| S04-T07 | Keep signed-out Sign in button | Link label aligned with checklist and browser followed it to /auth/login; lint/build passed; 26 of 85 checked | `01aba14` / `main` | No changes | Pushed to origin/main | 2026-11-09 |
 
 ## Blockers, decisions, and risks
 
