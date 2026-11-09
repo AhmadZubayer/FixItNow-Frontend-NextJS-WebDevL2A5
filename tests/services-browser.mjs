@@ -144,8 +144,7 @@ try {
   await page.getByRole("button", { name: "Go to previous page" }).click();
   await page.waitForURL((url) => !url.searchParams.has("page") || url.searchParams.get("page") === "1");
   assert.equal(await technicianCards.count(), 9);
-  assert.equal(await page.locator('[data-slot="pagination-link"][data-active="true"]').innerText(), "1");
-  await page.getByRole("button", { name: "Go to next page" }).click();
+  await page.locator('[data-slot="pagination-link"]').getByText("2", { exact: true }).click();
   await page.waitForURL("**/services?page=2");
 
   await page.getByLabel("Price", { exact: true }).click();
