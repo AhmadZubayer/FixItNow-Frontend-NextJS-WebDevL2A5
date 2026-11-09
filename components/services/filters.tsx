@@ -46,7 +46,7 @@ const ServicesFilters = ({ categories, initial, errors }: ServicesFiltersProps) 
       <div className="grid gap-3 sm:grid-cols-3">
         <div className="space-y-1">
           <Label htmlFor="service-category">Category</Label>
-          <Select value={selectValue(initial.categoryId)} onValueChange={(value) => update({ categoryId: value === "all" ? "" : value ?? "", serviceId: "" })}>
+          <Select value={selectValue(initial.categoryId)} onValueChange={(value) => update({ categoryId: value === "all" ? "" : value ?? "", serviceId: "", serviceTitle: "" })}>
             <SelectTrigger id="service-category" className="h-10 w-full rounded-full"><SelectValue>{(value: string) => value === "all" ? "All categories" : categories.find((category) => category.id === value)?.name ?? "All categories"}</SelectValue></SelectTrigger>
             <SelectContent><SelectItem value="all">All categories</SelectItem>{categories.map((category) => <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>)}</SelectContent>
           </Select>

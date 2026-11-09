@@ -63,6 +63,7 @@ const backend = createHttpServer((request, response) => {
   }
   if (url.pathname === "/api/technicians") {
     let matches = technicians.filter((technician) => !url.searchParams.has("categoryId") || technician.services[0].category.id === url.searchParams.get("categoryId"));
+    if (url.searchParams.has("serviceTitle")) matches = matches.filter((technician) => technician.services[0].title.toLowerCase() === url.searchParams.get("serviceTitle").toLowerCase());
     if (url.searchParams.has("serviceId")) matches = matches.filter((technician) => technician.services[0].id === url.searchParams.get("serviceId"));
     if (url.searchParams.has("q")) matches = matches.filter((technician) => technician.services[0].title.toLowerCase().includes(url.searchParams.get("q").toLowerCase()));
     if (url.searchParams.has("location")) matches = matches.filter((technician) => technician.location.toLowerCase().includes(url.searchParams.get("location").toLowerCase()));
@@ -129,8 +130,7 @@ try {
   assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   assert.equal(await page.locator("#service-results, #service-location, #min-price, #max-price, #minimum-rating").count(), 0);
   await technicianCards.first().hover();
-  await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).borderTopColor === "rgb(0, 0, 0)");
-  assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).borderTopColor), "rgb(0, 0, 0)");
+  assert.equal(await technicianCards.first().evaluate((element) => getComputedStyle(element).borderTopColor), "rgba(0, 0, 0, 0)");
   await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).backgroundColor === "rgb(154, 230, 0)");
   await page.mouse.move(0, 0);
   await page.waitForFunction(() => getComputedStyle(document.querySelector("section[aria-labelledby='technician-results'] a[href^='/technicians/']")).backgroundColor === "rgb(239, 239, 239)");
@@ -173,7 +173,16 @@ try {
   await page.waitForURL("**ratingSort=desc*");
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("ratingSort") === "desc"));
 
+  const serviceNavigation = page.getByRole("navigation", { name: "Filter by service" });
+  assert.equal(await serviceNavigation.getByRole("link", { name: "Electrical", exact: true }).count(), 0);
+  await serviceNavigation.getByRole("link", { name: "Fan Repair 1", exact: true }).click();
+  await page.waitForURL(url => url.searchParams.get("serviceTitle") === "Fan Repair 1");
+  await technicianCards.first().waitFor();
+  assert.equal(await technicianCards.count(), 1);
+  assert.match(await technicianCards.first().getAttribute("href"), /serviceId=44444444-4444-4444-8444-000000000001/);
+
   const selectedService = new URL(page.url());
+  selectedService.searchParams.delete("serviceTitle");
   selectedService.searchParams.set("serviceId", "44444444-4444-4444-8444-000000000001");
   await page.goto(selectedService.href);
   await technicianCards.first().waitFor();
@@ -181,7 +190,8 @@ try {
   assert(observed.some((url) => url.pathname === "/api/technicians" && url.searchParams.get("serviceId") === "44444444-4444-4444-8444-000000000001" && url.searchParams.get("q") === "Fan" && url.searchParams.get("priceSort") === "desc"));
   assert.equal(await page.getByText("Showing technicians for the selected service.").count(), 1);
 
-  await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Electrical" }).click();
+  await page.getByRole("combobox", { name: "Category" }).click();
+  await page.getByRole("option", { name: "Electrical", exact: true }).click();
   await page.waitForURL((url) => url.searchParams.get("categoryId") === categoryId && !url.searchParams.has("serviceId") && !url.searchParams.has("page"));
   assert.equal(await technicianCards.count(), 9);
 
@@ -218,7 +228,8 @@ try {
   assert.match(headerStyle.blur, /blur\(/);
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-  await page.getByRole("navigation", { name: "Filter by category" }).getByRole("link", { name: "Plumbing" }).click();
+  await page.getByRole("combobox", { name: "Category" }).click();
+  await page.getByRole("option", { name: "Plumbing", exact: true }).click();
   await page.waitForURL((url) => url.searchParams.get("categoryId") === plumbingId);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.setViewportSize({ width: 768, height: 1024 });

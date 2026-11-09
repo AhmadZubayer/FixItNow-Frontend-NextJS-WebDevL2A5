@@ -6,7 +6,7 @@ import EmptyState from "@/components/empty-state";
 import BackLink from "@/components/back-link";
 import ServicesFilters from "@/components/services/filters";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { getCategories, getTechniciansPage } from "@/lib/public-api";
+import { getCategories, getServices, getTechniciansPage } from "@/lib/public-api";
 import { searchSchema } from "@/validations/search.validation";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -23,10 +23,14 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
   technicianParams.limit = "9";
   technicianParams.page = String(filters?.page ?? 1);
 
-  const [categories, technicianPage] = await Promise.all([
+  const [categories, services, technicianPage] = await Promise.all([
     getCategories(),
+    getServices(filters?.categoryId ? { categoryId: filters.categoryId } : undefined),
     filters ? getTechniciansPage(technicianParams) : Promise.resolve({ technicians: [], meta: { page: 1, limit: 9, total: 0 } }),
   ]);
+  const serviceTitles = [...new Map(services.map(({ title }) => [title.toLowerCase(), title])).values()]
+    .sort((a, b) => a.localeCompare(b));
+  const selectedTitle = filters?.serviceTitle?.toLowerCase();
   const technicians = technicianPage.technicians;
   const pageCount = Math.max(1, Math.ceil(technicianPage.meta.total / 9));
   const page = technicianPage.meta.page;
@@ -49,12 +53,12 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
         <BackLink href="/" />
         </div>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[15rem_minmax(0,1fr)]">
-        <aside className="min-w-0 space-y-4 border-b pb-5 lg:border-r lg:border-b-0 lg:pr-6" aria-label="Service categories">
+        <aside className="min-w-0 space-y-4 border-b pb-5 lg:border-r lg:border-b-0 lg:pr-6" aria-label="Available services">
           <h2 className="text-lg font-semibold">Services</h2>
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col" aria-label="Filter by category">
-            <Link href={hrefWith({ categoryId: "", serviceId: "", page: "" })} aria-current={!filters?.categoryId ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap ${!filters?.categoryId ? "bg-[#9AE600]/30 font-semibold hover:bg-[#9AE600]/40" : "hover:bg-[#EFEFEF]"}`}>All</Link>
-            {categories.map((category) => (
-              <Link key={category.id} href={hrefWith({ categoryId: category.id, serviceId: "", page: "" })} aria-current={filters?.categoryId === category.id ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm whitespace-nowrap ${filters?.categoryId === category.id ? "bg-[#9AE600]/30 font-semibold hover:bg-[#9AE600]/40" : "hover:bg-[#EFEFEF]"}`}>{category.name}</Link>
+          <nav className="flex gap-1 overflow-x-auto lg:max-h-[32rem] lg:flex-col lg:overflow-y-auto lg:p-1" aria-label="Filter by service">
+            <Link href={hrefWith({ serviceTitle: "", serviceId: "", page: "" })} aria-current={!selectedTitle && !filters?.serviceId ? "page" : undefined} className="shrink-0 rounded-full px-4 py-2 text-sm hover:bg-[#EFEFEF] aria-[current=page]:bg-[#9AE600]/30 aria-[current=page]:font-semibold">All</Link>
+            {serviceTitles.map(title => (
+              <Link key={title} href={hrefWith({ serviceTitle: title, serviceId: "", page: "" })} aria-current={selectedTitle === title.toLowerCase() ? "page" : undefined} className="shrink-0 rounded-full px-4 py-2 text-sm whitespace-nowrap hover:bg-[#EFEFEF] aria-[current=page]:bg-[#9AE600]/30 aria-[current=page]:font-semibold lg:whitespace-normal">{title}</Link>
             ))}
           </nav>
         </aside>
@@ -66,9 +70,10 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
           </div>
           <section className="space-y-3" aria-labelledby="technician-results">
             <div className="flex items-baseline justify-between"><h2 id="technician-results" className="sr-only">Technician results</h2><span className="text-xs text-muted-foreground">{technicianPage.meta.total} results</span></div>
-            {filters?.serviceId && <p className="text-sm text-muted-foreground">Showing technicians for the selected service.</p>}
-            {technicians.length ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{technicians.map((technician) => (
-              <Link key={technician.id} href={`/technicians/${technician.id}${filters?.serviceId ? `?serviceId=${encodeURIComponent(filters.serviceId)}` : ""}`} className="flex min-h-44 flex-col gap-3 rounded-xl border border-transparent group bg-[#EFEFEF] p-4 transition-colors hover:border-black hover:bg-[#9AE600] focus-visible:border-black focus-visible:outline-2 focus-visible:outline-offset-2">
+            {(filters?.serviceId || selectedTitle) && <p className="text-sm text-muted-foreground">Showing technicians for the selected service.</p>}
+            {technicians.length ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{technicians.map((technician) => {
+              const serviceId = filters?.serviceId ?? (selectedTitle ? technician.services[0]?.id : undefined);
+              return <Link key={technician.id} href={`/technicians/${technician.id}${serviceId ? `?serviceId=${encodeURIComponent(serviceId)}` : ""}`} className="group flex min-h-44 flex-col gap-3 rounded-xl border border-transparent bg-[#EFEFEF] p-4 transition-colors hover:bg-[#9AE600] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800">
                 <div className="flex items-start gap-3">
                   {technician.profilePhoto ? <Image src={technician.profilePhoto} alt="" width={48} height={48} unoptimized className="size-12 rounded-full object-cover" /> : <div aria-hidden="true" className="flex size-12 items-center justify-center rounded-full bg-white font-semibold">{technician.user.name.charAt(0)}</div>}
                   <div><h3 className="font-semibold">{technician.user.name}</h3><p className="text-xs text-muted-foreground group-hover:text-black">{technician.location}</p></div>
@@ -76,7 +81,7 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
                 <p className="line-clamp-2 text-sm text-muted-foreground group-hover:text-black">{technician.bio || "Professional home services."}</p>
                 <div className="mt-auto flex items-center justify-between gap-2 text-sm"><span>★ {technician.averageRating.toFixed(1)} ({technician.reviewCount})</span><span className="font-semibold">{technician.services.length ? `From ৳${Math.min(...technician.services.map((service) => Number(service.price))).toFixed(0)}` : "View profile"}</span></div>
               </Link>
-            ))}</div> : <EmptyState title="No technicians found" description="Try a different search or filter." />}
+            })}</div> : <EmptyState title="No technicians found" description="Try a different search or filter." />}
             {technicianPage.meta.total > 0 && <Pagination className="pt-4"><PaginationContent>
               {page > 1 && <PaginationItem><PaginationPrevious href={hrefWith({ page: String(page - 1) })} /></PaginationItem>}
               {visiblePages.map((number) => <PaginationItem key={number}><PaginationLink href={hrefWith({ page: String(number) })} isActive={number === page}>{number}</PaginationLink></PaginationItem>)}

@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -113,8 +114,8 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
                 disabled={!isSelected && values.serviceIds.length >= 50}
                 onClick={() => toggleService(service.id)}
                 className={cn(
-                  "h-auto min-w-0 justify-between gap-3 rounded-lg bg-card p-4 text-left whitespace-normal text-card-foreground hover:border-black",
-                  isSelected ? "border-black ring-1 ring-black" : ""
+                  "h-auto min-w-0 justify-between gap-3 rounded-lg bg-card p-4 text-left whitespace-normal text-card-foreground hover:bg-[#9AE600] hover:text-black focus-visible:outline-green-800",
+                  isSelected && "border-[#9AE600]"
                 )}
               >
                 <span className="min-w-0"><span className="block text-sm font-semibold sm:text-base">{service.title}</span><span className="block text-xs text-muted-foreground">{service.category?.name} · {service.durationMinutes} min</span></span>
@@ -143,9 +144,15 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
             <form onSubmit={handleSubmit} className="w-full space-y-5" noValidate>
               <div className="space-y-2 rounded-lg border bg-background/50 p-3" aria-live="polite">
                 <p className="text-sm font-medium">Selected services</p>
-                <p className="text-xs text-muted-foreground">Use the service cards to add or remove services for this visit.</p>
                 {selectedServices.length > 0 && <ul className="flex flex-wrap gap-2">
-                  {selectedServices.map(service => <li key={service.id} className="rounded-full border bg-background px-3 py-1 text-xs">{service.title}</li>)}
+                  {selectedServices.map(service => (
+                    <li key={service.id} className="flex min-w-0 items-center gap-1 rounded-full bg-[#9AE600] py-0.5 pr-1 pl-3 text-xs text-black">
+                      <span>{service.title}</span>
+                      <Button type="button" variant="ghost" size="icon-xs" className="rounded-full hover:bg-black/10 focus-visible:outline-green-800" aria-label={`Remove ${service.title}`} onClick={() => toggleService(service.id)}>
+                        <X aria-hidden />
+                      </Button>
+                    </li>
+                  ))}
                 </ul>}
                 {errors.serviceIds && <p className="text-xs text-destructive">{errors.serviceIds[0]}</p>}
                 <div className="flex items-end justify-between gap-2">
@@ -189,12 +196,12 @@ const BookingForm = ({ services, slots, initialServiceId }: BookingFormProps) =>
                           setValues((current) => ({ ...current, availabilitySlotId: slot.id }));
                           setErrors({});
                         }}
-                        style={isSelected ? { backgroundColor: "#9AE600", color: "#000000", borderColor: "#000000" } : undefined}
+                        style={isSelected ? { backgroundColor: "#9AE600", color: "#000000", borderColor: "#9AE600" } : undefined}
                         className={cn(
                           "h-auto min-w-0 flex-col items-center justify-center rounded-xl px-3 py-2.5 text-center text-sm",
-                          available && "hover:border-black",
+                          available && "hover:border-[#9AE600]",
                           isSelected
-                            ? "border-black !bg-[#9AE600] font-semibold text-black hover:!bg-[#9AE600]"
+                            ? "border-[#9AE600] !bg-[#9AE600] font-semibold text-black hover:!bg-[#9AE600]"
                             : "bg-background"
                         )}
                       >

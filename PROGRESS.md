@@ -256,3 +256,9 @@ Append a short entry whenever a session ends or a usage limit approaches:
 - Live frontend API checks passed for valid two-service booking (BDT 2,100), duplicate and mixed-technician rejection, insufficient time, prevention of a second booking on the same slot, cancellation, and legacy single-service request. QA bookings were cancelled.
 - Backend build, typecheck, and four regression tests passed. Backend main commit 4eec14e pushed to origin/main. Checklist remains 85 / 85 (100%).
 - Final frontend lint, production build with TypeScript, and all three browser regression suites passed. Browser coverage verifies live total updates, removal, combined-duration slot restrictions, multi-service submission, and payment display.
+
+## Service selection UI follow-up (2026-11-10)
+
+- Current task: list real service titles in the discovery sidebar, remove black selection borders, add removable lime pills, and remove the marked profile skills and helper text.
+- Resume checkpoint: verify exact service-title filtering and preselection, then run frontend and backend checks and push backend first.
+- Verified: frontend lint, production build, and services and booking Chrome suites passed. Backend build, typecheck, and four regression tests passed. Main database exact-title query found ten matching technicians. No migration was needed. Backend main 6fa0753 pushed first. Checklist remains 85 / 85 (100%).

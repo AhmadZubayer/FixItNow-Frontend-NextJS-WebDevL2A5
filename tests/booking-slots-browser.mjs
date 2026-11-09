@@ -126,7 +126,7 @@ try {
   const breadcrumbTop = await profileBreadcrumb.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   const contentTop = await page.locator("main").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
   assert.ok(breadcrumbTop < contentTop, "Breadcrumbs must appear above profile content");
-  const serviceCard = page.getByRole("button", { name: /Other service/ });
+  const serviceCard = page.getByRole("button", { name: /^Other service/ });
   assert.equal(await serviceCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   const profileCard = page.locator("main div.rounded-xl.border.bg-card").first();
   assert.equal(await profileCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
@@ -153,16 +153,21 @@ try {
   const leftBox = await leftCol.evaluate((element) => element.getBoundingClientRect());
   const rightBox = await rightCol.evaluate((element) => element.getBoundingClientRect());
   assert.ok(leftBox.right <= rightBox.left, "Left and right columns must be positioned side-by-side on desktop");
-  const chosen = page.getByRole("button", { name: /Chosen service/ });
-  const other = page.getByRole("button", { name: /Other service/ });
+  const chosen = page.getByRole("button", { name: /^Chosen service/ });
+  const other = page.getByRole("button", { name: /^Other service/ });
   await page.getByText("Selected services", { exact: true }).waitFor();
   assert.equal(await chosen.getAttribute("aria-pressed"), "true");
+  assert.equal(await chosen.evaluate(element => getComputedStyle(element).borderColor), "rgb(154, 230, 0)");
   assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳200");
+  await other.hover();
+  await page.waitForFunction(() => [...document.querySelectorAll('button[aria-pressed]')].some(
+    element => element.textContent.includes("Other service") && getComputedStyle(element).backgroundColor === "rgb(154, 230, 0)"
+  ));
   await other.click();
   assert.equal(await other.getAttribute("aria-pressed"), "true");
   assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳300");
   assert.equal(await page.getByRole("button", { name: /Too short/ }).isDisabled(), true);
-  await other.click();
+  await page.getByRole("button", { name: "Remove Other service", exact: true }).click();
   assert.equal(await page.locator("p.text-xl.font-bold, span.text-xl.font-bold").innerText(), "৳200");
   await other.click();
   const booked = page.getByRole("button", { name: /Booked/ });

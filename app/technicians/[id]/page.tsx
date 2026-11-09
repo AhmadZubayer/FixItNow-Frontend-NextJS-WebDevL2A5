@@ -4,7 +4,6 @@ import { connection } from "next/server";
 import { MapPin, Star } from "lucide-react";
 
 import BackLink from "@/components/back-link";
-import { Badge } from "@/components/ui/badge";
 import { getTechnician } from "@/lib/public-api";
 import BookingForm from "@/components/booking-form";
 import { cn } from "@/lib/utils";
@@ -60,17 +59,6 @@ const TechnicianPage = async ({
               </span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{technician.bio}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {technician.skills.map((skill) => (
-                <Badge
-                  key={skill}
-                  variant="secondary"
-                  className="rounded-full border border-border/40 bg-background/80 px-3 py-1 text-xs font-normal hover:bg-background"
-                >
-                  {skill}
-                </Badge>
-              ))}
-            </div>
           </div>
 
           {/* Customer Reviews Section */}
