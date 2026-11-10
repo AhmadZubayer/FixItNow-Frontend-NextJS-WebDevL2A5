@@ -1,5 +1,5 @@
-import AdminWorkspace from "@/components/admin/workspace";
+import AdminOverview from "@/components/admin/overview";
 
-const Page = () => <AdminWorkspace view="overview" />;
+const Page = () => <AdminOverview />;
 
 export default Page;

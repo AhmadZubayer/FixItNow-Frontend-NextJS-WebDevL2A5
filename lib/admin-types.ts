@@ -28,4 +28,6 @@ export type AdminCategory = {
 export type AdminPaymentSummary = {
   status: string;
   platformEarning: string;
+  paidAt: string | null;
+  createdAt: string;
 };

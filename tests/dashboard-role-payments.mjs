@@ -71,7 +71,7 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
   if (path.startsWith("/dashboard/admin")) {
     await page.getByRole("navigation", { name: "Admin navigation" }).waitFor();
     const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
-    const card = page.locator("main h1").first();
+    const card = page.locator("main h1:visible").first();
     await Promise.all([breadcrumbs.waitFor(), card.waitFor()]);
     assert.ok(await breadcrumbs.evaluate((element) => element.getBoundingClientRect().bottom) <= await card.evaluate((element) => element.getBoundingClientRect().top));
     return;
@@ -93,8 +93,8 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
 
 const assertDashboardContentContained = async (page, path, { requireTable = false } = {}) => {
   if (path.startsWith("/dashboard/admin")) {
-    assert.equal(await page.locator("main [data-slot='card']").count(), 0);
-    if (requireTable) await page.locator("main table").first().waitFor();
+    assert.equal(await page.locator("main [data-slot='card']:visible").count(), path === "/dashboard/admin" ? 5 : 0);
+    if (requireTable) await page.locator("main table:visible").first().waitFor();
     return;
   }
   const mainCard = page.locator("main > div[data-slot='card']");
@@ -120,9 +120,10 @@ const assertDashboardContentContained = async (page, path, { requireTable = fals
 };
 
 const assertDashboardShell = async (page, path) => {
+  if (path === "/dashboard/admin") await page.getByRole("heading", { name: "Platform Earnings", exact: true }).waitFor();
   const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "[data-slot='sidebar-inset']" : "main > div[data-slot='card']");
   if (path.startsWith("/dashboard/admin")) {
-    assert.equal(await page.locator("main [data-slot='card']").count(), 0);
+    assert.equal(await page.locator("main [data-slot='card']:visible").count(), path === "/dashboard/admin" ? 5 : 0);
     assert.equal(await page.locator("header").count(), 0);
   }
   assert.ok(
@@ -146,7 +147,13 @@ const assertDashboardShell = async (page, path) => {
   await page.setViewportSize({ width: 1280, height: 800 });
 };
 
+let healthRequests = 0;
+let healthy = true;
 const backend = createHttpServer((request, response) => {
+  if (request.url === "/health") {
+    healthRequests++;
+    return send(response, healthy ? 200 : 503, { success: healthy, message: healthy ? "Backend is running and database is connected." : "Backend is running but database is unavailable.", data: { server: "running", database: healthy ? "connected" : "disconnected" } });
+  }
   const token = request.headers.authorization?.replace("Bearer ", "");
   const role = token?.startsWith("valid-") ? token.slice(6).toUpperCase() : null;
 
@@ -400,7 +407,7 @@ try {
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.setViewportSize({ width: 1280, height: 800 });
-  const rows = page.locator("tbody tr");
+  const rows = page.locator("tbody tr:visible");
   await rows.first().waitFor();
   assert.equal(await rows.count(), 12);
   await assertDashboardContentContained(page, "/dashboard/admin/technicians", { requireTable: true });
@@ -434,13 +441,30 @@ try {
   for (const link of await adminNavigation.getByRole("link").all()) {
     if (await link.getAttribute("aria-current") !== "page") assert.notEqual(await link.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
   }
-  assert.equal(await page.locator("main [data-slot='card']").count(), 0);
+  assert.equal(await page.locator("main [data-slot='card']:visible").count(), 5);
   assert.equal(await page.locator("header").count(), 0);
-  const overviewMetric = page.locator('section[aria-label="Platform overview"] > div').first();
-  assert.equal(await overviewMetric.evaluate((element) => getComputedStyle(element).borderTopWidth), "0px");
+  assert.equal(await page.getByRole("search").count(), 0);
   const platformOverview = page.getByRole("region", { name: "Platform overview" });
-  assert.match(await platformOverview.getByText("Active bookings").locator("..").innerText(), /1/);
-  assert.match(await platformOverview.getByText("Platform revenue").locator("..").innerText(), /15\.00/);
+  assert.equal(await platformOverview.locator('[data-slot="chart"]').count(), 4);
+  assert.deepEqual(await platformOverview.getByRole("heading", { level: 2 }).allTextContents(), ["Platform Earnings", "Users", "Technicians", "System Health", "Bookings"]);
+  await page.getByText("Backend is running and database is connected.", { exact: true }).waitFor();
+  const baselineHealthRequests = healthRequests;
+  await adminNavigation.getByRole("link", { name: "Users", exact: true }).click();
+  await page.waitForURL("**/dashboard/admin/users");
+  healthy = false;
+  await adminNavigation.getByRole("link", { name: "Overview", exact: true }).click();
+  await page.getByText("Backend is running but database is unavailable.", { exact: true }).waitFor();
+  assert.ok(healthRequests > baselineHealthRequests, "Revisiting overview must check backend health again");
+  healthy = true;
+  await page.getByRole("button", { name: "Check again", exact: true }).click();
+  await page.getByText("Backend is running and database is connected.", { exact: true }).waitFor();
+  await page.getByRole("heading", { name: "Platform Earnings", exact: true }).waitFor();
+  assert.equal((await dashboard("/api/admin/health", "accessToken=valid-customer")).status, 403);
+  await page.waitForFunction(() => {
+    const curves = [...document.querySelectorAll('[data-slot="chart"] .recharts-area-curve')];
+    return curves.length === 4 && curves.every((curve) => curve.getTotalLength() > 200);
+  });
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: process.env.TEMP + "/fixitnow-admin-sidebar.png", fullPage: true });
   await adminNavigation.getByRole("link", { name: "Users", exact: true }).click();
   await page.waitForURL("**/dashboard/admin/users");
@@ -448,7 +472,7 @@ try {
   await assertDashboardContentContained(page, "/dashboard/admin/users", { requireTable: true });
   await page.getByLabel("Search users").fill("Technician 12");
   await page.getByRole("button", { name: "Search", exact: true }).click();
-  assert.equal(await page.locator("tbody tr").count(), 1);
+  assert.equal(await page.locator("tbody tr:visible").count(), 1);
   await adminNavigation.getByRole("link", { name: "Categories", exact: true }).click();
   await page.waitForURL("**/dashboard/admin/categories");
   await page.getByRole("button", { name: "Edit", exact: true }).click();
@@ -504,20 +528,20 @@ try {
     await page.getByRole("heading", { level: 1, name: `${title} (65)`, exact: true }).waitFor();
     const search = page.getByPlaceholder(`Search ${title.toLowerCase()}`, { exact: true });
     await search.waitFor();
-    assert.equal(await page.locator("main h1").count(), 1);
+    assert.equal(await page.locator("main h1:visible").count(), 1);
     assert.equal(await page.locator('label').filter({ hasText: `Search ${title.toLowerCase()}` }).count(), 0);
-    assert.equal(await page.locator("tbody tr").count(), 30);
+    assert.equal(await page.locator("tbody tr:visible").count(), 30);
     await page.getByRole("button", { name: "Next", exact: true }).click();
-    assert.equal(await page.locator("tbody tr").count(), 30);
+    assert.equal(await page.locator("tbody tr:visible").count(), 30);
     await page.getByRole("button", { name: "Next", exact: true }).click();
-    assert.equal(await page.locator("tbody tr").count(), 5);
+    assert.equal(await page.locator("tbody tr:visible").count(), 5);
     await search.fill("Pagination record 65");
     await search.press("Enter");
-    assert.equal(await page.locator("tbody tr").count(), 1);
+    assert.equal(await page.locator("tbody tr:visible").count(), 1);
     await page.getByText("Page 1 of 1", { exact: true }).waitFor();
     assert.equal(await page.getByRole("heading", { level: 1 }).innerText(), `${title} (65)`);
     await search.fill("");
-    assert.equal(await page.locator("tbody tr").count(), 30);
+    assert.equal(await page.locator("tbody tr:visible").count(), 30);
     await page.getByText("Page 1 of 3", { exact: true }).waitFor();
     if (section === "users") await page.screenshot({ path: process.env.TEMP + "/fixitnow-admin-users-pagination.png", fullPage: true });
     await page.unroute(`**/api/admin/${endpoint}`);

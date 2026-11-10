@@ -35,6 +35,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Five-card admin overview (2026-11-10)
+
+- Current task: replace the overview summary/search with five default shadcn cards matching the supplied layout. Add four weekly monthly charts, totals and last-month comparisons, and a fresh backend health check on every overview visit.
+- Implemented dedicated AdminOverview, existing API data and reusable lime AreaChart, plus an admin-authenticated no-store health proxy. Dates use Asia/Dhaka. Weekly periods are days 1–7, 8–14, 15–21, and 22–month end. Earnings count completed payments using paidAt (createdAt fallback). Totals are all-time; comparisons use this month's new activity against the full previous month, with absolute differences when the previous month is zero.
+- Validation: focused ESLint, production build with TypeScript, git diff --check, deterministic overview calculation tests, and the dashboard roles/admin views browser suite passed. Calculation tests cover Dhaka midnight, four period totals including month end, future/invalid dates, January/year rollover, and positive/negative/zero-baseline comparisons. Browser coverage confirms five overview cards/four charts/no search, healthy and failing health responses, a new check on revisit, retry, and admin-only proxy access. Existing six paginated data pages and customer/technician dashboards pass. Desktop/mobile screenshots visually inspected.
+- Resume checkpoint: implementation complete and verified, frontend-only. Save scoped local commit; preserve unrelated local changes and do not push. Checklist remains 85 / 85 (100%).
+
 ### Reusable lime area chart (2026-11-10)
 
 - Current task: turn the supplied shadcn/Recharts area chart into a reusable UI component using the project's lime green and shaded fill.

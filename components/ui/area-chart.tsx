@@ -40,7 +40,7 @@ const AreaChart = ({ data, title, description, seriesLabel, footer, withCard = f
         </linearGradient>
       </defs>
       <CartesianGrid vertical={false} />
-      <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={tickFormatter} />
+      <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} interval="preserveStartEnd" tickFormatter={tickFormatter} />
       <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
       <Area dataKey="value" name={seriesLabel} type="monotone" fill={`url(#${gradientId})`} stroke="var(--color-value)" strokeWidth={2} />
     </RechartsAreaChart>
