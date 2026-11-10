@@ -35,6 +35,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Admin sidebar account placement (2026-11-10)
+
+- Current task: move the account name and Admin label above logout at the bottom of the sidebar; make logout smaller with red text and its icon.
+- Implemented in components/admin/dashboard-shell.tsx using SidebarFooter and the small SidebarMenuButton size. Updated existing browser selectors to locate account details in the footer. Preserve unrelated local changes; publication remains unapproved.
+- Validation: focused ESLint and git diff --check passed; diff reviewed. This is a presentation-only change; no API or authentication behavior changed. Save as a scoped local commit; do not push. Checklist remains 85 / 85 (100%).
+
 ### Plain admin dashboard design (2026-11-10)
 
 - Current task: match the supplied plain sidebar reference, remove admin main cards and top bar, preserve breadcrumbs, and use project lime only for the selected menu.

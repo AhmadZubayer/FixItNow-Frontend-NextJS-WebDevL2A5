@@ -426,8 +426,8 @@ try {
   assert.deepEqual(await adminNavigation.getByRole("link").allTextContents(), ["Overview", "Users", "Technicians", "Platform Payments", "Categories", "Bookings", "Feedbacks"]);
   assert.equal(await page.getByRole("navigation", { name: "Main navigation" }).count(), 0);
   assert.equal(await page.getByRole("tablist").count(), 0);
-  await page.locator('[data-slot="sidebar-header"]').getByText("Test user", { exact: true }).waitFor();
-  assert.equal(await page.locator('[data-slot="sidebar-header"]').getByText("Admin", { exact: true }).count(), 1);
+  await page.locator('[data-slot="sidebar-footer"]').getByText("Test user", { exact: true }).waitFor();
+  assert.equal(await page.locator('[data-slot="sidebar-footer"]').getByText("Admin", { exact: true }).count(), 1);
   assert.equal(await page.locator('[data-slot="sidebar-header"]').getByRole("link", { name: "FixItNow" }).getAttribute("href"), "/");
   const selectedOverview = adminNavigation.getByRole("link", { name: "Overview", exact: true });
   assert.equal(await selectedOverview.getAttribute("aria-current"), "page");

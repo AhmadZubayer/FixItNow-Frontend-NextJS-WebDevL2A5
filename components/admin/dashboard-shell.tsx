@@ -58,10 +58,6 @@ const AdminSidebar = () => {
       <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold tracking-tight">
         <Wrench aria-hidden className="size-6 text-[#145b28]" />FixItNow
       </Link>
-      <div className="min-w-0">
-        <p className="truncate text-sm font-semibold">{name || "Loading account…"}</p>
-        <p className="text-xs text-muted-foreground">Admin</p>
-      </div>
     </SidebarHeader>
     <SidebarContent>
       <SidebarGroup><SidebarGroupContent>
@@ -77,9 +73,15 @@ const AdminSidebar = () => {
         </SidebarMenu></nav>
       </SidebarGroupContent></SidebarGroup>
     </SidebarContent>
-    <SidebarFooter><SidebarMenu><SidebarMenuItem>
-      <SidebarMenuButton onClick={logout} disabled={pending} className="h-10 text-sm"><LogOut aria-hidden /><span>{pending ? "Logging out…" : "Log out"}</span></SidebarMenuButton>
-    </SidebarMenuItem></SidebarMenu></SidebarFooter>
+    <SidebarFooter className="gap-2 p-4">
+      <div className="min-w-0">
+        <p className="truncate text-sm font-semibold">{name || "Loading account…"}</p>
+        <p className="text-xs text-muted-foreground">Admin</p>
+      </div>
+      <SidebarMenu><SidebarMenuItem>
+        <SidebarMenuButton size="sm" onClick={logout} disabled={pending} className="w-fit text-red-600 hover:bg-red-50 hover:text-red-700 [&_svg]:size-3.5"><LogOut aria-hidden /><span>{pending ? "Logging out…" : "Log out"}</span></SidebarMenuButton>
+      </SidebarMenuItem></SidebarMenu>
+    </SidebarFooter>
   </Sidebar>;
 };
 
