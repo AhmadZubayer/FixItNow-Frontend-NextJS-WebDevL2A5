@@ -35,6 +35,12 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Reusable lime area chart (2026-11-10)
+
+- Current task: turn the supplied shadcn/Recharts area chart into a reusable UI component using the project's lime green and shaded fill.
+- Added components/ui/area-chart.tsx with configurable data, title, description, series label, footer, axis formatter, and sizing. Plain by default to preserve the admin design; withCard enables the supplied card presentation. Unique gradient IDs support multiple chart instances, and empty datasets have a message. No fake data or trend claims embedded.
+- Validation: focused ESLint and TypeScript --noEmit passed. Component is available for reuse and is not yet mounted on a page. Save as a scoped local commit; preserve unrelated local changes and do not push. Checklist remains 85 / 85 (100%).
+
 ### Booking activity time column (2026-11-10)
 
 - Added Activity Time after Status in the admin Bookings table. Uses the existing booking createdAt field, formatted with both date and time in Asia/Dhaka, and a semantic time element retaining the original timestamp.
