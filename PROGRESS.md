@@ -35,6 +35,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Backend health startup check (2026-11-10)
+
+- Current task: call backend /health when the frontend server starts and immediately log its response in the server terminal.
+- Implemented instrumentation.ts using the existing backend client. The Node.js startup hook logs HTTP status and response, including HTTP failure bodies; connection errors are caught so the frontend can start. Existing 10-second client timeout applies.
+- Verified focused ESLint and TypeScript checks passed. Invoking the hook against the live backend logged HTTP 200 with database connected; an unreachable local port logged ECONNREFUSED and returned normally. Next.js startup timing follows the installed instrumentation documentation; restart the running frontend to activate the new hook.
+- Preserve pre-existing working tree changes; checklist remains 85 / 85 (100%). Commit/push pending. The initial tsx validation runner failed on sandbox userInfo; native Node TypeScript execution verified the hook successfully.
+
 | Field | Details |
 | --- | --- |
 | Task ID | Complete |
