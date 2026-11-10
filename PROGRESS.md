@@ -35,6 +35,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Plain admin dashboard design (2026-11-10)
+
+- Current task: match the supplied plain sidebar reference, remove admin main cards and top bar, preserve breadcrumbs, and use project lime only for the selected menu.
+- Removed the admin shell Card, bordered top bar, sidebar header divider, overview metric cards, and category card styling. Breadcrumbs and the collapse/mobile trigger sit directly in plain content. Only the selected menu uses #9AE600. All seven routes and account controls are preserved.
+- Validation: focused ESLint, production frontend build with TypeScript, and the dashboard roles/admin views browser suite passed. The suite checks the absence of cards and headers, selected-only lime styling, mobile drawer, desktop collapse, management actions, and existing customer/technician behavior. Updated desktop and mobile screenshots were visually inspected.
+- Resume checkpoint: frontend-only implementation verified; save as a scoped local commit. Preserve unrelated local changes. Publication remains unapproved; do not push. Checklist remains 85 / 85 (100%).
+
 ### Admin sidebar navigation (2026-11-10)
 
 - Current task: replace admin tabs with the default shadcn sidebar, seven functional destinations, home-linked logo, and account name with Admin beneath it. Hide the public navbar on admin routes.

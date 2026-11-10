@@ -61,7 +61,7 @@ const assertSelectedTabStyle = async (tab) => {
 };
 
 const assertDashboardMainCardContainsHeading = async (page, path) => {
-  const mainCard = page.locator("main > div[data-slot='card']");
+  const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "main" : "main > div[data-slot='card']");
   const pageHeading = mainCard.getByRole("heading", { level: 1 }).first();
   await pageHeading.waitFor();
   assert.ok(await pageHeading.isVisible(), `${path}: page heading must render inside the main card`);
@@ -71,7 +71,7 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
   if (path.startsWith("/dashboard/admin")) {
     await page.getByRole("navigation", { name: "Admin navigation" }).waitFor();
     const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
-    const card = page.locator("main > div[data-slot='card']");
+    const card = page.locator("main h1").first();
     await Promise.all([breadcrumbs.waitFor(), card.waitFor()]);
     assert.ok(await breadcrumbs.evaluate((element) => element.getBoundingClientRect().bottom) <= await card.evaluate((element) => element.getBoundingClientRect().top));
     return;
@@ -92,6 +92,11 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
 };
 
 const assertDashboardContentContained = async (page, path, { requireTable = false } = {}) => {
+  if (path.startsWith("/dashboard/admin")) {
+    assert.equal(await page.locator("main [data-slot='card']").count(), 0);
+    if (requireTable) await page.locator("main table").first().waitFor();
+    return;
+  }
   const mainCard = page.locator("main > div[data-slot='card']");
   await mainCard.waitFor();
   if (requireTable) await mainCard.locator("table").first().waitFor();
@@ -115,11 +120,14 @@ const assertDashboardContentContained = async (page, path, { requireTable = fals
 };
 
 const assertDashboardShell = async (page, path) => {
-  const mainCard = page.locator("main > div[data-slot='card']");
-  assert.equal(
-    await mainCard.evaluate((element) => getComputedStyle(element).backgroundColor),
-    "rgb(255, 255, 255)",
-    `${path}: main card must be white`
+  const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "[data-slot='sidebar-inset']" : "main > div[data-slot='card']");
+  if (path.startsWith("/dashboard/admin")) {
+    assert.equal(await page.locator("main [data-slot='card']").count(), 0);
+    assert.equal(await page.locator("header").count(), 0);
+  }
+  assert.ok(
+    ["rgb(255, 255, 255)", "lab(100 0 0)"].includes(await mainCard.evaluate((element) => getComputedStyle(element).backgroundColor)),
+    `${path}: content background must be white`
   );
   const footer = page.locator("footer");
   assert.equal(await footer.count(), 1, `${path}: shared footer must appear once`);
@@ -421,7 +429,16 @@ try {
   await page.locator('[data-slot="sidebar-header"]').getByText("Test user", { exact: true }).waitFor();
   assert.equal(await page.locator('[data-slot="sidebar-header"]').getByText("Admin", { exact: true }).count(), 1);
   assert.equal(await page.locator('[data-slot="sidebar-header"]').getByRole("link", { name: "FixItNow" }).getAttribute("href"), "/");
-  assert.equal(await adminNavigation.getByRole("link", { name: "Overview", exact: true }).getAttribute("aria-current"), "page");
+  const selectedOverview = adminNavigation.getByRole("link", { name: "Overview", exact: true });
+  assert.equal(await selectedOverview.getAttribute("aria-current"), "page");
+  assert.equal(await selectedOverview.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
+  for (const link of await adminNavigation.getByRole("link").all()) {
+    if (await link.getAttribute("aria-current") !== "page") assert.notEqual(await link.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
+  }
+  assert.equal(await page.locator("main [data-slot='card']").count(), 0);
+  assert.equal(await page.locator("header").count(), 0);
+  const overviewMetric = page.locator('section[aria-label="Platform overview"] > div').first();
+  assert.equal(await overviewMetric.evaluate((element) => getComputedStyle(element).borderTopWidth), "0px");
   const platformOverview = page.getByRole("region", { name: "Platform overview" });
   assert.match(await platformOverview.getByText("Active bookings").locator("..").innerText(), /1/);
   assert.match(await platformOverview.getByText("Platform revenue").locator("..").innerText(), /15\.00/);

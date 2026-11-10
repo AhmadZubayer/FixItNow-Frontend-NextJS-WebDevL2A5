@@ -9,11 +9,10 @@ import { toast } from "sonner";
 import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import { routeCrumbs } from "@/components/route-breadcrumbs";
 import SiteFooter from "@/components/site-footer";
-import { Card } from "@/components/ui/card";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent,
   SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
-  SidebarProvider, SidebarSeparator, SidebarTrigger, useSidebar,
+  SidebarProvider, SidebarTrigger, useSidebar,
 } from "@/components/ui/sidebar";
 
 const menus = [
@@ -64,14 +63,13 @@ const AdminSidebar = () => {
         <p className="text-xs text-muted-foreground">Admin</p>
       </div>
     </SidebarHeader>
-    <SidebarSeparator />
     <SidebarContent>
       <SidebarGroup><SidebarGroupContent>
         <nav aria-label="Admin navigation"><SidebarMenu>
           {menus.map(({ label, href, icon: Icon }) => {
             const active = href === "/dashboard/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
             return <SidebarMenuItem key={href}>
-              <SidebarMenuButton isActive={active} className="h-10 text-sm" render={<Link href={href} aria-current={active ? "page" : undefined} onClick={() => setOpenMobile(false)} />}>
+              <SidebarMenuButton isActive={active} className="h-10 text-sm data-active:bg-[#9AE600] data-active:text-black data-active:hover:bg-[#9AE600]" render={<Link href={href} aria-current={active ? "page" : undefined} onClick={() => setOpenMobile(false)} />}>
                 <Icon aria-hidden /><span>{label}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>;
@@ -87,15 +85,17 @@ const AdminSidebar = () => {
 
 const AdminDashboardShell = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  return <SidebarProvider className="flex-1 bg-muted [--card:#fff]">
+  return <SidebarProvider className="flex-1 bg-background">
     <AdminSidebar />
-    <SidebarInset className="min-w-0 bg-muted">
-      <header className="flex min-h-14 items-center gap-3 border-b bg-background px-4 sm:px-6">
-        <SidebarTrigger />
-        <PageBreadcrumbs items={routeCrumbs(pathname)} />
-      </header>
-      <main className="w-full min-w-0 flex-1 p-4 sm:p-6">
-        <Card className="mx-auto w-full max-w-7xl min-w-0 overflow-hidden bg-card p-4 sm:p-6">{children}</Card>
+    <SidebarInset className="min-w-0 bg-background">
+      <main className="w-full min-w-0 flex-1 px-4 py-5 sm:px-8 sm:py-6">
+        <div className="mx-auto w-full max-w-7xl min-w-0 space-y-8">
+          <div className="flex items-center gap-3">
+            <SidebarTrigger />
+            <PageBreadcrumbs items={routeCrumbs(pathname)} />
+          </div>
+          {children}
+        </div>
       </main>
       <SiteFooter />
     </SidebarInset>
