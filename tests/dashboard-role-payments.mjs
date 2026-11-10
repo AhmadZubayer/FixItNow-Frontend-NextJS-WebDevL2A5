@@ -392,7 +392,7 @@ try {
   await context.addCookies([{ name: "accessToken", value: "valid-admin", url: base }]);
   const page = await context.newPage();
   await page.goto(`${base}/dashboard/admin/technicians`);
-  await page.getByRole("heading", { name: "Technician management" }).waitFor();
+  await page.getByRole("heading", { name: /^Technicians \(\d+\)$/ }).waitFor();
   const technicianBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   await technicianBreadcrumb.waitFor();
   assert.equal(await technicianBreadcrumb.count(), 1);
@@ -402,10 +402,9 @@ try {
   await page.setViewportSize({ width: 1280, height: 800 });
   const rows = page.locator("tbody tr");
   await rows.first().waitFor();
-  assert.equal(await rows.count(), 10);
+  assert.equal(await rows.count(), 12);
   await assertDashboardContentContained(page, "/dashboard/admin/technicians", { requireTable: true });
-  await page.getByRole("button", { name: "Next" }).click();
-  assert.equal(await rows.count(), 2);
+  assert.equal(await page.getByRole("button", { name: "Next", exact: true }).isDisabled(), true);
   await page.getByLabel("Search technicians").fill("Technician 12");
   await page.getByRole("button", { name: "Search", exact: true }).click();
   assert.equal(await rows.count(), 1);
@@ -414,7 +413,7 @@ try {
   assert.equal(users[11].activeStatus, "BLOCKED");
 
   await page.goto(`${base}/dashboard/admin/payments`);
-  await page.getByRole("heading", { name: "Platform payment history" }).waitFor();
+  await page.getByRole("heading", { name: /^Platform Payments \(\d+\)$/ }).waitFor();
   await page.getByRole("cell", { name: "৳85.00" }).waitFor();
   await page.getByRole("cell", { name: "৳15.00" }).waitFor();
   await assertDashboardContentContained(page, "/dashboard/admin/payments", { requireTable: true });
@@ -485,6 +484,44 @@ try {
   });
   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
   await adminNavigation.waitFor();
+
+  // Every admin data page caps tables at 30 rows and resets pagination on search.
+  for (const [section, title] of [["users", "Users"], ["technicians", "Technicians"], ["payments", "Platform Payments"], ["categories", "Categories"], ["bookings", "Bookings"], ["feedbacks", "Feedbacks"]]) {
+    const endpoint = section === "technicians" ? "users" : section;
+    const fixtureResponse = await page.request.get(`${base}/api/admin/${endpoint}`);
+    const fixture = (await fixtureResponse.json())[0];
+    const fixtures = Array.from({ length: 65 }, (_, index) => {
+      const record = structuredClone(fixture);
+      record.id = `pagination-${index + 1}`;
+      const text = `Pagination record ${index + 1}`;
+      if (section === "users" || section === "technicians" || section === "categories") record.name = text;
+      if (section === "payments" || section === "bookings") record[section === "payments" ? "booking" : "customer" ] = section === "payments" ? { ...record.booking, customer: { name: text } } : { name: text };
+      if (section === "feedbacks") record.comment = text;
+      return record;
+    });
+    await page.route(`**/api/admin/${endpoint}`, (route) => route.fulfill({ json: fixtures }));
+    await page.goto(`${base}/dashboard/admin/${section}`);
+    await page.getByRole("heading", { level: 1, name: `${title} (65)`, exact: true }).waitFor();
+    const search = page.getByPlaceholder(`Search ${title.toLowerCase()}`, { exact: true });
+    await search.waitFor();
+    assert.equal(await page.locator("main h1").count(), 1);
+    assert.equal(await page.locator('label').filter({ hasText: `Search ${title.toLowerCase()}` }).count(), 0);
+    assert.equal(await page.locator("tbody tr").count(), 30);
+    await page.getByRole("button", { name: "Next", exact: true }).click();
+    assert.equal(await page.locator("tbody tr").count(), 30);
+    await page.getByRole("button", { name: "Next", exact: true }).click();
+    assert.equal(await page.locator("tbody tr").count(), 5);
+    await search.fill("Pagination record 65");
+    await search.press("Enter");
+    assert.equal(await page.locator("tbody tr").count(), 1);
+    await page.getByText("Page 1 of 1", { exact: true }).waitFor();
+    assert.equal(await page.getByRole("heading", { level: 1 }).innerText(), `${title} (65)`);
+    await search.fill("");
+    assert.equal(await page.locator("tbody tr").count(), 30);
+    await page.getByText("Page 1 of 3", { exact: true }).waitFor();
+    if (section === "users") await page.screenshot({ path: process.env.TEMP + "/fixitnow-admin-users-pagination.png", fullPage: true });
+    await page.unroute(`**/api/admin/${endpoint}`);
+  }
 
   // Verify consistent page structure on Customer dashboard
   const custContext = await browser.newContext();

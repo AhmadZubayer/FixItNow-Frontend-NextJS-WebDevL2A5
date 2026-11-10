@@ -3,10 +3,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import EmptyState from "@/components/empty-state";
-import PageSkeleton from "@/components/page-skeleton";
+import AdminDataList from "@/components/admin/data-list";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 type AdminPayment = {
@@ -48,24 +46,13 @@ const AdminPaymentsPage = () => {
     return () => { active = false; };
   }, [retry]);
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Platform payment history</h1>
-      </div>
-      {loading ? <PageSkeleton /> : error ? (
-        <div role="alert" className="space-y-2 text-sm text-destructive">
-          <p>{error}</p>
-          <Button variant="outline" onClick={() => { setLoading(true); setRetry((value) => value + 1); }}>Retry</Button>
-        </div>
-      ) : payments.length ? (
-        <div className="overflow-x-auto">
-          <Table>
+    return <AdminDataList title="Platform Payments" items={payments} searchText={(payment) => `${payment.booking.customer.name} ${payment.booking.service.technicianProfile.user.name} ${payment.booking.service.title} ${payment.method ?? payment.provider} ${payment.status.replaceAll("_", " ")} ${payment.amount}`} loading={loading} error={error} onRetry={() => { setLoading(true); setRetry((value) => value + 1); }}>
+    {(rows, offset) => <div className="overflow-x-auto"><Table>
             <TableHeader><TableRow><TableHead>No.</TableHead><TableHead>Date & time</TableHead><TableHead>Method</TableHead><TableHead>Customer</TableHead><TableHead>Technician</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Customer paid</TableHead><TableHead className="text-right">Technician received</TableHead><TableHead className="text-right">Platform earning</TableHead></TableRow></TableHeader>
             <TableBody>
-              {payments.map((payment, index) => (
+              {rows.map((payment, index) => (
                 <TableRow key={payment.id}>
-                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{offset + index + 1}</TableCell>
                   <TableCell>{new Date(payment.paidAt ?? payment.createdAt).toLocaleString("en-BD", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Dhaka" })}</TableCell>
                   <TableCell>{payment.method ?? payment.provider}</TableCell>
                   <TableCell>{payment.booking.customer.name}</TableCell>
@@ -77,11 +64,8 @@ const AdminPaymentsPage = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </div>
-      ) : <EmptyState title="No payments yet" description="Platform payments will appear here when customers start checkout." />}
-    </div>
-  );
+          </Table></div>}
+  </AdminDataList>;
 };
 
 export default AdminPaymentsPage;

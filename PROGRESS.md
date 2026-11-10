@@ -35,6 +35,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Admin search, counts, and pagination (2026-11-10)
+
+- Current task: single heading with total count in parentheses, placeholder-only search, and pagination capped at 30 rows on all admin data pages. Apply the Users pattern consistently to Technicians, Platform Payments, Categories, Bookings, and Feedbacks. Overview keeps its summary and receives search without table pagination.
+- Implemented shared AdminDataList controls: one heading with total count, accessible placeholder-only search submitted by Enter or Search, and shadcn pagination capped at 30 rows. Search and clearing reset to page 1; total heading counts remain unchanged by filtering. Users, Technicians, Platform Payments, Categories, Bookings, and Feedbacks use this pattern. Categories now uses a table and keeps add/edit actions; overview includes a summary search without pagination.
+- Validation: focused ESLint, production frontend build with TypeScript, git diff --check, and the dashboard roles/admin views browser suite passed. The suite exercises all six data tables with 65 mocked records, confirms 30/30/5 rows, search from page 3, clearing/reset, and unchanged total headings. Existing management actions and other dashboard roles also pass. Users screenshot visually inspected. Initial syntax error during refactoring was fixed before final checks.
+- Resume checkpoint: frontend-only change verified; save a scoped local commit. Preserve unrelated local changes; no publication is authorized. Checklist remains 85 / 85 (100%).
+
 ### Admin sidebar account placement (2026-11-10)
 
 - Current task: move the account name and Admin label above logout at the bottom of the sidebar; make logout smaller with red text and its icon.

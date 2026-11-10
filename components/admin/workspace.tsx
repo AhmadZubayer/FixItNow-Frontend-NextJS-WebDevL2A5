@@ -7,17 +7,13 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import CategoryForm from "@/components/admin/category-form";
-import EmptyState from "@/components/empty-state";
-import PageSkeleton from "@/components/page-skeleton";
 import PendingButton from "@/components/pending-button";
-import SearchField from "@/components/search-field";
+import AdminDataList from "@/components/admin/data-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { AdminBooking, AdminCategory, AdminPaymentSummary, AdminUser } from "@/lib/admin-types";
-import { adminSearchSchema, adminStatusSchema } from "@/validations/admin.validation";
-
-const pageSize = 10;
+import { adminStatusSchema } from "@/validations/admin.validation";
 
 type WorkspaceView = "overview" | "users" | "categories" | "bookings";
 
@@ -29,10 +25,6 @@ const AdminWorkspace = ({ view }: { view: WorkspaceView }) => {
   const [payments, setPayments] = useState<AdminPaymentSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [queryInput, setQueryInput] = useState("");
-  const [query, setQuery] = useState("");
-  const [queryError, setQueryError] = useState("");
-  const [page, setPage] = useState(1);
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
   const [editing, setEditing] = useState<AdminCategory | null>(null);
 
@@ -59,15 +51,6 @@ const AdminWorkspace = ({ view }: { view: WorkspaceView }) => {
 
   useEffect(() => { queueMicrotask(() => void load()); }, [load]);
 
-  const search = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const result = adminSearchSchema.safeParse({ q: queryInput });
-    if (!result.success) { setQueryError(result.error.flatten().fieldErrors.q?.[0] ?? "Invalid search"); return; }
-    setQueryError("");
-    setQuery(result.data.q);
-    setPage(1);
-  };
-
   const changeStatus = async (user: AdminUser) => {
     if (pendingUserId) return;
     const status = user.activeStatus === "ACTIVE" ? "BLOCKED" : "ACTIVE";
@@ -83,18 +66,46 @@ const AdminWorkspace = ({ view }: { view: WorkspaceView }) => {
     } finally { setPendingUserId(null); }
   };
 
-  const visibleUsers = users.filter((user) => `${user.name} ${user.email} ${user.role}`.toLowerCase().includes(query.toLowerCase()));
-  const pageCount = Math.max(1, Math.ceil(visibleUsers.length / pageSize));
   const activeBookings = bookings.filter((booking) => ["REQUESTED", "ACCEPTED", "PAID", "IN_PROGRESS"].includes(booking.status)).length;
   const platformRevenue = payments.filter((payment) => payment.status === "COMPLETED").reduce((sum, payment) => sum + Number(payment.platformEarning), 0);
 
-  return <div className="space-y-8"><h1 className="text-2xl font-semibold tracking-tight">{{ overview: "Overview", users: "Users", categories: "Categories", bookings: "Bookings" }[view]}</h1>
-    {loading ? <PageSkeleton /> : error ? <p role="alert" className="text-sm text-destructive">{error} <Button variant="link" onClick={() => { setLoading(true); void load(); }}>Retry</Button></p> : <>
-      {view === "overview" && (<section className="grid gap-3 sm:grid-cols-4" aria-label="Platform overview">{[["Users", users.length], ["Technicians", users.filter((user) => user.role === "TECHNICIAN").length], ["Active bookings", activeBookings], ["Platform revenue", `৳${platformRevenue.toFixed(2)}`]].map(([label, value]) => <div key={label} className="py-3 sm:pr-6"><p className="text-xs text-muted-foreground">{label}</p><p className="mt-2 text-2xl font-semibold">{value}</p></div>)}</section>)}
-      {view === "users" && (<section className="space-y-4" aria-labelledby="users-heading"><div><h2 id="users-heading" className="text-lg font-semibold">Users</h2><p className="text-xs text-muted-foreground">{visibleUsers.length} matching users</p></div><form onSubmit={search} noValidate className="flex max-w-lg items-end gap-2"><div className="min-w-0 flex-1"><SearchField id="admin-user-search" label="Search users" value={queryInput} onChange={(event) => setQueryInput(event.target.value)} placeholder="Name, email, or role" error={queryError} /></div><Button type="submit" variant="outline">Search</Button></form>{visibleUsers.length ? <><div className="overflow-x-auto"><Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Email</TableHead><TableHead>Role</TableHead><TableHead>Status</TableHead><TableHead>Action</TableHead></TableRow></TableHeader><TableBody>{visibleUsers.slice((page - 1) * pageSize, page * pageSize).map((user) => <TableRow key={user.id}><TableCell className="font-medium">{user.name}</TableCell><TableCell>{user.email}</TableCell><TableCell>{user.role}</TableCell><TableCell><Badge variant={user.activeStatus === "BLOCKED" ? "destructive" : "secondary"}>{user.activeStatus}</Badge></TableCell><TableCell><PendingButton size="sm" variant="outline" pending={pendingUserId === user.id} disabled={!!pendingUserId} onClick={() => changeStatus(user)}>{user.activeStatus === "ACTIVE" ? "Block" : "Unblock"}</PendingButton></TableCell></TableRow>)}</TableBody></Table></div><div className="flex items-center gap-2 text-sm"><Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</Button><span>Page {page} of {pageCount}</span><Button size="sm" variant="outline" disabled={page >= pageCount} onClick={() => setPage(page + 1)}>Next</Button></div></> : <EmptyState title="No matching users" description="Try another search term." />}</section>)}
-      {view === "categories" && (<section className="space-y-4" aria-labelledby="categories-heading"><div className="flex items-center justify-between"><h2 id="categories-heading" className="text-lg font-semibold">Categories</h2>{editing && <Button variant="ghost" onClick={() => setEditing(null)}>Add new instead</Button>}</div><div className="grid gap-2 sm:grid-cols-2">{categories.map((category) => <div key={category.id} className="flex items-center justify-between gap-2 border-b py-3"><div><p className="text-sm font-medium">{category.name}</p><p className="text-xs text-muted-foreground">{category.slug} · {category.isActive ? "Active" : "Hidden"}</p></div><Button size="sm" variant="outline" onClick={() => setEditing(category)}>Edit</Button></div>)}</div><CategoryForm key={editing?.id ?? "new"} category={editing ?? undefined} onSaved={() => { setEditing(null); void load(); }} /></section>)}
-      {view === "bookings" && (<section className="space-y-3" aria-labelledby="recent-bookings-heading"><h2 id="recent-bookings-heading" className="text-lg font-semibold">All bookings</h2>{bookings.length ? <div className="overflow-x-auto"><Table><TableHeader><TableRow><TableHead>Service</TableHead><TableHead>Customer</TableHead><TableHead>Technician</TableHead><TableHead>Status</TableHead></TableRow></TableHeader><TableBody>{bookings.map((booking) => <TableRow key={booking.id}><TableCell>{bookingLabel(booking)}</TableCell><TableCell>{booking.customer.name}</TableCell><TableCell>{booking.service.technicianProfile.user.name}</TableCell><TableCell><Badge variant="secondary">{booking.status.replaceAll("_", " ")}</Badge></TableCell></TableRow>)}</TableBody></Table></div> : <EmptyState title="No bookings" description="Platform bookings will appear here." />}</section>)}
-    </>}
+  const retry = () => { setLoading(true); void load(); };
+  const state = { loading, error, onRetry: retry };
+
+  if (view === "overview") {
+    const metrics = [
+      { label: "Users", value: users.length },
+      { label: "Technicians", value: users.filter((user) => user.role === "TECHNICIAN").length },
+      { label: "Active bookings", value: activeBookings },
+      { label: "Platform revenue", value: `৳${platformRevenue.toFixed(2)}` },
+    ];
+    return <AdminDataList title="Overview" items={metrics} searchText={(metric) => metric.label} showCount={false} paginate={false} {...state}>
+      {(rows) => <section className="grid gap-3 sm:grid-cols-4" aria-label="Platform overview">{rows.map((metric) => <div key={metric.label} className="py-3 sm:pr-6"><p className="text-xs text-muted-foreground">{metric.label}</p><p className="mt-2 text-2xl font-semibold">{metric.value}</p></div>)}</section>}
+    </AdminDataList>;
+  }
+
+  if (view === "users") return <AdminDataList title="Users" items={users} searchText={(user) => `${user.name} ${user.email} ${user.role} ${user.activeStatus}`} {...state}>
+    {(rows) => <div className="overflow-x-auto"><Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Email</TableHead><TableHead>Role</TableHead><TableHead>Status</TableHead><TableHead>Action</TableHead></TableRow></TableHeader><TableBody>{rows.map((user) => <TableRow key={user.id}><TableCell className="font-medium">{user.name}</TableCell><TableCell>{user.email}</TableCell><TableCell>{user.role}</TableCell><TableCell><Badge variant={user.activeStatus === "BLOCKED" ? "destructive" : "secondary"}>{user.activeStatus}</Badge></TableCell><TableCell><PendingButton size="sm" variant="outline" pending={pendingUserId === user.id} disabled={!!pendingUserId} onClick={() => changeStatus(user)}>{user.activeStatus === "ACTIVE" ? "Block" : "Unblock"}</PendingButton></TableCell></TableRow>)}</TableBody></Table></div>}
+  </AdminDataList>;
+
+  if (view === "bookings") return <AdminDataList title="Bookings" items={bookings} searchText={(booking) => `${bookingLabel(booking)} ${booking.customer.name} ${booking.service.technicianProfile.user.name} ${booking.status.replaceAll("_", " ")}`} {...state}>
+    {(rows) => <div className="overflow-x-auto"><Table><TableHeader><TableRow><TableHead>Service</TableHead><TableHead>Customer</TableHead><TableHead>Technician</TableHead><TableHead>Status</TableHead></TableRow></TableHeader><TableBody>{rows.map((booking) => <TableRow key={booking.id}><TableCell>{bookingLabel(booking)}</TableCell><TableCell>{booking.customer.name}</TableCell><TableCell>{booking.service.technicianProfile.user.name}</TableCell><TableCell><Badge variant="secondary">{booking.status.replaceAll("_", " ")}</Badge></TableCell></TableRow>)}</TableBody></Table></div>}
+  </AdminDataList>;
+
+  return <div className="space-y-8">
+    <AdminDataList title="Categories" items={categories} searchText={(category) => `${category.name} ${category.slug} ${category.description ?? ""} ${category.isActive ? "Active" : "Hidden"}`} {...state}>
+      {(rows) => <div className="overflow-x-auto"><Table>
+        <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Slug</TableHead><TableHead>Status</TableHead><TableHead>Action</TableHead></TableRow></TableHeader>
+        <TableBody>{rows.map((category) => <TableRow key={category.id}>
+          <TableCell className="font-medium">{category.name}</TableCell><TableCell>{category.slug}</TableCell><TableCell>{category.isActive ? "Active" : "Hidden"}</TableCell>
+          <TableCell><Button size="sm" variant="outline" onClick={() => setEditing(category)}>Edit</Button></TableCell>
+        </TableRow>)}</TableBody>
+      </Table></div>}
+    </AdminDataList>
+    {!loading && !error && <section className="max-w-xl space-y-4" aria-label="Category form">
+      <div className="flex items-center justify-between gap-2"><h2 className="text-lg font-semibold">{editing ? "Edit category" : "Add category"}</h2>{editing && <Button variant="ghost" onClick={() => setEditing(null)}>Add new instead</Button>}</div>
+      <CategoryForm key={editing?.id ?? "new"} category={editing ?? undefined} onSaved={() => { setEditing(null); void load(); }} />
+    </section>}
   </div>;
 };
 
