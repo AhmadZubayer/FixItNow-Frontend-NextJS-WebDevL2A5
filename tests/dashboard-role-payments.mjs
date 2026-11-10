@@ -460,6 +460,15 @@ try {
   await page.getByText("Backend is running and database is connected.", { exact: true }).waitFor();
   await page.getByRole("heading", { name: "Platform Earnings", exact: true }).waitFor();
   assert.equal((await dashboard("/api/admin/health", "accessToken=valid-customer")).status, 403);
+  for (const viewport of [{ width: 1280, height: 720 }, { width: 1366, height: 768 }, { width: 1440, height: 900 }]) {
+    await page.setViewportSize(viewport);
+    await page.waitForFunction(() => document.documentElement.scrollHeight <= innerHeight + 1);
+    for (const card of await platformOverview.locator('[data-slot="card"]').all()) {
+      const box = await card.boundingBox();
+      assert.ok(box.y >= 0 && box.y + box.height <= viewport.height, "Overview cards must fit within the desktop viewport");
+    }
+  }
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.waitForFunction(() => {
     const curves = [...document.querySelectorAll('[data-slot="chart"] .recharts-area-curve')];
     return curves.length === 4 && curves.every((curve) => curve.getTotalLength() > 200);

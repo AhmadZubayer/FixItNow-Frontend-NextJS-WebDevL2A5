@@ -35,6 +35,21 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Compact overview viewport layout (2026-11-10)
+
+- Current task: compact the five overview cards so all information fits desktop viewports without scrolling, while retaining a readable stacked mobile layout.
+- Reduced overview chart heights, card spacing, summary typography, page spacing, and footer padding. Preserve every metric and health detail. Other admin data pages keep their existing layout.
+- Validation: focused ESLint, production build with TypeScript, git diff --check, and the dashboard browser suite passed. Explicit browser assertions confirm the entire page has no vertical scroll and every overview card stays in the viewport at 1280x720, 1366x768, and 1440x900. Compact 1280x720 screenshot visually inspected; all five cards, totals, breadcrumbs, account controls, and footer fit. Mobile stays stacked and remains horizontally contained.
+- Resume checkpoint: save a scoped local frontend commit. Preserve unrelated user changes, including app/page.tsx and components/session-actions.tsx. No publication authorized. Checklist remains 85 / 85 (100%).
+
+### Landing navbar and category labels (2026-11-10)
+
+- Current task: reuse the Services navbar on the landing page and replace Browse Services with Browse Categories.
+- Implemented the same shared search, navigation, and account layout on home and Services. Changed all landing Browse Services labels to Browse Categories; the two buttons now link to the category section.
+- Validation: TypeScript --noEmit passed and focused git diff --check passed. Focused ESLint could not start because the sandbox denies access to C:/nvm/v24.15.0/node.exe. Browser rendering was not checked.
+- Resume checkpoint: implementation remains local on main; preserve existing admin work and unpublished commits. Re-run focused ESLint and inspect the landing page when Node/browser execution is available. No push performed, consistent with the existing no-publication checkpoint.
+- Original checklist remains 85 / 85 (100%).
+
 ### Five-card admin overview (2026-11-10)
 
 - Current task: replace the overview summary/search with five default shadcn cards matching the supplied layout. Add four weekly monthly charts, totals and last-month comparisons, and a fresh backend health check on every overview visit.

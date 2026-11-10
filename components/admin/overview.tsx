@@ -47,35 +47,35 @@ const AdminOverview = () => {
   const technicians = summarizeMonth((data?.users ?? []).filter((user) => user.role === "TECHNICIAN").map((user) => ({ date: user.createdAt, value: 1 })), now);
   const bookings = summarizeMonth((data?.bookings ?? []).map((booking) => ({ date: booking.createdAt, value: 1 })), now);
 
-  const summary = (label: string, stats: ReturnType<typeof summarizeMonth>) => <div className="w-full space-y-2">
-    <div className="flex flex-wrap items-end justify-between gap-2"><p><span className="text-2xl font-semibold">{stats.total.toLocaleString("en-BD")}</span><span className="ml-2 text-muted-foreground">Total {label.toLowerCase()}</span></p><p className="text-xs text-muted-foreground">{stats.thisMonth} new this month</p></div>
+  const summary = (label: string, stats: ReturnType<typeof summarizeMonth>) => <div className="w-full space-y-1">
+    <div className="flex flex-wrap items-end justify-between gap-2"><p><span className="text-xl font-semibold">{stats.total.toLocaleString("en-BD")}</span><span className="ml-2 text-xs text-muted-foreground">Total {label.toLowerCase()}</span></p><p className="text-xs text-muted-foreground">{stats.thisMonth} new this month</p></div>
     <p className="text-xs text-muted-foreground">{monthChange(stats.thisMonth, stats.lastMonth)}</p>
   </div>;
 
-  const healthCard = <Card className="min-w-0 lg:col-start-1 lg:row-start-3" aria-labelledby="system-health-heading">
+  const healthCard = <Card className="min-w-0 gap-2 py-3 [--card-spacing:0.75rem] lg:col-start-1 lg:row-start-3" aria-labelledby="system-health-heading">
     <CardHeader><h2 id="system-health-heading" className="text-sm font-medium">System Health</h2></CardHeader>
-    <CardContent className="space-y-3">
-      <p role="status" className="flex items-start gap-2 text-sm"><span aria-hidden className={`mt-1 size-2.5 shrink-0 rounded-full ${health === null ? "animate-pulse bg-slate-400" : health.success ? "bg-green-500" : "bg-red-500"}`} /><span>{health?.message || "Checking backend and database…"}</span></p>
+    <CardContent className="space-y-2">
+      <p role="status" className="flex items-start gap-2 text-xs"><span aria-hidden className={`mt-1 size-2.5 shrink-0 rounded-full ${health === null ? "animate-pulse bg-slate-400" : health.success ? "bg-green-500" : "bg-red-500"}`} /><span>{health?.message || "Checking backend and database…"}</span></p>
       {health?.data && <dl className="grid grid-cols-2 gap-3 text-xs"><div><dt className="text-muted-foreground">Backend</dt><dd className="mt-1 capitalize">{health.data.server ?? "Unknown"}</dd></div><div><dt className="text-muted-foreground">Database</dt><dd className="mt-1 capitalize">{health.data.database ?? "Unknown"}</dd></div></dl>}
       {health && !health.success && <Button variant="outline" size="sm" onClick={refresh}>Check again</Button>}
     </CardContent>
   </Card>;
 
-  return <div className="space-y-6">
-    <div><h1 className="text-2xl font-semibold tracking-tight">Overview</h1><p className="mt-1 text-sm text-muted-foreground">{month} · Monthly activity across four weekly periods</p></div>
+  return <div className="space-y-3">
+    <div><h1 className="text-xl font-semibold tracking-tight">Overview</h1><p className="mt-1 text-xs text-muted-foreground">{month} · Monthly activity across four weekly periods</p></div>
     {error ? <div role="alert" className="space-y-2"><p className="text-sm text-destructive">{error}</p><Button variant="outline" onClick={refresh}>Retry</Button></div> : !data ? <PageSkeleton /> : null}
-    <div className="grid min-w-0 gap-5 lg:grid-cols-2" role="region" aria-label="Platform overview">
+    <div className="grid min-w-0 gap-3 lg:grid-cols-2" role="region" aria-label="Platform overview">
       {data && <>
-        <AreaChart withCard title="Platform Earnings" seriesLabel="Platform earnings (BDT)" description="Completed payments · this month" data={earnings.weeks} className="min-w-0 lg:col-start-1 lg:row-span-2" chartClassName="h-72 lg:h-96" footer={<div className="w-full space-y-4">
-          <div><p className="text-xs text-muted-foreground">Total earnings</p><p className="mt-1 text-3xl font-semibold">{money(earnings.total)}</p></div>
-          <dl className="grid grid-cols-2 gap-4"><div><dt className="text-xs text-muted-foreground">Today</dt><dd className="mt-1 text-lg font-semibold">{money(earnings.today)}</dd></div><div><dt className="text-xs text-muted-foreground">This month</dt><dd className="mt-1 text-lg font-semibold">{money(earnings.thisMonth)}</dd></div></dl>
+        <AreaChart withCard title="Platform Earnings" seriesLabel="Platform earnings (BDT)" description="Completed payments · this month" data={earnings.weeks} className="min-w-0 gap-2 py-3 [--card-spacing:0.75rem] lg:col-start-1 lg:row-span-2" chartClassName="h-32 xl:h-36" footer={<div className="w-full space-y-2">
+          <div><p className="text-xs text-muted-foreground">Total earnings</p><p className="mt-1 text-2xl font-semibold">{money(earnings.total)}</p></div>
+          <dl className="grid grid-cols-2 gap-3"><div><dt className="text-xs text-muted-foreground">Today</dt><dd className="mt-0.5 text-base font-semibold">{money(earnings.today)}</dd></div><div><dt className="text-xs text-muted-foreground">This month</dt><dd className="mt-0.5 text-base font-semibold">{money(earnings.thisMonth)}</dd></div></dl>
           <p className="text-xs text-muted-foreground">{monthChange(earnings.thisMonth, earnings.lastMonth, money)}</p>
         </div>} />
-        <AreaChart withCard title="Users" seriesLabel="New users" description="New registrations · this month" data={users.weeks} className="min-w-0 lg:col-start-2 lg:row-start-1" chartClassName="h-28" footer={summary("users", users)} />
-        <AreaChart withCard title="Technicians" seriesLabel="New technicians" description="New technician accounts · this month" data={technicians.weeks} className="min-w-0 lg:col-start-2 lg:row-start-2" chartClassName="h-28" footer={summary("technicians", technicians)} />
+        <AreaChart withCard title="Users" seriesLabel="New users" data={users.weeks} className="min-w-0 gap-2 py-3 [--card-spacing:0.75rem] lg:col-start-2 lg:row-start-1" chartClassName="h-16 lg:h-[clamp(2.5rem,8vh,5rem)]" footer={summary("users", users)} />
+        <AreaChart withCard title="Technicians" seriesLabel="New technicians" data={technicians.weeks} className="min-w-0 gap-2 py-3 [--card-spacing:0.75rem] lg:col-start-2 lg:row-start-2" chartClassName="h-16 lg:h-[clamp(2.5rem,8vh,5rem)]" footer={summary("technicians", technicians)} />
       </>}
       {healthCard}
-      {data && <AreaChart withCard title="Bookings" seriesLabel="New bookings" description="Bookings created · this month" data={bookings.weeks} className="min-w-0 lg:col-start-2 lg:row-start-3" chartClassName="h-28" footer={summary("bookings", bookings)} />}
+      {data && <AreaChart withCard title="Bookings" seriesLabel="New bookings" data={bookings.weeks} className="min-w-0 gap-2 py-3 [--card-spacing:0.75rem] lg:col-start-2 lg:row-start-3" chartClassName="h-16 lg:h-[clamp(2.5rem,8vh,5rem)]" footer={summary("bookings", bookings)} />}
     </div>
   </div>;
 };

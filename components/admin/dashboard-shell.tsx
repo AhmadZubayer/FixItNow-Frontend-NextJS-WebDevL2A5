@@ -87,11 +87,12 @@ const AdminSidebar = () => {
 
 const AdminDashboardShell = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const isOverview = pathname === "/dashboard/admin";
   return <SidebarProvider className="flex-1 bg-background">
     <AdminSidebar />
     <SidebarInset className="min-w-0 bg-background">
-      <main className="w-full min-w-0 flex-1 px-4 py-5 sm:px-8 sm:py-6">
-        <div className="mx-auto w-full max-w-7xl min-w-0 space-y-8">
+      <main className={`w-full min-w-0 flex-1 px-4 sm:px-8 ${isOverview ? "py-3" : "py-5 sm:py-6"}`}>
+        <div className={`mx-auto w-full max-w-7xl min-w-0 ${isOverview ? "space-y-3" : "space-y-8"}`}>
           <div className="flex items-center gap-3">
             <SidebarTrigger />
             <PageBreadcrumbs items={routeCrumbs(pathname)} />
@@ -99,7 +100,7 @@ const AdminDashboardShell = ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </main>
-      <SiteFooter />
+      <div className={isOverview ? "mt-auto [&_footer>div]:py-3" : "mt-auto"}><SiteFooter /></div>
     </SidebarInset>
   </SidebarProvider>;
 };
