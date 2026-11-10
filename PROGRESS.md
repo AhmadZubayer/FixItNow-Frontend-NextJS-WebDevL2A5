@@ -35,6 +35,11 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Booking activity time column (2026-11-10)
+
+- Added Activity Time after Status in the admin Bookings table. Uses the existing booking createdAt field, formatted with both date and time in Asia/Dhaka, and a semantic time element retaining the original timestamp.
+- Validation: focused ESLint and git diff --check passed; diff reviewed. No backend or database changes required. Save as a scoped local commit; no publication is authorized. Checklist remains 85 / 85 (100%).
+
 ### Admin search, counts, and pagination (2026-11-10)
 
 - Current task: single heading with total count in parentheses, placeholder-only search, and pagination capped at 30 rows on all admin data pages. Apply the Users pattern consistently to Technicians, Platform Payments, Categories, Bookings, and Feedbacks. Overview keeps its summary and receives search without table pagination.
