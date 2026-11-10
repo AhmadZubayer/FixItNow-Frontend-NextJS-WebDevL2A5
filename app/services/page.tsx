@@ -5,6 +5,7 @@ import { connection } from "next/server";
 import EmptyState from "@/components/empty-state";
 import BackLink from "@/components/back-link";
 import ServicesFilters from "@/components/services/filters";
+import ServicesSidebar from "@/components/services/sidebar";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { getCategories, getServices, getTechniciansPage } from "@/lib/public-api";
 import { searchSchema } from "@/validations/search.validation";
@@ -52,16 +53,7 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <BackLink href="/" />
         </div>
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[15rem_minmax(0,1fr)]">
-        <aside className="min-w-0 space-y-4 border-b pb-5 lg:border-r lg:border-b-0 lg:pr-6" aria-label="Available services">
-          <h2 className="text-lg font-semibold">Services</h2>
-          <nav className="flex gap-1 overflow-x-auto lg:max-h-[32rem] lg:flex-col lg:overflow-y-auto lg:p-1" aria-label="Filter by service">
-            <Link href={hrefWith({ serviceTitle: "", serviceId: "", page: "" })} aria-current={!selectedTitle && !filters?.serviceId ? "page" : undefined} className="shrink-0 rounded-full px-4 py-2 text-sm hover:bg-[#EFEFEF] aria-[current=page]:bg-[#9AE600]/30 aria-[current=page]:font-semibold">All</Link>
-            {serviceTitles.map(title => (
-              <Link key={title} href={hrefWith({ serviceTitle: title, serviceId: "", page: "" })} aria-current={selectedTitle === title.toLowerCase() ? "page" : undefined} className="shrink-0 rounded-full px-4 py-2 text-sm whitespace-nowrap hover:bg-[#EFEFEF] aria-[current=page]:bg-[#9AE600]/30 aria-[current=page]:font-semibold lg:whitespace-normal">{title}</Link>
-            ))}
-          </nav>
-        </aside>
+      <ServicesSidebar titles={serviceTitles} initial={initial} selectedTitle={selectedTitle} selectedServiceId={filters?.serviceId}>
         <div className="min-w-0 space-y-10">
           <div className="grid gap-4 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
             <div><h1 className="text-3xl font-semibold tracking-tight">Technicians</h1><p className="sr-only">Browse services and find an available professional.</p></div>
@@ -89,7 +81,7 @@ const ServicesPage = async ({ searchParams }: { searchParams: Promise<SearchPara
             </PaginationContent></Pagination>}
           </section>
         </div>
-      </div>
+      </ServicesSidebar>
     </main>
   );
 };

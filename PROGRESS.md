@@ -35,6 +35,78 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Admin Services moderation (2026-11-11)
+
+- Current task: Services menu with service name, offered by, verified status and approve/reject controls, plus a shadcn three-dot menu for pause/delete.
+- The user confirmed another session is updating technician services; reuse isApproved/isCancelled/isActive and its existing additive migration. Added a separate admin controller, compatible with action payloads and the existing isApproved approval payload. Preserve the other session's technician workflow.
+- Implemented searchable 30-row frontend table, approval controls, pause/resume, and confirmed deletion. Delete withdraws the service without deleting historical booking/payment relationships. The existing admin routes keep admin authorization.
+- Resume checkpoint: validate live schema/endpoint and authorization, backend/frontend checks, and browser controls. Coordinate with existing schema changes by reusing fields; no resets, destructive migrations, or publication.
+
+### Technician dashboard redesign (2026-11-11)
+
+- Current task: admin-style technician sidebar with default Activity, Earnings, Booking requests, Your profile/service approval, and Availability.
+- Database inspected directly: 411 services, 34 payments, 353 bookings. Services have no approval/cancellation fields; payments contain gross amounts and paidAt, with no payout ledger. Add moderation flags preserving legacy offerings, hide new submissions until approval, and retain booking history on withdrawal. Earnings use completed payment records at the existing 85% share, Asia/Dhaka dates and Monday-start calendar weeks.
+- Plan: additive moderation migration and role/ownership-protected APIs, service suggestions and approval controls; then sidebar pages, timeline/dialogs, monthly chart/payment history, service submission dialog, existing availability editor; verify both projects and database invariants. Preserve all prior uncommitted work. No publication authorized.
+
+### Responsive services sidebar (2026-11-11)
+
+- Current task: move the Services filter list into shadcn Sidebar, visible by default on desktop, with a View services list button opening/closing the mobile drawer.
+- Implemented a page-contained desktop sidebar with its own scroll area and the standard mobile sidebar drawer. Service-title links preserve the other filters and reset pagination; selection closes the mobile drawer. The drawer has an explicit close button.
+- Validation: focused ESLint, production build with TypeScript, and the Services browser suite passed. Coverage verifies the desktop sidebar, mobile toggle and close button, Escape dismissal, automatic close after selection, service filtering, retained search/sort parameters, pagination, and containment at phone/tablet/desktop widths. Desktop and mobile drawer screenshots visually inspected.
+- Corrected the existing mobile Sign up link's responsive class to max-md:hidden so its base button inline-flex style cannot override the intended hidden state. Existing mobile navbar behavior remains covered by the page suite.
+- Resume checkpoint: complete locally; no commit or push. Shared navigation and the browser suite contain independent uncommitted changes, so preserve them rather than mixing unrelated work into a task commit. No backend or database changes. Checklist remains 85 / 85 (100%).
+
+### Black underlined back navigation (2026-11-11)
+
+- Updated the shared BackLink used by services, technician profiles/errors, not-found, and customer payment/review pages to black text with a permanent underline. The arrow inherits black; the background stays transparent.
+- This explicit user request supersedes the earlier green back-button styling requirement. Updated existing browser color assertions and added underline assertions; unrelated lime controls remain unchanged.
+- Validation: TypeScript --noEmit and focused git diff --check passed. Browser assertions were updated but not run; browser automation remains unavailable.
+- Resume checkpoint: implementation is local. Preserve other local work; no publication authorized.
+
+### Mobile navbar animation (2026-11-11)
+
+- Added a subtle height-and-opacity animation to the shared mobile menu: 200ms opening and 180ms closing. Uses the installed Base UI Collapsible panel height variable and open/closed states so the panel remains mounted through its closing animation.
+- Moved panel padding/divider into its content so the panel collapses to zero height. Existing global reduced-motion styles minimize both animations. Desktop navigation is unaffected.
+- Validation: frontend TypeScript --noEmit and focused git diff --check passed. Animation timing was not visually verified because browser automation remains unavailable.
+- Resume checkpoint: implementation is local; inspect the mobile menu opening/closing when browser access is available. Preserve earlier customer/mobile layout changes; no publication authorized.
+
+### Customer payment confirmation dialog (2026-11-10)
+
+- Current task: open a default shadcn dialog from dashboard Pay now controls, showing fresh booking services, technician, times, itemized prices, total, the requested red 24-hour warning, and Continue to Payment at the lower right.
+- Backend inspection confirmed no scheduled 24-hour automatic cancellation exists. This change adds the requested warning only; implementing cancellation is separate backend work. Existing checkout rules and gateway remain unchanged.
+- Implemented components/customer/payment-dialog.tsx and wired both activity Pay now actions to it. The dialog fetches fresh booking details, shows itemized services and durations, technician, appointment start/end, subtotal and total, the red warning, and a lower-right Continue to Payment button. Checkout uses the existing payment endpoint and validated Stripe URL; duplicate submissions are guarded and stale/non-accepted bookings cannot proceed. Existing pay URLs remain compatible.
+- Validation: focused ESLint, production build with TypeScript, git diff --check, dedicated customer-payment-dialog browser coverage, and the broader dashboard-role-payments suite passed. Dedicated coverage verifies both entry points, no route change/payment creation on open, multi-service math, times, red warning, desktop/mobile sizing, load retry, stale state, checkout errors, URL validation, and a mocked gateway redirect. Screenshots visually inspected; no real payment was initiated.
+- Shared suite assertions now expect Pay now buttons, close the radio filter menu with Escape between selections, and use the customer layout's existing global card color for the legacy pay page. Initial dashboard effect loading is deferred to a microtask to satisfy lint.
+- Resume checkpoint: complete in the working tree, with no commit or push. The customer page and shared suite already contained substantial independent uncommitted work; committing them would mix unrelated changes. Preserve that work and the existing layout/navigation/backend edits. Original checklist remains 85 / 85 (100%). Automatic cancellation still requires backend implementation; only the requested warning was added here.
+
+### Global mobile navbar (2026-11-10)
+
+- Current task: show only the home-linked logo, sign-in/account control, and hamburger in the mobile navbar on every page; reveal search and other links when expanded.
+- Plan: reuse the shadcn Collapsible, expose mobile search on every route, keep desktop navigation unchanged, include mobile admin pages, and update browser regression coverage. Preserve the existing customer timeline and unrelated changes. No publication authorized.
+- Implemented below 768px: one row with the home-linked FixItNow logo, sign-in or truncated username, and hamburger. The shadcn Collapsible reveals search, Services & Technicians, authenticated Dashboard, and signed-out Sign up. Navigation/search/logout close the menu, route changes reset it, and Escape closes it and focuses the toggle. Desktop layout remains expanded; admin pages gain the shared header only on mobile and retain their sidebar/footer.
+- Search preserves discovery filters only on /services, so searches from other pages do not carry unrelated query parameters. Existing public navigation, account dropdown, and role-based dashboard routing remain intact.
+- Validation: TypeScript --noEmit and focused git diff --check passed. Running local preview returned HTTP 200 with the new mobile toggle and no compile error on /, /services, /auth/login, and /auth/register. Updated services/dashboard browser test syntax checks passed.
+- Browser limitations: headless browser launch timed out and the in-app browser host is unavailable. Expanded/collapsed visual layout and browser regression suites remain unverified. Existing shell runtime restrictions still prevent a fresh production build/lint.
+- Resume checkpoint: changes are local on frontend main. Run focused lint/build and the updated services/dashboard browser suites when browser execution is available; verify 320/375/767px widths and desktop transition. Preserve the earlier customer timeline and unrelated files. Original checklist remains 85 / 85 (100%).
+
+### Customer activity records (2026-11-10)
+
+- Added 26 bookings, 30 booking items, 26 non-overlapping appointment slots, 19 payment records, and 5 reviews for the active customer account requested by the user. Existing records remain unchanged. Records use natural service titles and review comments without scenario labels.
+- New bookings: 7 accepted, 3 paid, 2 requested, 2 declined, 5 cancelled, 6 completed, and 1 in progress. Six accepted bookings can begin checkout; one has a pending payment. Completed bookings include one still awaiting a review. Past and future appointments include single- and multi-service visits.
+- Payments cover completed, pending, failed, cancelled, refunded, refund pending, and refund failed states, including retry histories. States were inserted into the database only; no gateway transactions, charges, or refunds were created. Provider references remain null.
+- Committed atomically and verified through the running customer bookings/payments APIs: 26 bookings, 19 payments, 5 reviews, and 6 ready to pay. Price snapshots, paid/completed relationships, review ownership, and zero technician slot overlaps checked. Recoverable ID manifest: Windows temp file fixitnow-customer-activity-20261110.json. Deterministic record IDs prevent duplicates on replay.
+- Data-only operation; no application source or schema changes, commits, or pushes. Checklist remains 85 / 85 (100%).
+
+### Customer activity timeline (2026-11-10)
+
+- Current task: replace customer tabs/card/table with Activity, an All/Bookings/Payments/Reviews dropdown, and the timeline-3 layout. Include status icons, detail dialogs, and accepted-booking payment actions.
+- Plan: expose owned booking update timestamps and reviews, merge real booking/payment/review records newest first, preserve cancellation/payment/review journeys, then validate types, sorting, filtering, dialogs, and mobile layout. The timeline shows each record's current state; it does not invent historical transitions.
+- Implemented: customer routes render without tabs or a wrapper card; Activity sits below breadcrumbs with the shadcn radio dropdown. The page reuses the timeline-3 structure and components/reui/timeline.tsx, plain green checks/red crosses, existing status badges, black text-only detail triggers, and default green Pay now links for ACCEPTED bookings. Detail dialogs show real booking/payment/review information and preserve allowed cancellation and review actions. Visible activity refreshes every 30 seconds and on window focus; stale responses cannot overwrite newer ones.
+- Backend changes: owned booking results additionally select updatedAt and the existing review relation; owned payment results additionally select updatedAt. No schema changes, migrations, database mutations, or broader data access.
+- Validation: frontend and backend TypeScript --noEmit passed. Activity logic tests passed through the available JavaScript runtime (ordering, updated booking/payment timestamps including refunds, all four filters, outcome flags, empty views, and non-mutation). Updated dashboard browser suite has no syntax diagnostics and now checks the customer timeline/filter/dialog/cancellation/mobile behavior. git diff --check passed.
+- Limitations: shell cannot access the Node executable for lint or production build. A direct ESLint API attempt through the JavaScript runtime timed out. Browser tests and visual layout have not been verified against a fresh build.
+- Resume checkpoint: changes remain local on main in both repositories; run focused lint, build both projects, and run the updated dashboard browser suite when runtime execution is available. Preserve pre-existing components.json, examples/reui files, and unrelated backend changes. No publication authorized. Original checklist remains 85 / 85 (100%).
+
 ### Category create/edit dialog (2026-11-10)
 
 - Current task: move the Categories form into the default shadcn dialog, with Add Category on the right of the search row and table Edit opening the same dialog.

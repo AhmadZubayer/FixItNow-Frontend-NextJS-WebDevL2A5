@@ -32,10 +32,14 @@ export const routeCrumbs = (pathname: string): Crumb[] => {
     if (!role || parts.length === 2) return [home, { label: workspace }];
     const parent: Crumb = { label: workspace, href: `/dashboard/${role}` };
     if (role === "admin") {
-      const labels: Record<string, string> = { users: "Users", technicians: "Technicians", payments: "Platform Payments", categories: "Categories", bookings: "Bookings", feedbacks: "Feedbacks" };
+      const labels: Record<string, string> = { users: "Users", technicians: "Technicians", services: "Services", payments: "Platform Payments", categories: "Categories", bookings: "Bookings", feedbacks: "Feedbacks" };
       return [home, parent, { label: labels[parts[2]] ?? "Overview" }];
     }
     if (parts[2] === "payments") return [home, parent, { label: "Payments" }];
+    if (role === "technician" && ["profile", "earnings", "availability"].includes(parts[2])) {
+      const labels: Record<string, string> = { profile: "Your profile", earnings: "Earnings", availability: "Availability" };
+      return [home, parent, { label: labels[parts[2]] }];
+    }
     if (parts[2] === "technicians") return [home, parent, { label: "Technicians" }];
     if (parts[2] === "bookings" && parts.length === 3) return [home, parent, { label: "Booking requests" }];
     if (parts[2] === "bookings") return [home, parent, { label: parts.at(-1) === "pay" ? "Pay for booking" : "Leave a review" }];

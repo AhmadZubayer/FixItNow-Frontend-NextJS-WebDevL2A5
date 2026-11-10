@@ -114,8 +114,9 @@ try {
   await page.getByRole("heading", { name: "Request a booking" }).waitFor();
   const profileBack = page.getByRole("link", { name: "Back to services" });
   assert.equal(await profileBack.getAttribute("href"), "/services");
-  assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
-  assert.equal(await profileBack.locator("svg").evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
+  assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).color), "rgb(0, 0, 0)");
+  assert.equal(await profileBack.locator("svg").evaluate((element) => getComputedStyle(element).color), "rgb(0, 0, 0)");
+  assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).textDecorationLine), "underline");
   assert.equal(await profileBack.evaluate((element) => getComputedStyle(element).backgroundColor), "rgba(0, 0, 0, 0)");
   const profileBreadcrumb = page.getByRole("navigation", { name: "breadcrumb" });
   await profileBreadcrumb.waitFor();

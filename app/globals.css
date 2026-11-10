@@ -150,6 +150,24 @@
   padding: 0.25rem 0.5rem;
 }
 
+.mobile-navbar-panel[data-open] {
+  animation: mobile-navbar-open 200ms ease-out;
+}
+
+.mobile-navbar-panel[data-closed] {
+  animation: mobile-navbar-close 180ms ease-in both;
+}
+
+@keyframes mobile-navbar-open {
+  from { height: 0; opacity: 0; }
+  to { height: var(--collapsible-panel-height); opacity: 1; }
+}
+
+@keyframes mobile-navbar-close {
+  from { height: var(--collapsible-panel-height); opacity: 1; }
+  to { height: 0; opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

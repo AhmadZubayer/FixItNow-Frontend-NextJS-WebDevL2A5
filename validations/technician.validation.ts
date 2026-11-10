@@ -19,7 +19,7 @@ export const technicianServiceSchema = z.object({
   categoryId: z.uuid("Choose a category"),
 });
 
-export const technicianServiceEditSchema = technicianServiceSchema.partial().extend({ isActive: z.boolean().optional() }).refine(
+export const technicianServiceEditSchema = technicianServiceSchema.partial().extend({ isActive: z.boolean().optional(), action: z.enum(["cancel", "pause", "resume"]).optional() }).refine(
   (value) => Object.keys(value).length > 0,
   "Provide a service field to update",
 );

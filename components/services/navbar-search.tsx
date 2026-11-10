@@ -1,28 +1,31 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
-const NavbarSearch = () => {
+const NavbarSearch = ({ className, onSearch }: { className?: string; onSearch?: () => void }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const params = useSearchParams();
-  const query = params.get("q") ?? "";
+  const query = pathname === "/services" ? params.get("q") ?? "" : "";
 
   return (
     <form
-      key={params.toString()}
+      key={`${pathname}?${params.toString()}`}
       role="search"
-      className="service-navbar-search relative col-span-2 row-start-2 w-full max-w-72 justify-self-center sm:col-span-1 sm:col-start-2 sm:row-start-1"
+      className={cn("service-navbar-search relative w-full max-w-72", className)}
       onSubmit={event => {
         event.preventDefault();
         const search = String(new FormData(event.currentTarget).get("q") ?? "").trim();
-        const next = new URLSearchParams(params.toString());
+        const next = new URLSearchParams(pathname === "/services" ? params.toString() : "");
         if (search) next.set("q", search);
         else next.delete("q");
         next.delete("page");
         const queryString = next.toString();
         router.push(queryString ? `/services?${queryString}` : "/services");
+        onSearch?.();
       }}
     >
       <Search aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />

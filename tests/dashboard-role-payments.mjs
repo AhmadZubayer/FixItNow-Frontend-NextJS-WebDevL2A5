@@ -61,13 +61,21 @@ const assertSelectedTabStyle = async (tab) => {
 };
 
 const assertDashboardMainCardContainsHeading = async (page, path) => {
-  const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "main" : "main > div[data-slot='card']");
+  const mainCard = page.locator(path.startsWith("/dashboard/admin") || path.startsWith("/dashboard/customer") ? "main" : "main > div[data-slot='card']");
   const pageHeading = mainCard.getByRole("heading", { level: 1 }).first();
   await pageHeading.waitFor();
   assert.ok(await pageHeading.isVisible(), `${path}: page heading must render inside the main card`);
 };
 
 const assertDashboardBreadcrumbOrder = async (page, path) => {
+  if (path.startsWith("/dashboard/customer")) {
+    const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
+    const heading = page.locator("main h1").first();
+    await heading.waitFor();
+    assert.equal(await page.getByRole("tablist").count(), 0);
+    assert.ok(await breadcrumbs.evaluate((element) => element.getBoundingClientRect().bottom) <= await heading.evaluate((element) => element.getBoundingClientRect().top));
+    return;
+  }
   if (path.startsWith("/dashboard/admin")) {
     await page.getByRole("navigation", { name: "Admin navigation" }).waitFor();
     const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
@@ -92,6 +100,11 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
 };
 
 const assertDashboardContentContained = async (page, path, { requireTable = false } = {}) => {
+  if (path.startsWith("/dashboard/customer")) {
+    assert.equal(await page.locator("main > [data-slot='card']").count(), 0);
+    if (requireTable) await page.locator("main table:visible").first().waitFor();
+    return;
+  }
   if (path.startsWith("/dashboard/admin")) {
     assert.equal(await page.locator("main [data-slot='card']:visible").count(), path === "/dashboard/admin" ? 5 : 0);
     if (requireTable) await page.locator("main table:visible").first().waitFor();
@@ -121,13 +134,13 @@ const assertDashboardContentContained = async (page, path, { requireTable = fals
 
 const assertDashboardShell = async (page, path) => {
   if (path === "/dashboard/admin") await page.getByRole("heading", { name: "Platform Earnings", exact: true }).waitFor();
-  const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "[data-slot='sidebar-inset']" : "main > div[data-slot='card']");
+  const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "[data-slot='sidebar-inset']" : path.startsWith("/dashboard/customer") ? "main" : "main > div[data-slot='card']");
   if (path.startsWith("/dashboard/admin")) {
     assert.equal(await page.locator("main [data-slot='card']:visible").count(), path === "/dashboard/admin" ? 5 : 0);
-    assert.equal(await page.locator("header").count(), 0);
+    assert.equal(await page.locator("header:visible").count(), 0);
   }
   assert.ok(
-    ["rgb(255, 255, 255)", "lab(100 0 0)"].includes(await mainCard.evaluate((element) => getComputedStyle(element).backgroundColor)),
+    ["rgb(255, 255, 255)", "lab(100 0 0)"].includes(await mainCard.evaluate((element) => getComputedStyle(element.closest("main")?.parentElement?.classList.contains("bg-background") ? element.parentElement : element).backgroundColor)),
     `${path}: content background must be white`
   );
   const footer = page.locator("footer");
@@ -342,6 +355,11 @@ try {
     assert.equal(await dashboardLink.count(), 1);
     await rolePage.setViewportSize({ width: 375, height: 812 });
     assert.equal(await rolePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    assert.equal(await mainNavigation.count(), 0);
+    const mobileMenu = rolePage.getByRole("button", { name: "Open navigation menu", exact: true });
+    assert.equal(await mobileMenu.getAttribute("aria-expanded"), "false");
+    await mobileMenu.click();
+    await rolePage.locator("header").getByRole("searchbox").waitFor();
     assert.equal(await mainNavigation.getByRole("link", { name: "Services & Technicians" }).isVisible(), true);
     assert.equal(await dashboardLink.isVisible(), true);
     const accountTrigger = rolePage.locator("header").getByRole("button", { name: "Test user" });
@@ -373,6 +391,7 @@ try {
   await loginPage.getByLabel("Password", { exact: true }).fill("password123");
   await loginPage.getByRole("button", { name: "Log in" }).click();
   await loginPage.waitForURL("**/dashboard/customer");
+  await loginPage.getByRole("button", { name: "Open navigation menu", exact: true }).click();
   await loginPage.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Dashboard" }).waitFor();
   assert.equal(await loginPage.locator("header").getByRole("button", { name: "Test user" }).isVisible(), true);
   assert.equal(await loginPage.locator("header").getByRole("link", { name: "Sign in" }).count(), 0);
@@ -442,7 +461,7 @@ try {
     if (await link.getAttribute("aria-current") !== "page") assert.notEqual(await link.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
   }
   assert.equal(await page.locator("main [data-slot='card']:visible").count(), 5);
-  assert.equal(await page.locator("header").count(), 0);
+  assert.equal(await page.locator("header:visible").count(), 0);
   assert.equal(await page.getByRole("search").count(), 0);
   const platformOverview = page.getByRole("region", { name: "Platform overview" });
   assert.equal(await platformOverview.locator('[data-slot="chart"]').count(), 4);
@@ -518,6 +537,11 @@ try {
   const forbiddenFeedback = await dashboard("/api/admin/feedbacks", "accessToken=valid-customer");
   assert.equal(forbiddenFeedback.status, 403);
   await page.setViewportSize({ width: 375, height: 812 });
+  const adminMobileHeader = page.locator("header:visible");
+  await adminMobileHeader.getByRole("button", { name: "Open navigation menu", exact: true }).click();
+  await adminMobileHeader.getByRole("searchbox").waitFor();
+  await adminMobileHeader.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Dashboard", exact: true }).waitFor();
+  await adminMobileHeader.getByRole("button", { name: "Close navigation menu", exact: true }).click();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
   const mobileNavigation = page.getByRole("navigation", { name: "Admin navigation" });
@@ -573,30 +597,65 @@ try {
     await page.unroute(`**/api/admin/${endpoint}`);
   }
 
-  // Verify consistent page structure on Customer dashboard
+  // Customer activity: filters, newest-first ordering, dialogs, payment and cancellation.
   const custContext = await browser.newContext();
   await custContext.addCookies([{ name: "accessToken", value: "valid-customer", url: base }]);
   const custPage = await custContext.newPage();
+  const activityBooking = { id: acceptedBookingId, status: "ACCEPTED", createdAt: "2026-11-01T09:00:00Z", updatedAt: "2026-11-10T12:00:00Z", startAt: "2026-11-12T09:00:00Z", endAt: "2026-11-12T10:00:00Z", priceAtBooking: "100.00", service: { title: "Fan Repair", technicianProfile: { id: "tech-1", user: { name: "Technician One" } } } };
+  const reviewedBooking = { ...activityBooking, id: "completed-booking", status: "COMPLETED", updatedAt: "2026-11-02T09:00:00Z", review: { id: "review-1", rating: 5, comment: "Excellent repair", createdAt: "2026-11-10T13:00:00Z" } };
+  await custPage.route("**/api/customer/bookings", (route) => route.fulfill({ json: [activityBooking, reviewedBooking] }));
+  await custPage.route("**/api/customer/payments", (route) => route.fulfill({ json: [
+    { id: "paid", bookingId: "completed-booking", status: "COMPLETED", amount: "100.00", provider: "STRIPE", createdAt: "2026-11-01T09:00:00Z", paidAt: "2026-11-10T11:00:00Z", booking: reviewedBooking },
+    { id: "failed", bookingId: acceptedBookingId, status: "FAILED", amount: "100.00", provider: "STRIPE", createdAt: "2026-11-10T10:00:00Z", booking: activityBooking },
+  ] }));
+  await custPage.route(`**/api/customer/bookings/${acceptedBookingId}/cancel`, (route) => {
+    activityBooking.status = "CANCELLED";
+    activityBooking.updatedAt = "2026-11-10T14:00:00Z";
+    return route.fulfill({ json: activityBooking });
+  });
   await custPage.goto(`${base}/dashboard/customer`);
   await assertDashboardMainCardContainsHeading(custPage, "/dashboard/customer");
   await assertDashboardShell(custPage, "/dashboard/customer");
   await assertDashboardContentContained(custPage, "/dashboard/customer");
-  const custTabs = custPage.getByRole("tablist");
-  await custTabs.waitFor();
-  assert.deepEqual(await custTabs.getByRole("tab").allTextContents(), ["Bookings", "Payments"]);
-  const activeCustTab = custTabs.getByRole("tab", { name: "Bookings" });
-  await assertSelectedTabStyle(activeCustTab);
-  const custBreadcrumbs = custPage.getByRole("navigation", { name: "breadcrumb" });
-  const custMainCard = custPage.locator("main div[data-slot='card']");
-  const custTabsTop = await custTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  const custBreadcrumbsTop = await custBreadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  const custCardTop = await custMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  assert.ok(custTabsTop < custBreadcrumbsTop, "Customer tabs must appear above breadcrumbs");
-  assert.ok(custBreadcrumbsTop < custCardTop, "Customer breadcrumbs must appear above main card");
-  assert.equal(await custMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
-  await custTabs.getByRole("tab", { name: "Payments" }).click();
-  await custPage.waitForURL("**/dashboard/customer/payments");
-  await custPage.getByRole("heading", { name: "Payment history" }).waitFor();
+  await custPage.getByRole("heading", { name: "Activity", exact: true }).waitFor();
+  await assertDashboardBreadcrumbOrder(custPage, "/dashboard/customer");
+  const activityRows = custPage.locator('[data-slot="timeline-item"]');
+  await activityRows.first().waitFor();
+  assert.equal(await activityRows.count(), 5);
+  assert.deepEqual(await activityRows.locator('[data-slot="timeline-title"]').allTextContents(), ["Review", "Booking", "Payment", "Payment", "Booking"]);
+  const times = await activityRows.locator("time").evaluateAll((elements) => elements.map((element) => Date.parse(element.dateTime)));
+  assert.deepEqual(times, [...times].sort((a, b) => b - a));
+  const payAction = custPage.getByRole("button", { name: "Pay now", exact: true });
+  assert.equal(await payAction.count(), 1);
+  await activityRows.first().getByRole("button", { name: /View details/ }).click();
+  const activityDialog = custPage.getByRole("dialog");
+  await activityDialog.getByRole("heading", { name: "Review details" }).waitFor();
+  await activityDialog.getByText("Excellent repair", { exact: true }).waitFor();
+  await custPage.keyboard.press("Escape");
+  await activityDialog.waitFor({ state: "hidden" });
+  for (const [filter, count, kind] of [["Bookings", 2, "Booking"], ["Payments", 2, "Payment"], ["Reviews", 1, "Review"], ["All", 5, ""]]) {
+    await custPage.getByRole("button", { name: /^View:/ }).click();
+    await custPage.getByRole("menuitemradio", { name: filter, exact: true }).click();
+    await custPage.keyboard.press("Escape");
+    await custPage.getByRole("menu").waitFor({ state: "hidden" });
+    assert.equal(await activityRows.count(), count);
+    if (kind) assert.ok((await activityRows.locator('[data-slot="timeline-title"]').allTextContents()).every((text) => text === kind));
+  }
+  await activityRows.nth(2).getByRole("button", { name: /View details/ }).click();
+  await activityDialog.getByRole("heading", { name: "Payment details" }).waitFor();
+  await activityDialog.getByText("STRIPE", { exact: true }).waitFor();
+  await activityDialog.getByRole("button", { name: "Close", exact: true }).click();
+  await activityDialog.waitFor({ state: "hidden" });
+  await activityRows.nth(1).getByRole("button", { name: /View details/ }).click();
+  await activityDialog.getByRole("heading", { name: "Booking details" }).waitFor();
+  await activityDialog.getByRole("button", { name: "Cancel booking", exact: true }).click();
+  await activityDialog.getByText("CANCELLED", { exact: true }).waitFor();
+  assert.equal(await activityDialog.getByRole("button", { name: "Pay now", exact: true }).count(), 0);
+  await activityDialog.getByRole("button", { name: "Close", exact: true }).click();
+  await activityDialog.waitFor({ state: "hidden" });
+  assert.equal(await activityRows.first().getByText("CANCELLED", { exact: true }).count(), 1);
+  await custPage.setViewportSize({ width: 375, height: 812 });
+  assert.equal(await custPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await custContext.close();
 
   // Verify consistent page structure on Technician dashboard
@@ -652,9 +711,10 @@ try {
   await paymentPage.getByRole("heading", { name: "Pay for booking" }).waitFor();
   await paymentPage.getByRole("button", { name: "Continue to Stripe" }).waitFor();
   assert.equal(await paymentPage.getByText("Fan Repair").count(), 1);
-  assert.equal(await paymentPage.getByRole("link", { name: "Back to bookings" }).evaluate((element) => getComputedStyle(element).color), "rgb(154, 230, 0)");
+  assert.equal(await paymentPage.getByRole("link", { name: "Back to bookings" }).evaluate((element) => getComputedStyle(element).color), "rgb(0, 0, 0)");
+  assert.equal(await paymentPage.getByRole("link", { name: "Back to bookings" }).evaluate((element) => getComputedStyle(element).textDecorationLine), "underline");
   assert.equal(await paymentPage.locator("footer").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
-  assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
+  assert.equal(await paymentPage.locator("main div.bg-card").last().evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(239, 239, 239)");
   await paymentPage.setViewportSize({ width: 375, height: 812 });
   assert.equal(await paymentPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
 

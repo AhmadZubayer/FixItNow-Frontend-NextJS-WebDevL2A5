@@ -2,9 +2,11 @@
 
 import { usePathname } from "next/navigation";
 
-const PublicSiteChrome = ({ children }: { children: React.ReactNode }) => {
+const PublicSiteChrome = ({ children, mobileHeader = false }: { children: React.ReactNode; mobileHeader?: boolean }) => {
   const pathname = usePathname();
-  if (pathname === "/dashboard/admin" || pathname.startsWith("/dashboard/admin/")) return null;
+  if (/^\/dashboard\/(admin|technician)(\/|$)/.test(pathname)) {
+    return mobileHeader ? <div className="sticky top-0 z-40 md:hidden">{children}</div> : null;
+  }
   return children;
 };
 

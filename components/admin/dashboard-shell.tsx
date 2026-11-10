@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CalendarDays, CreditCard, LayoutDashboard, LogOut, MessageSquare, Tags, Users, Wrench } from "lucide-react";
+import { Activity, CalendarDays, CreditCard, LayoutDashboard, LogOut, MessageSquare, Tags, UserRound, Users, Wrench, BriefcaseBusiness } from "lucide-react";
 import { toast } from "sonner";
 import PageBreadcrumbs from "@/components/page-breadcrumbs";
 import { routeCrumbs } from "@/components/route-breadcrumbs";
@@ -19,13 +19,22 @@ const menus = [
   { label: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
   { label: "Users", href: "/dashboard/admin/users", icon: Users },
   { label: "Technicians", href: "/dashboard/admin/technicians", icon: Wrench },
+  { label: "Services", href: "/dashboard/admin/services", icon: BriefcaseBusiness },
   { label: "Platform Payments", href: "/dashboard/admin/payments", icon: CreditCard },
   { label: "Categories", href: "/dashboard/admin/categories", icon: Tags },
   { label: "Bookings", href: "/dashboard/admin/bookings", icon: CalendarDays },
   { label: "Feedbacks", href: "/dashboard/admin/feedbacks", icon: MessageSquare },
 ];
 
-const AdminSidebar = () => {
+const technicianMenus = [
+  { label: "Activity", href: "/dashboard/technician", icon: Activity },
+  { label: "Earnings", href: "/dashboard/technician/earnings", icon: CreditCard },
+  { label: "Booking requests", href: "/dashboard/technician/bookings", icon: CalendarDays },
+  { label: "Your profile", href: "/dashboard/technician/profile", icon: UserRound },
+  { label: "Availability", href: "/dashboard/technician/availability", icon: CalendarDays },
+];
+
+const AdminSidebar = ({ role }: { role: "admin" | "technician" }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
@@ -61,9 +70,9 @@ const AdminSidebar = () => {
     </SidebarHeader>
     <SidebarContent>
       <SidebarGroup><SidebarGroupContent>
-        <nav aria-label="Admin navigation"><SidebarMenu>
-          {menus.map(({ label, href, icon: Icon }) => {
-            const active = href === "/dashboard/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+        <nav aria-label={role === "admin" ? "Admin navigation" : "Technician navigation"}><SidebarMenu>
+          {(role === "admin" ? menus : technicianMenus).map(({ label, href, icon: Icon }) => {
+            const active = href === `/dashboard/${role}` ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
             return <SidebarMenuItem key={href}>
               <SidebarMenuButton isActive={active} className="h-10 text-sm data-active:bg-[#9AE600] data-active:text-black data-active:hover:bg-[#9AE600]" render={<Link href={href} aria-current={active ? "page" : undefined} onClick={() => setOpenMobile(false)} />}>
                 <Icon aria-hidden /><span>{label}</span>
@@ -76,7 +85,7 @@ const AdminSidebar = () => {
     <SidebarFooter className="gap-2 p-4">
       <div className="min-w-0">
         <p className="truncate text-sm font-semibold">{name || "Loading account…"}</p>
-        <p className="text-xs text-muted-foreground">Admin</p>
+        <p className="text-xs text-muted-foreground">{role === "admin" ? "Admin" : "Technician"}</p>
       </div>
       <SidebarMenu><SidebarMenuItem>
         <SidebarMenuButton size="sm" onClick={logout} disabled={pending} className="w-fit text-red-600 hover:bg-red-50 hover:text-red-700 [&_svg]:size-3.5"><LogOut aria-hidden /><span>{pending ? "Logging out…" : "Log out"}</span></SidebarMenuButton>
@@ -85,11 +94,11 @@ const AdminSidebar = () => {
   </Sidebar>;
 };
 
-const AdminDashboardShell = ({ children }: { children: React.ReactNode }) => {
+const AdminDashboardShell = ({ children, role = "admin" }: { children: React.ReactNode; role?: "admin" | "technician" }) => {
   const pathname = usePathname();
   const isOverview = pathname === "/dashboard/admin";
   return <SidebarProvider className="flex-1 bg-background">
-    <AdminSidebar />
+    <AdminSidebar role={role} />
     <SidebarInset className="min-w-0 bg-background">
       <main className={`w-full min-w-0 flex-1 px-4 sm:px-8 ${isOverview ? "py-3" : "py-5 sm:py-6"}`}>
         <div className={`mx-auto w-full max-w-7xl min-w-0 ${isOverview ? "space-y-3" : "space-y-8"}`}>
