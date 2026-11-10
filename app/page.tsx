@@ -51,7 +51,7 @@ const Home = async () => {
             <h1 className="max-w-xl text-4xl leading-[1.06] font-bold tracking-tight xl:text-[2.6rem]">Find a trusted technician for the work that <span className="text-[#328d0a] underline decoration-[#9AE600] decoration-2 underline-offset-5">matters.</span></h1>
             <p className="max-w-lg text-sm leading-relaxed text-slate-700 sm:text-base">Explore home services, compare professionals, book a time that works for you, and get the job done right.</p>
             <div className="flex flex-wrap gap-3 py-1">
-              <Link href="/services" className={buttonVariants({ size: "lg", className: "h-10 bg-[#125b13]! px-5 font-semibold text-white! hover:bg-[#0c4810]!" })}><Search /> Browse Services</Link>
+              <Link href="#browse-categories" className={buttonVariants({ size: "lg", className: "h-10 bg-[#125b13]! px-5 font-semibold text-white! hover:bg-[#0c4810]!" })}><Search /> Browse Categories</Link>
               <Link href="/auth/register" className={buttonVariants({ size: "lg", variant: "outline", className: "h-10 bg-white px-5 font-semibold" })}>Join FixItNow</Link>
             </div>
             <ul className="flex flex-wrap gap-x-5 gap-y-2 pt-1 text-xs font-semibold">
@@ -69,8 +69,8 @@ const Home = async () => {
       </section>
 
       <div className={`${content} space-y-7 py-6 sm:space-y-8`}>
-        <section id="browse-services" aria-labelledby="browse-title" className="scroll-mt-28 space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2"><h2 id="browse-title" className={sectionTitle}>Browse Services</h2><Link href="/services" className={sectionLink}>View all services <ArrowRight className="size-4" /></Link></div>
+        <section id="browse-categories" aria-labelledby="browse-title" className="scroll-mt-28 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2"><h2 id="browse-title" className={sectionTitle}>Browse Categories</h2><Link href="/services" className={sectionLink}>View all services <ArrowRight className="size-4" /></Link></div>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9">
             {categoryTiles.map(({ name, icon: Icon, match }, index) => {
               const category = categories.find(({ name }) => match.test(name));
@@ -134,7 +134,7 @@ const Home = async () => {
         <section aria-labelledby="booking-cta" className="relative isolate flex flex-wrap items-center justify-between gap-4 overflow-hidden rounded-2xl bg-linear-to-br from-[#19533e] to-[#08361e] p-5 text-white sm:px-8">
           <Wrench className="pointer-events-none absolute -right-4 -bottom-9 -z-10 size-36 text-white/12" aria-hidden />
           <div className="flex items-center gap-4"><House className="size-9 shrink-0" aria-hidden /><div><h2 id="booking-cta" className={sectionTitle}>Need a Technician Today?</h2><p className="mt-1 text-sm text-white/85">Find home services and book a time that works for you.</p></div></div>
-          <div className="flex flex-wrap gap-2"><Link href="/services" className={buttonVariants({ size: "lg", className: "bg-[#9AE600]! font-semibold text-black! hover:bg-[#85ca00]!" })}>Browse Services <ArrowRight /></Link><Link href="/auth/register?role=technician" className={buttonVariants({ size: "lg", variant: "outline", className: "border-white/70 bg-transparent font-semibold text-white hover:bg-white hover:text-[#123d2c]" })}>Become a Technician</Link></div>
+          <div className="flex flex-wrap gap-2"><Link href="#browse-categories" className={buttonVariants({ size: "lg", className: "bg-[#9AE600]! font-semibold text-black! hover:bg-[#85ca00]!" })}>Browse Categories <ArrowRight /></Link><Link href="/auth/register?role=technician" className={buttonVariants({ size: "lg", variant: "outline", className: "border-white/70 bg-transparent font-semibold text-white hover:bg-white hover:text-[#123d2c]" })}>Become a Technician</Link></div>
         </section>
       </div>
     </main>

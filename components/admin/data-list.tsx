@@ -19,9 +19,10 @@ type Props<T> = {
   children: (items: T[], offset: number) => ReactNode;
   showCount?: boolean;
   paginate?: boolean;
+  actions?: ReactNode;
 };
 
-const AdminDataList = <T,>({ title, items, searchText, loading, error, onRetry, children, showCount = true, paginate = true }: Props<T>) => {
+const AdminDataList = <T,>({ title, items, searchText, loading, error, onRetry, children, showCount = true, paginate = true, actions }: Props<T>) => {
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -33,10 +34,13 @@ const AdminDataList = <T,>({ title, items, searchText, loading, error, onRetry, 
 
   return <div className="space-y-6">
     <h1 className="text-2xl font-semibold tracking-tight">{title}{showCount && !loading && !error ? ` (${items.length})` : ""}</h1>
-    <form className="flex max-w-lg items-center gap-2" role="search" onSubmit={(event) => { event.preventDefault(); setQuery(input.trim()); setPage(1); }}>
-      <Input type="search" aria-label={`Search ${title.toLowerCase()}`} placeholder={`Search ${title.toLowerCase()}`} maxLength={100} value={input} onChange={(event) => { setInput(event.target.value); if (!event.target.value) { setQuery(""); setPage(1); } }} />
-      <Button type="submit" variant="outline">Search</Button>
-    </form>
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <form className="flex w-full max-w-lg min-w-0 flex-1 items-center gap-2" role="search" onSubmit={(event) => { event.preventDefault(); setQuery(input.trim()); setPage(1); }}>
+        <Input type="search" aria-label={`Search ${title.toLowerCase()}`} placeholder={`Search ${title.toLowerCase()}`} maxLength={100} value={input} onChange={(event) => { setInput(event.target.value); if (!event.target.value) { setQuery(""); setPage(1); } }} />
+        <Button type="submit" variant="outline">Search</Button>
+      </form>
+      {actions && <div className="shrink-0">{actions}</div>}
+    </div>
     {loading ? <PageSkeleton /> : error ? <div role="alert" className="space-y-2"><p className="text-sm text-destructive">{error}</p><Button variant="outline" onClick={onRetry}>Retry</Button></div> : <>
       {matching.length ? children(visible, offset) : <EmptyState title={query ? "No matching results" : `No ${title.toLowerCase()} yet`} description={query ? "Try another search term." : "Records will appear here when available."} />}
       {paginate && <Pagination className="justify-start" aria-label={`${title} pagination`}>

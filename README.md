@@ -16,7 +16,7 @@ FixItNow is a home services marketplace built with Next.js. Customers can find t
 - Node.js and npm.
 - Access to the FixItNow backend API.
 
-The frontend uses `API_BASE_URL` to select the backend API. If it is not set, the app uses the configured FixItNow API endpoint.
+The frontend uses `API_BASE_URL` to select the backend API. When it is not set, `npm run dev` uses the local backend on port 8001. Production builds and `npm run start` use the hosted FixItNow API endpoint by default.
 
 ## Setup
 

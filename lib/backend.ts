@@ -1,7 +1,11 @@
 import axios from "axios";
 
 export const backend = axios.create({
-  baseURL: process.env.API_BASE_URL ?? "https://ph-l2-a4-fix-it-now-banckend-server-tau.vercel.app",
+  baseURL: process.env.API_BASE_URL ?? (
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:8001"
+      : "https://ph-l2-a4-fix-it-now-banckend-server-tau.vercel.app"
+  ),
   timeout: 10000,
 });
 

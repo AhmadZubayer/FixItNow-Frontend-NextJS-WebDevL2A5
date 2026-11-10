@@ -46,24 +46,18 @@ const SessionActions = () => {
     }
   };
 
-  const onServices = pathname === "/services";
+  const showSearch = pathname === "/services" || pathname === "/";
   const navigation = (
-    <nav aria-label="Main navigation" className={onServices
+    <nav aria-label="Main navigation" className={showSearch
       ? "col-span-2 row-start-3 flex flex-wrap items-center justify-end gap-x-1"
       : "col-span-2 row-start-2 flex flex-wrap items-center justify-center gap-x-1 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-x-3"}>
-      {pathname === "/" ? <>
-        <Link href="/" aria-current="page" className="border-b-2 border-[#145b28] px-1 py-2 text-xs font-bold text-[#145b28]">Home</Link>
-        <Link href="#browse-services" className={buttonVariants({ variant: "ghost" })}>Services</Link>
-        <Link href="#top-technicians" className={buttonVariants({ variant: "ghost" })}>Technicians</Link>
-        <Link href="#how-it-works" className={buttonVariants({ variant: "ghost" })}>How It Works</Link>
-        <Link href="/auth/register?role=technician" className={buttonVariants({ variant: "ghost" })}>Become a Technician</Link>
-      </> : <Link href="/services" className={buttonVariants({ variant: "ghost" })}>Services &amp; Technicians</Link>}
+      <Link href="/services" className={buttonVariants({ variant: "ghost" })}>Services &amp; Technicians</Link>
       {loaded && user && <Link href={`/dashboard/${user.role.toLowerCase()}`} className={buttonVariants({ variant: "ghost" })}>Dashboard</Link>}
     </nav>
   );
   const account = (
     <div className="col-start-2 row-start-1 justify-self-end sm:col-start-3">
-      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <div className="flex gap-2"><Link href="/auth/login" className={buttonVariants({ variant: pathname === "/" ? "outline" : "ghost" })}>Sign in</Link><Link href="/auth/register" className={buttonVariants()}>Sign up</Link></div> : <DropdownMenu>
+      {!loaded ? <div className="h-7 w-28 animate-pulse rounded bg-muted" aria-label="Loading account" /> : !user ? <div className="flex gap-2"><Link href="/auth/login" className={buttonVariants({ variant: "ghost" })}>Sign in</Link><Link href="/auth/register" className={buttonVariants()}>Sign up</Link></div> : <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" className="max-w-36 sm:max-w-48" />}>
           <span className="truncate">{user.name}</span>
         </DropdownMenuTrigger>
@@ -74,7 +68,7 @@ const SessionActions = () => {
     </div>
   );
 
-  return onServices ? <>
+  return showSearch ? <>
     <NavbarSearch />
     <div className="contents sm:col-start-3 sm:row-start-1 sm:flex sm:items-center sm:gap-2">{navigation}{account}</div>
   </> : <>{navigation}{account}</>;

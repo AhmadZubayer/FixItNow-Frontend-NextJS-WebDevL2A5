@@ -35,6 +35,13 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Category create/edit dialog (2026-11-10)
+
+- Current task: move the Categories form into the default shadcn dialog, with Add Category on the right of the search row and table Edit opening the same dialog.
+- Added an optional actions slot to AdminDataList and reused CategoryForm in a controlled dialog. Add starts empty, Edit preloads the row, closing discards unsaved form state, and successful saves close the dialog and refresh the list. Existing validation and API requests are preserved.
+- Validation: TypeScript --noEmit and focused git diff --check passed. Updated the existing browser regression for add/edit prefill, close, Escape, and fresh add state; it has not been executed against a rebuilt frontend. Lint/browser execution remains limited by the previously confirmed sandbox restriction on Node outside the approved commands.
+- Resume checkpoint: changes remain local on main; run focused lint and the updated browser suite when execution is available. Preserve existing local changes and unpublished commits. Original checklist remains 85 / 85 (100%).
+
 ### Compact overview viewport layout (2026-11-10)
 
 - Current task: compact the five overview cards so all information fits desktop viewports without scrolling, while retaining a readable stacked mobile layout.
@@ -94,14 +101,21 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 - Implemented seven sidebar destinations: Overview, Users, Technicians, Platform Payments, Categories, Bookings, and Feedbacks. The default shadcn sidebar includes the home-linked logo, real account name, Admin label, logout, desktop collapse, and mobile drawer. Public navbar is hidden on admin routes; the shared footer renders inside the admin content column. Existing user/category management and role restrictions are preserved.
 - Feedbacks displays customer reviews through a new admin-only backend GET /api/admin/feedbacks and frontend proxy. No schema or database mutations. Live backend verification returned 305 reviews for admin and HTTP 401 anonymously.
 - Validation: focused frontend ESLint, frontend and backend TypeScript, production frontend build, and updated dashboard-role-payments browser suite passed. The browser suite covers all seven destinations, current-page links, logo/account, hidden navbar, desktop collapse/mobile drawer, role redirects, feedback access restrictions, users/categories/technicians, payment displays, and existing customer/technician dashboards. Desktop/mobile screenshots were visually inspected. Stale tab/collapse assertions in the suite were updated for the sidebar.
-- Resume checkpoint: implementation verified and ready locally. Preserve unrelated local changes and the previous startup-check commit. Publication remains unapproved; do not push. Original checklist remains 85 / 85 (100%).
+- Resume checkpoint: verified implementation committed locally on main: backend 089bc63 and frontend d87e8a1. Preserve unrelated local changes and the previous startup-check commit. Publication remains unapproved; neither new commit was pushed. Original checklist remains 85 / 85 (100%).
 
 ### Backend health startup check (2026-11-10)
 
 - Current task: call backend /health when the frontend server starts and immediately log its response in the server terminal.
 - Implemented instrumentation.ts using the existing backend client. The Node.js startup hook logs HTTP status and response, including HTTP failure bodies; connection errors are caught so the frontend can start. Existing 10-second client timeout applies.
 - Verified focused ESLint and TypeScript checks passed. Invoking the hook against the live backend logged HTTP 200 with database connected; an unreachable local port logged ECONNREFUSED and returned normally. Next.js startup timing follows the installed instrumentation documentation; restart the running frontend to activate the new hook.
-- Preserve pre-existing working tree changes; checklist remains 85 / 85 (100%). Commit/push pending. The initial tsx validation runner failed on sandbox userInfo; native Node TypeScript execution verified the hook successfully.
+- Preserve pre-existing working tree changes; checklist remains 85 / 85 (100%). Frontend main commit 5184ef9 contains only instrumentation.ts and this task's tracking entry. Push failed because sandbox credentials were unavailable; elevated push was rejected by automatic approval review because publication was not explicitly authorized and the destination was not verified as trusted. User approval is required to publish. The initial tsx validation runner failed on sandbox userInfo; native Node TypeScript execution verified the hook successfully.
+
+### Development backend follow-up (2026-11-09)
+
+- Current task: user-requested local development API configuration; frontend only. Original checklist remains 85 / 85 (100%).
+- Startup: frontend `main` is clean and aligned with `origin/main` at `31237b3`; backend `main` retains unrelated deleted `deploy.txt` and untracked `.vscode/`, `deploy_fix.md`, `docs/APIDemo.md`, all untouched.
+- Resume checkpoint: update the shared backend client's development default to the user's local server, document selection behavior, validate local API connectivity and lint, then commit and push the frontend change.
+- No environment files, credentials, database changes, or backend edits are needed.
 
 | Field | Details |
 | --- | --- |
@@ -307,6 +321,18 @@ Append a short entry whenever a session ends or a usage limit approaches:
 4. Validate each task, update its checkbox and the percentage, commit scoped changes, and push to the already configured GitHub repositories **after every task**.
 5. Before the next usage limit, leave an exact checkpoint here. A new Codex session must be started by the user; the agent cannot automatically resume itself after a usage cap.
 
+## Live audit checkpoint (2026-11-09)
+
+- Current task: user-requested browser and API audit against REQUIREMENTS.md and TASKS.md. The checklist was already 85 / 85. This audit records any new discrepancies separately.
+- Frontend and backend are on main tracking origin/main. Preserve the pre-existing frontend development API changes and the unrelated backend working tree changes.
+- Resume checkpoint: use both development servers and the configured main database as requested. Scope mutations to newly created audit records, then write fix_required.md.
+
+- Audit completed. Findings and evidence are in fix_required.md. The main database was used for new audit-only accounts, category, services, bookings, review, and Stripe test payments. The records are retained.
+- Verified customer, technician, and admin browser flows, including checkout, review, refund, and moderation. Confirmed checkout retry HTTP 409, mobile services overflow, missing category deletion, and production build issues.
+- Frontend lint and typecheck passed. Backend build, typecheck, and four regression tests passed. Default frontend build and the browser suites against the alternate build did not pass.
+- Both main branches and upstreams are unchanged by the audit. The report and this checkpoint are local. Existing TASKS.md count remains 85 / 85 (100%).
+- Exact next action if remediation is requested: start with F00 in fix_required.md and re-run the live checkout cancel/retry flow using the audit fixtures.
+
 ## UI reference follow-up (2026-11-09)
 
 - Current task: implement the requested services, landing, auth background, and dashboard UI adjustments in the frontend.
@@ -314,6 +340,15 @@ Append a short entry whenever a session ends or a usage limit approaches:
 - Implemented and verified. The services listing shows technician results only, the landing page uses original vector artwork, and dashboard cards are white on a light-gray background. Authentication artwork is scoped to the auth layout.
 - Checks passed: frontend lint, route type generation and TypeScript, default production build, and the services, dashboard/payments, and booking-slot browser suites. The in-app browser also confirmed the landing layout, mobile width, and technician signup selection.
 - Frontend only. Original checklist remains 85 / 85 (100%). No database or backend changes were needed for this follow-up.
+- Pushed frontend UI commit ba7258c on main to origin/main and verified both refs match. Earlier local audit and development changes remain outside the commit.
+
+## Main database technician catalog (2026-11-10)
+
+- Current task: seed at least 100 demo technician accounts in the configured main database, with realistic Bangladesh repair offerings and future availability.
+- Resume checkpoint: seed only the dedicated demo account namespace in one transaction, reuse active categories where possible, and verify profile, service, and slot totals.
+- Seeded and verified 100 active fictional technician profiles, 400 services across 40 offerings and 10 categories, and 1,200 future slots across 16 locations. Slot times run November 10–22, 2026 (Bangladesh time).
+- Accounts use the reserved repair-demo.fixitnow.example namespace and unique random passwords. Public API search for RO Filter Replacement returned 10 matches, and a sample technician detail exposed 4 services and 12 slots.
+- Data-only operation. No app source or schema changes, commits, or pushes. Original checklist remains 85 / 85 (100%).
 
 ## Multi-service bookings and demo reviews (2026-11-10)
 
@@ -324,15 +359,18 @@ Append a short entry whenever a session ends or a usage limit approaches:
 - Live frontend API checks passed for valid two-service booking (BDT 2,100), duplicate and mixed-technician rejection, insufficient time, prevention of a second booking on the same slot, cancellation, and legacy single-service request. QA bookings were cancelled.
 - Backend build, typecheck, and four regression tests passed. Backend main commit 4eec14e pushed to origin/main. Checklist remains 85 / 85 (100%).
 - Final frontend lint, production build with TypeScript, and all three browser regression suites passed. Browser coverage verifies live total updates, removal, combined-duration slot restrictions, multi-service submission, and payment display.
+- Frontend commit 48f8961 pushed to origin/main after backend and verified at upstream. The additive migration is already applied on the configured main database. No pending task push.
 
 ## Service selection UI follow-up (2026-11-10)
 
 - Current task: list real service titles in the discovery sidebar, remove black selection borders, add removable lime pills, and remove the marked profile skills and helper text.
 - Resume checkpoint: verify exact service-title filtering and preselection, then run frontend and backend checks and push backend first.
 - Verified: frontend lint, production build, and services and booking Chrome suites passed. Backend build, typecheck, and four regression tests passed. Main database exact-title query found ten matching technicians. No migration was needed. Backend main 6fa0753 pushed first. Checklist remains 85 / 85 (100%).
+- Frontend main 7867a06 pushed and verified at origin/main. No pending push.
 
 ## Services navbar follow-up (2026-11-10)
 
 - Current task: place a compact search field in the Services navbar, move navigation links beside the account controls, and align Clear filters after Rating.
 - Scope: Services navbar only to preserve the reference-based landing navigation. Validate search, filter placement, and mobile width before pushing.
 - Verified frontend lint, production build, and Services and dashboard browser suites. The Services suite checks compact search dimensions, navigation beside the account controls, inline Clear filters, search submission, and mobile width. No backend changes. Checklist remains 85 / 85 (100%).
+- Frontend main 9a5eba6 pushed and verified at origin/main.

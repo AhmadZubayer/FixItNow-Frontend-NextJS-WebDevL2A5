@@ -11,6 +11,7 @@ import PendingButton from "@/components/pending-button";
 import AdminDataList from "@/components/admin/data-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { AdminBooking, AdminCategory, AdminUser } from "@/lib/admin-types";
 import { adminStatusSchema } from "@/validations/admin.validation";
@@ -26,6 +27,7 @@ const AdminWorkspace = ({ view }: { view: WorkspaceView }) => {
   const [error, setError] = useState("");
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
   const [editing, setEditing] = useState<AdminCategory | null>(null);
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -74,21 +76,25 @@ const AdminWorkspace = ({ view }: { view: WorkspaceView }) => {
     {(rows) => <div className="overflow-x-auto"><Table><TableHeader><TableRow><TableHead>Service</TableHead><TableHead>Customer</TableHead><TableHead>Technician</TableHead><TableHead>Status</TableHead><TableHead>Activity Time</TableHead></TableRow></TableHeader><TableBody>{rows.map((booking) => <TableRow key={booking.id}><TableCell>{bookingLabel(booking)}</TableCell><TableCell>{booking.customer.name}</TableCell><TableCell>{booking.service.technicianProfile.user.name}</TableCell><TableCell><Badge variant="secondary">{booking.status.replaceAll("_", " ")}</Badge></TableCell><TableCell><time dateTime={booking.createdAt}>{new Date(booking.createdAt).toLocaleString("en-BD", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Dhaka" })}</time></TableCell></TableRow>)}</TableBody></Table></div>}
   </AdminDataList>;
 
-  return <div className="space-y-8">
-    <AdminDataList title="Categories" items={categories} searchText={(category) => `${category.name} ${category.slug} ${category.description ?? ""} ${category.isActive ? "Active" : "Hidden"}`} {...state}>
+  return <Dialog open={categoryDialogOpen} onOpenChange={setCategoryDialogOpen}>
+    <AdminDataList title="Categories" items={categories} searchText={(category) => `${category.name} ${category.slug} ${category.description ?? ""} ${category.isActive ? "Active" : "Hidden"}`} {...state}
+      actions={<DialogTrigger render={<Button disabled={loading || !!error} onClick={() => setEditing(null)} />}>Add Category</DialogTrigger>}>
       {(rows) => <div className="overflow-x-auto"><Table>
         <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Slug</TableHead><TableHead>Status</TableHead><TableHead>Action</TableHead></TableRow></TableHeader>
         <TableBody>{rows.map((category) => <TableRow key={category.id}>
           <TableCell className="font-medium">{category.name}</TableCell><TableCell>{category.slug}</TableCell><TableCell>{category.isActive ? "Active" : "Hidden"}</TableCell>
-          <TableCell><Button size="sm" variant="outline" onClick={() => setEditing(category)}>Edit</Button></TableCell>
+          <TableCell><DialogTrigger render={<Button size="sm" variant="outline" onClick={() => setEditing(category)} />}>Edit</DialogTrigger></TableCell>
         </TableRow>)}</TableBody>
       </Table></div>}
     </AdminDataList>
-    {!loading && !error && <section className="max-w-xl space-y-4" aria-label="Category form">
-      <div className="flex items-center justify-between gap-2"><h2 className="text-lg font-semibold">{editing ? "Edit category" : "Add category"}</h2>{editing && <Button variant="ghost" onClick={() => setEditing(null)}>Add new instead</Button>}</div>
-      <CategoryForm key={editing?.id ?? "new"} category={editing ?? undefined} onSaved={() => { setEditing(null); void load(); }} />
-    </section>}
-  </div>;
+    <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-lg">
+      <DialogHeader>
+        <DialogTitle>{editing ? "Edit Category" : "Add Category"}</DialogTitle>
+        <DialogDescription>{editing ? "Update the category details below." : "Enter the details for the new category."}</DialogDescription>
+      </DialogHeader>
+      {categoryDialogOpen && <CategoryForm key={editing?.id ?? "new"} category={editing ?? undefined} onSaved={() => { setCategoryDialogOpen(false); void load(); }} />}
+    </DialogContent>
+  </Dialog>;
 };
 
 export default AdminWorkspace;
