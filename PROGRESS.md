@@ -35,6 +35,14 @@ This file is the persistent handoff record for Codex sessions. Keep it up to dat
 
 ## Current task and resume checkpoint
 
+### Admin sidebar navigation (2026-11-10)
+
+- Current task: replace admin tabs with the default shadcn sidebar, seven functional destinations, home-linked logo, and account name with Admin beneath it. Hide the public navbar on admin routes.
+- Implemented seven sidebar destinations: Overview, Users, Technicians, Platform Payments, Categories, Bookings, and Feedbacks. The default shadcn sidebar includes the home-linked logo, real account name, Admin label, logout, desktop collapse, and mobile drawer. Public navbar is hidden on admin routes; the shared footer renders inside the admin content column. Existing user/category management and role restrictions are preserved.
+- Feedbacks displays customer reviews through a new admin-only backend GET /api/admin/feedbacks and frontend proxy. No schema or database mutations. Live backend verification returned 305 reviews for admin and HTTP 401 anonymously.
+- Validation: focused frontend ESLint, frontend and backend TypeScript, production frontend build, and updated dashboard-role-payments browser suite passed. The browser suite covers all seven destinations, current-page links, logo/account, hidden navbar, desktop collapse/mobile drawer, role redirects, feedback access restrictions, users/categories/technicians, payment displays, and existing customer/technician dashboards. Desktop/mobile screenshots were visually inspected. Stale tab/collapse assertions in the suite were updated for the sidebar.
+- Resume checkpoint: implementation verified and ready locally. Preserve unrelated local changes and the previous startup-check commit. Publication remains unapproved; do not push. Original checklist remains 85 / 85 (100%).
+
 ### Backend health startup check (2026-11-10)
 
 - Current task: call backend /health when the frontend server starts and immediately log its response in the server terminal.

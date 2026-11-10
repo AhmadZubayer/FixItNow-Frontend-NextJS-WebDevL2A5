@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import PublicSiteChrome from "@/components/public-site-chrome";
 import RouteBreadcrumbs from "@/components/route-breadcrumbs";
 import { Toaster } from "sonner";
 
@@ -33,12 +34,12 @@ const RootLayout = ({ children }: LayoutProps<"/">) => {
     >
       <body className="min-h-full flex flex-col">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:font-medium focus:shadow-lg">Skip to content</a>
-        <SiteHeader />
+        <Suspense fallback={null}><PublicSiteChrome><SiteHeader /></PublicSiteChrome></Suspense>
         <Suspense fallback={<div className="mx-auto h-7 w-full max-w-7xl px-4 pt-4 sm:px-6" />}>
           <RouteBreadcrumbs />
         </Suspense>
         <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col">{children}</div>
-        <SiteFooter />
+        <Suspense fallback={null}><PublicSiteChrome><SiteFooter /></PublicSiteChrome></Suspense>
         <Toaster richColors={false} position="bottom-right" />
       </body>
     </html>

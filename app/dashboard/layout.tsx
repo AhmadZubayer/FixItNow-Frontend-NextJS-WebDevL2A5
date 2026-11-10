@@ -7,6 +7,7 @@ import { routeCrumbs } from "@/components/route-breadcrumbs";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import AdminDashboardShell from "@/components/admin/dashboard-shell";
 
 type TabItem = {
   label: string;
@@ -68,6 +69,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const tabs = (roleSegment && roleTabs[roleSegment]) ?? [];
   const currentTab = tabs.find((tab) => tab.match(pathname)) ?? tabs[0];
   const activeValue = currentTab?.href ?? pathname;
+
+  if (roleSegment === "admin") return <AdminDashboardShell>{children}</AdminDashboardShell>;
 
   return (
     <div className="flex flex-1 flex-col bg-muted [--card:#fff]">

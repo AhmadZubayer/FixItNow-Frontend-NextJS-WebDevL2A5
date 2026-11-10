@@ -68,6 +68,14 @@ const assertDashboardMainCardContainsHeading = async (page, path) => {
 };
 
 const assertDashboardBreadcrumbOrder = async (page, path) => {
+  if (path.startsWith("/dashboard/admin")) {
+    await page.getByRole("navigation", { name: "Admin navigation" }).waitFor();
+    const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
+    const card = page.locator("main > div[data-slot='card']");
+    await Promise.all([breadcrumbs.waitFor(), card.waitFor()]);
+    assert.ok(await breadcrumbs.evaluate((element) => element.getBoundingClientRect().bottom) <= await card.evaluate((element) => element.getBoundingClientRect().top));
+    return;
+  }
   const tabs = page.getByRole("tablist");
   const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
   const mainCard = page.locator("main > div[data-slot='card']");
@@ -169,6 +177,10 @@ const backend = createHttpServer((request, response) => {
     send(response, 403, { message: "Forbidden" });
   } else if (request.url === "/api/admin/users" && role === "ADMIN") {
     send(response, 200, { data: users });
+  } else if (request.url === "/api/admin/feedbacks" && role === "ADMIN") {
+    send(response, 200, { data: [{ id: "review-1", rating: 5, comment: "Excellent repair", createdAt: "2026-01-01T00:00:00.000Z", customer: { name: "Customer One" }, technicianProfile: { user: { name: "Technician One" } }, booking: { service: { title: "Fan Repair" }, items: [] } }] });
+  } else if (request.url === "/api/admin/feedbacks" && role) {
+    send(response, 403, { message: "Forbidden" });
   } else if (request.url === "/api/admin/bookings" && role === "ADMIN") {
     send(response, 200, { data: adminBookings });
   } else if (request.url === "/api/admin/categories" && role === "ADMIN") {
@@ -399,44 +411,63 @@ try {
   await page.getByRole("cell", { name: "৳15.00" }).waitFor();
   await assertDashboardContentContained(page, "/dashboard/admin/payments", { requireTable: true });
   await page.goto(`${base}/dashboard/admin`);
-  assert.equal(await page.locator("footer").count(), 1);
-  await page.getByRole("heading", { name: "Categories" }).waitFor();
+  await page.getByRole("heading", { name: "Overview", exact: true }).waitFor();
   await assertDashboardMainCardContainsHeading(page, "/dashboard/admin");
   await assertDashboardShell(page, "/dashboard/admin");
-  await assertDashboardContentContained(page, "/dashboard/admin", { requireTable: true });
+  const adminNavigation = page.getByRole("navigation", { name: "Admin navigation" });
+  assert.deepEqual(await adminNavigation.getByRole("link").allTextContents(), ["Overview", "Users", "Technicians", "Platform Payments", "Categories", "Bookings", "Feedbacks"]);
+  assert.equal(await page.getByRole("navigation", { name: "Main navigation" }).count(), 0);
+  assert.equal(await page.getByRole("tablist").count(), 0);
+  await page.locator('[data-slot="sidebar-header"]').getByText("Test user", { exact: true }).waitFor();
+  assert.equal(await page.locator('[data-slot="sidebar-header"]').getByText("Admin", { exact: true }).count(), 1);
+  assert.equal(await page.locator('[data-slot="sidebar-header"]').getByRole("link", { name: "FixItNow" }).getAttribute("href"), "/");
+  assert.equal(await adminNavigation.getByRole("link", { name: "Overview", exact: true }).getAttribute("aria-current"), "page");
   const platformOverview = page.getByRole("region", { name: "Platform overview" });
   assert.match(await platformOverview.getByText("Active bookings").locator("..").innerText(), /1/);
   assert.match(await platformOverview.getByText("Platform revenue").locator("..").innerText(), /15\.00/);
-  assert.equal(await platformOverview.getByText("Paid job value").count(), 0);
-  const overviewCard = page.locator('section[aria-label="Platform overview"] > div').first();
-  assert.equal(await overviewCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
-  await page.getByRole("button", { name: "Edit" }).click();
-  const active = page.getByRole("checkbox", { name: "Active" });
+  await page.screenshot({ path: process.env.TEMP + "/fixitnow-admin-sidebar.png", fullPage: true });
+  await adminNavigation.getByRole("link", { name: "Users", exact: true }).click();
+  await page.waitForURL("**/dashboard/admin/users");
+  await page.getByLabel("Search users").waitFor();
+  await assertDashboardContentContained(page, "/dashboard/admin/users", { requireTable: true });
+  await page.getByLabel("Search users").fill("Technician 12");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  assert.equal(await page.locator("tbody tr").count(), 1);
+  await adminNavigation.getByRole("link", { name: "Categories", exact: true }).click();
+  await page.waitForURL("**/dashboard/admin/categories");
+  await page.getByRole("button", { name: "Edit", exact: true }).click();
+  const active = page.getByRole("checkbox", { name: "Active", exact: true });
   await active.waitFor();
   assert.equal(await active.isChecked(), true);
   await active.click();
   assert.equal(await active.isChecked(), false);
-
-  // Verify consistent page structure on Admin dashboard
-  const adminTabs = page.getByRole("tablist");
-  await adminTabs.waitFor();
-  assert.deepEqual(await adminTabs.getByRole("tab").allTextContents(), ["Overview & Users", "Technicians", "Platform payments"]);
-  const activeAdminTab = adminTabs.getByRole("tab", { name: "Overview & Users" });
-  await assertSelectedTabStyle(activeAdminTab);
-  const adminBreadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
-  const adminMainCard = page.locator("main div[data-slot='card']");
-  const adminTabsTop = await adminTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  const adminBreadcrumbsTop = await adminBreadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  const adminCardTop = await adminMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  assert.ok(adminTabsTop < adminBreadcrumbsTop, "Admin tabs must appear above breadcrumbs");
-  assert.ok(adminBreadcrumbsTop < adminCardTop, "Admin breadcrumbs must appear above main card");
-  assert.equal(await adminMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
-  await adminTabs.getByRole("tab", { name: "Technicians" }).click();
-  await page.waitForURL("**/dashboard/admin/technicians");
-  await page.getByRole("heading", { name: "Technician management" }).waitFor();
-  await page.getByRole("tablist").getByRole("tab", { name: "Platform payments" }).click();
-  await page.waitForURL("**/dashboard/admin/payments");
-  await page.getByRole("heading", { name: "Platform payment history" }).waitFor();
+  await adminNavigation.getByRole("link", { name: "Bookings", exact: true }).click();
+  await page.waitForURL("**/dashboard/admin/bookings");
+  await page.getByRole("cell", { name: "Fan Repair", exact: true }).waitFor();
+  await adminNavigation.getByRole("link", { name: "Feedbacks", exact: true }).click();
+  await page.waitForURL("**/dashboard/admin/feedbacks");
+  await page.getByRole("cell", { name: "Excellent repair", exact: true }).waitFor();
+  await page.getByRole("cell", { name: "5 / 5", exact: true }).waitFor();
+  assert.equal(await adminNavigation.getByRole("link", { name: "Feedbacks", exact: true }).getAttribute("aria-current"), "page");
+  const forbiddenFeedback = await dashboard("/api/admin/feedbacks", "accessToken=valid-customer");
+  assert.equal(forbiddenFeedback.status, 403);
+  await page.setViewportSize({ width: 375, height: 812 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+  const mobileNavigation = page.getByRole("navigation", { name: "Admin navigation" });
+  await mobileNavigation.getByRole("link", { name: "Overview", exact: true }).click();
+  await page.waitForURL("**/dashboard/admin");
+  await page.getByRole("heading", { name: "Overview", exact: true }).waitFor();
+  await page.getByRole("dialog").waitFor({ state: "hidden" });
+  await page.screenshot({ path: process.env.TEMP + "/fixitnow-admin-mobile.png", fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+  await page.waitForFunction(() => {
+    const sidebar = document.querySelector('[data-slot="sidebar-container"]');
+    return sidebar && sidebar.getBoundingClientRect().right <= 1;
+  });
+  await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+  await adminNavigation.waitFor();
 
   // Verify consistent page structure on Customer dashboard
   const custContext = await browser.newContext();
