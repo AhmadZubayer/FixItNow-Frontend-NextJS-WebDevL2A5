@@ -61,7 +61,7 @@ const assertSelectedTabStyle = async (tab) => {
 };
 
 const assertDashboardMainCardContainsHeading = async (page, path) => {
-  const mainCard = page.locator(path.startsWith("/dashboard/admin") || path.startsWith("/dashboard/customer") ? "main" : "main > div[data-slot='card']");
+  const mainCard = page.locator("main");
   const pageHeading = mainCard.getByRole("heading", { level: 1 }).first();
   await pageHeading.waitFor();
   assert.ok(await pageHeading.isVisible(), `${path}: page heading must render inside the main card`);
@@ -76,8 +76,8 @@ const assertDashboardBreadcrumbOrder = async (page, path) => {
     assert.ok(await breadcrumbs.evaluate((element) => element.getBoundingClientRect().bottom) <= await heading.evaluate((element) => element.getBoundingClientRect().top));
     return;
   }
-  if (path.startsWith("/dashboard/admin")) {
-    await page.getByRole("navigation", { name: "Admin navigation" }).waitFor();
+  if (path.startsWith("/dashboard/admin") || path.startsWith("/dashboard/technician")) {
+    await page.getByRole("navigation", { name: path.startsWith("/dashboard/admin") ? "Admin navigation" : "Technician navigation" }).waitFor();
     const breadcrumbs = page.getByRole("navigation", { name: "breadcrumb" });
     const card = page.locator("main h1:visible").first();
     await Promise.all([breadcrumbs.waitFor(), card.waitFor()]);
@@ -105,7 +105,7 @@ const assertDashboardContentContained = async (page, path, { requireTable = fals
     if (requireTable) await page.locator("main table:visible").first().waitFor();
     return;
   }
-  if (path.startsWith("/dashboard/admin")) {
+  if (path.startsWith("/dashboard/admin") || path.startsWith("/dashboard/technician")) {
     assert.equal(await page.locator("main [data-slot='card']:visible").count(), path === "/dashboard/admin" ? 5 : 0);
     if (requireTable) await page.locator("main table:visible").first().waitFor();
     return;
@@ -134,8 +134,8 @@ const assertDashboardContentContained = async (page, path, { requireTable = fals
 
 const assertDashboardShell = async (page, path) => {
   if (path === "/dashboard/admin") await page.getByRole("heading", { name: "Platform Earnings", exact: true }).waitFor();
-  const mainCard = page.locator(path.startsWith("/dashboard/admin") ? "[data-slot='sidebar-inset']" : path.startsWith("/dashboard/customer") ? "main" : "main > div[data-slot='card']");
-  if (path.startsWith("/dashboard/admin")) {
+  const mainCard = page.locator(path.startsWith("/dashboard/customer") ? "main" : "[data-slot='sidebar-inset']");
+  if (path.startsWith("/dashboard/admin") || path.startsWith("/dashboard/technician")) {
     assert.equal(await page.locator("main [data-slot='card']:visible").count(), path === "/dashboard/admin" ? 5 : 0);
     assert.equal(await page.locator("header:visible").count(), 0);
   }
@@ -234,6 +234,8 @@ const backend = createHttpServer((request, response) => {
     send(response, 200, { data: { id: "tech-1", bio: "Bio", skills: [], experienceYears: 3, location: "Dhaka", profilePhoto: null, services: [], availabilitySlots: [] } });
   } else if (request.url === "/api/technician/bookings" && role === "TECHNICIAN") {
     send(response, 200, { data: [] });
+  } else if (request.url === "/api/technician/payments" && role === "TECHNICIAN") {
+    send(response, 200, { data: [] });
   } else if (request.url === "/api/categories") {
     send(response, 200, { data: [] });
   } else if (request.url?.startsWith("/api/admin/users") && role) {
@@ -276,8 +278,8 @@ try {
 
   const protectedDashboardPaths = {
     customer: ["/dashboard/customer", "/dashboard/customer/payments"],
-    technician: ["/dashboard/technician", "/dashboard/technician/bookings"],
-    admin: ["/dashboard/admin", "/dashboard/admin/technicians", "/dashboard/admin/payments"],
+    technician: ["/dashboard/technician", "/dashboard/technician/bookings", "/dashboard/technician/earnings", "/dashboard/technician/profile", "/dashboard/technician/availability"],
+    admin: ["/dashboard/admin", "/dashboard/admin/technicians", "/dashboard/admin/payments", "/dashboard/admin/services"],
   };
   for (const authenticatedRole of Object.keys(protectedDashboardPaths)) {
     for (const [requestedRole, paths] of Object.entries(protectedDashboardPaths)) {
@@ -448,7 +450,7 @@ try {
   await assertDashboardMainCardContainsHeading(page, "/dashboard/admin");
   await assertDashboardShell(page, "/dashboard/admin");
   const adminNavigation = page.getByRole("navigation", { name: "Admin navigation" });
-  assert.deepEqual(await adminNavigation.getByRole("link").allTextContents(), ["Overview", "Users", "Technicians", "Platform Payments", "Categories", "Bookings", "Feedbacks"]);
+  assert.deepEqual(await adminNavigation.getByRole("link").allTextContents(), ["Overview", "Users", "Technicians", "Services", "Platform Payments", "Categories", "Bookings", "Feedbacks"]);
   assert.equal(await page.getByRole("navigation", { name: "Main navigation" }).count(), 0);
   assert.equal(await page.getByRole("tablist").count(), 0);
   await page.locator('[data-slot="sidebar-footer"]').getByText("Test user", { exact: true }).waitFor();
@@ -664,23 +666,29 @@ try {
   const tPage = await techCtx.newPage();
   await tPage.goto(`${base}/dashboard/technician`);
   await assertDashboardMainCardContainsHeading(tPage, "/dashboard/technician");
-  await tPage.getByRole("heading", { name: "Your profile" }).waitFor();
+  await tPage.getByRole("heading", { name: "Activity", exact: true }).waitFor();
+  await tPage.getByText("No activity yet", { exact: true }).waitFor();
   await assertDashboardShell(tPage, "/dashboard/technician");
   await assertDashboardContentContained(tPage, "/dashboard/technician");
-  const techTabs = tPage.getByRole("tablist");
-  await techTabs.waitFor();
-  assert.deepEqual(await techTabs.getByRole("tab").allTextContents(), ["Overview & Services", "Booking requests"]);
-  const activeTechTab = techTabs.getByRole("tab", { name: "Overview & Services" });
-  await assertSelectedTabStyle(activeTechTab);
-  const techBreadcrumbs = tPage.getByRole("navigation", { name: "breadcrumb" });
-  const techMainCard = tPage.locator("main div[data-slot='card']");
-  const tTabsTop = await techTabs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  const tBreadcrumbsTop = await techBreadcrumbs.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  const tCardTop = await techMainCard.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
-  assert.ok(tTabsTop < tBreadcrumbsTop, "Technician tabs must appear above breadcrumbs");
-  assert.ok(tBreadcrumbsTop < tCardTop, "Technician breadcrumbs must appear above main card");
-  assert.equal(await techMainCard.evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 255)");
-  await techTabs.getByRole("tab", { name: "Booking requests" }).click();
+  const techNavigation = tPage.getByRole("navigation", { name: "Technician navigation" });
+  assert.deepEqual(await techNavigation.getByRole("link").allTextContents(), ["Activity", "Earnings", "Booking requests", "Your profile", "Availability"]);
+  assert.equal(await tPage.getByRole("tablist").count(), 0);
+  const activeTechLink = techNavigation.getByRole("link", { name: "Activity", exact: true });
+  assert.equal(await activeTechLink.getAttribute("aria-current"), "page");
+  assert.equal(await activeTechLink.evaluate(element => getComputedStyle(element).backgroundColor), "rgb(154, 230, 0)");
+  await assertDashboardBreadcrumbOrder(tPage, "/dashboard/technician");
+  await techNavigation.getByRole("link", { name: "Earnings", exact: true }).click();
+  await tPage.getByRole("heading", { name: "Payment received history", exact: true }).waitFor();
+  assert.equal(await tPage.locator('[data-slot="chart"]').count(), 1);
+  for (const label of ["Earnings today", "Earnings this week", "Earnings this month"]) assert.equal(await tPage.locator("dt").getByText(label, { exact: true }).count(), 1);
+  await techNavigation.getByRole("link", { name: "Your profile", exact: true }).click();
+  await tPage.getByRole("button", { name: "Add New Services", exact: true }).click();
+  const serviceDialog = tPage.getByRole("dialog");
+  await serviceDialog.getByRole("button", { name: "Send For Approval", exact: true }).waitFor();
+  await serviceDialog.getByRole("button", { name: "Close", exact: true }).click();
+  await techNavigation.getByRole("link", { name: "Availability", exact: true }).click();
+  await tPage.getByLabel("Start (Bangladesh time)", { exact: true }).waitFor();
+  await techNavigation.getByRole("link", { name: "Booking requests", exact: true }).click();
   await tPage.waitForURL("**/dashboard/technician/bookings");
   await tPage.getByRole("heading", { name: "Booking requests" }).waitFor();
   await techCtx.close();

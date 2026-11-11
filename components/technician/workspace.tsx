@@ -59,7 +59,7 @@ const TechnicianWorkspace = ({ view }: { view: View }) => {
   }, [router]);
   useEffect(() => {
     const controller = new AbortController();
-    void load(controller.signal);
+    queueMicrotask(() => void load(controller.signal));
     const refresh = () => { if (document.visibilityState === "visible") void load(controller.signal); };
     const timer = window.setInterval(refresh, 30000);
     window.addEventListener("focus", refresh);
