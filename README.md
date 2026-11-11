@@ -1,77 +1,217 @@
-# FixItNow Frontend
+# FixItNow — Home Services Marketplace
 
-FixItNow is a home services marketplace built with Next.js. Customers can find technicians, request a service appointment, pay for accepted bookings, and leave reviews. Technicians can manage their profiles, services, availability, and jobs. Administrators can oversee users, technicians, bookings, categories, and platform payments.
+## 1. Project Overview
 
-## Features
+FixItNow is a full-stack home services marketplace that connects customers with skilled technicians for convenient service discovery, appointment booking, and secure payments. It provides role-based experiences for customers, technicians, and administrators to manage the complete service lifecycle from booking requests to reviews and platform oversight.
 
-- Search and filter services and technicians by category, location, price, and rating.
-- View technician profiles, reviews, services, prices, and available time slots.
-- Create customer bookings and follow their payment and job status.
-- Manage technician profiles, services, availability, and booking requests.
-- Review users, categories, bookings, technicians, and payment shares in the admin dashboard.
-- Use role-based dashboards with protected routes and responsive layouts.
+**Live URL:** [FixItNow-Frontend-NextJS-WebDevL2A5](https://github.com/AhmadZubayer/FixItNow-Frontend-NextJS-WebDevL2A5)
 
-## Requirements
+## 2. Entities
 
-- Node.js and npm.
-- Access to the FixItNow backend API.
+| Entity               | Responsibility                                                                                      |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| **Customer**   | Finds technicians, requests services, pays for accepted bookings, tracks jobs, and submits reviews. |
+| **Technician** | Manages professional details, offered services, availability, booking requests, and job progress.   |
+| **Admin**      | Oversees accounts, service approvals, categories, bookings, feedback, and platform payments.        |
 
-The frontend uses `API_BASE_URL` to select the backend API. When it is not set, `npm run dev` uses the local backend on port 8001. Production builds and `npm run start` use the hosted FixItNow API endpoint by default.
+## 3. User Journey
 
-## Setup
+**Customer:** Register / Log in → Browse services → Search and filter technicians → View technician profile → Select services and available time slot → Submit booking request → Wait for technician approval → Pay through Stripe → Track job progress → Leave a review after completion.
 
-Install the project dependencies:
+**Technician:** Register / Log in → Set up technician profile → Add services and availability → Receive booking requests → Accept or decline requests → Wait for customer payment → Start the job → Mark the job completed → View earnings and payment history.
 
-```bash
-npm ci
+**Admin:** Log in → Open admin dashboard → Monitor platform statistics → Manage customers and technicians → Review and moderate services → Manage categories → Monitor bookings → Review feedback → Inspect payments and platform earnings.
+
+### Booking lifecycle
+
+`REQUESTED` → `ACCEPTED` → `PAID` → `IN_PROGRESS` → `COMPLETED`
+
+A request may instead become `DECLINED` or `CANCELLED` where permitted by the booking workflow. A completed booking can be reviewed by its customer.
+
+## 4. Business Logic
+
+For every successfully completed payment:
+
+- **Technician share:** 85% of the payment amount.
+- **Platform share:** 15% of the payment amount.
+
+## 5. Features and Routes
+
+The following table documents the application's frontend page routes. Dynamic `[id]` segments refer to the relevant record ID.
+
+| No. | Route URL                                    | Short description                          | Access     |
+| --: | -------------------------------------------- | ------------------------------------------ | ---------- |
+|   1 | `/`                                        | Explore featured services and technicians  | Public     |
+|   2 | `/services`                                | Search and filter available services       | Public     |
+|   3 | `/technicians/[id]`                        | View technician details and availability   | Public     |
+|   4 | `/auth/login`                              | Sign in to an account                      | Public     |
+|   5 | `/auth/register`                           | Create a customer or technician account    | Public     |
+|   6 | `/dashboard/customer`                      | Track bookings, payments, and activity     | Customer   |
+|   7 | `/dashboard/customer/payments`             | View personal payment history              | Customer   |
+|   8 | `/dashboard/customer/bookings/[id]/pay`    | Open accepted booking checkout             | Customer   |
+|   9 | `/dashboard/customer/bookings/[id]/review` | Review a completed service                 | Customer   |
+|  10 | `/dashboard/technician`                    | View technician activity overview          | Technician |
+|  11 | `/dashboard/technician/bookings`           | Manage incoming booking requests           | Technician |
+|  12 | `/dashboard/technician/earnings`           | Track income and payment history           | Technician |
+|  13 | `/dashboard/technician/profile`            | Manage technician profile and services     | Technician |
+|  14 | `/dashboard/technician/availability`       | Manage available appointment slots         | Technician |
+|  15 | `/dashboard/admin`                         | View platform statistics and health        | Admin      |
+|  16 | `/dashboard/admin/users`                   | Manage customer and user accounts          | Admin      |
+|  17 | `/dashboard/admin/technicians`             | Search and manage technician accounts      | Admin      |
+|  18 | `/dashboard/admin/services`                | Approve, pause, and remove services        | Admin      |
+|  19 | `/dashboard/admin/categories`              | Manage service categories                  | Admin      |
+|  20 | `/dashboard/admin/bookings`                | Monitor platform booking records           | Admin      |
+|  21 | `/dashboard/admin/payments`                | Inspect transactions and revenue shares    | Admin      |
+|  22 | `/dashboard/admin/feedbacks`               | Review customer ratings and feedback       | Admin      |
+|  23 | `/payment/success`                         | Show successful payment return information | Public     |
+|  24 | `/payment/cancel`                          | Show cancelled checkout return information | Public     |
+
+**Other features:** Role-based route protection, JWT-backed sessions, responsive dashboards, multi-service appointment booking, technician availability scheduling, booking status updates, service moderation, form validation, and Stripe Checkout.
+
+> This table covers user-facing frontend pages, not every internal Next.js API proxy or Express backend endpoint. Backend HTTP endpoints are documented separately through Swagger UI / OpenAPI.
+
+## 6. Project Structure
+
+The directory tree below covers the tracked root folders and the **verified frontend page folders**. The `app/api/` branch shows examples of internal API handlers rather than an exhaustive listing of every proxy endpoint.
+
+```text
+FixItNow-Frontend-NextJS-WebDevL2A5/
+├── app/                          # Next.js App Router
+│   ├── api/                      # Internal API and session proxies
+│   │   ├── admin/
+│   │   │   ├── feedbacks/
+│   │   │   └── health/
+│   │   └── session/
+│   │       └── me/
+│   ├── auth/
+│   │   ├── login/
+│   │   └── register/
+│   ├── dashboard/
+│   │   ├── admin/
+│   │   │   ├── bookings/
+│   │   │   ├── categories/
+│   │   │   ├── feedbacks/
+│   │   │   ├── payments/
+│   │   │   ├── services/
+│   │   │   ├── technicians/
+│   │   │   └── users/
+│   │   ├── customer/
+│   │   │   ├── bookings/
+│   │   │   │   └── [id]/
+│   │   │   │       ├── pay/
+│   │   │   │       └── review/
+│   │   │   └── payments/
+│   │   └── technician/
+│   │       ├── availability/
+│   │       ├── bookings/
+│   │       ├── earnings/
+│   │       └── profile/
+│   ├── payment/
+│   │   ├── cancel/
+│   │   └── success/
+│   ├── services/
+│   └── technicians/
+│       └── [id]/
+├── components/                   # Reusable interface components
+│   ├── admin/                    # Admin dashboard components
+│   ├── auth/                     # Authentication forms
+│   ├── customer/                 # Customer booking/payment components
+│   ├── reui/                     # Shared timeline components
+│   ├── technician/               # Technician dashboard components
+│   └── ui/                       # shadcn/ui primitives
+├── hooks/                        # Reusable React hooks
+├── lib/                          # API clients, helpers, types
+├── public/                       # Static assets and images
+├── screenshots/                  # Project screenshots used in README
+├── tests/                        # Browser and end-to-end tests
+├── ui_references/                # UI reference assets
+├── validations/                  # Zod validation schemas
+├── AGENTS.md
+├── PROGRESS.md
+├── REQUIREMENTS.md
+├── TASKS.md
+├── README.md
+├── components.json
+├── eslint.config.mjs
+├── instrumentation.ts
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── proxy.ts
+└── tsconfig.json
 ```
 
-Set `API_BASE_URL` in a local environment file when you need to use a different backend API. Do not commit local environment files or credentials.
+## 7. Project Specification
 
-Start the development server:
+| Item              | Technology                                    |
+| ----------------- | --------------------------------------------- |
+| Frontend          | Next.js 16 (App Router), React 19, TypeScript |
+| UI                | Tailwind CSS 4, shadcn/ui                     |
+| API communication | Axios and Next.js route handlers              |
+| Backend           | Express.js 5 with TypeScript                  |
+| ORM               | Prisma 7                                      |
+| Database          | PostgreSQL (Prisma Postgres)                  |
+| Deployment        | Vercel via GitHub                             |
+| Form validation   | Zod                                           |
+| Authentication    | JWT and bcrypt                                |
+| Payments          | Stripe                                        |
+| API documentation | Swagger UI and OpenAPI                        |
+| Logger            | Pino                                          |
+| Backend build     | tsup                                          |
 
-```bash
-npm run dev
-```
+The frontend versions are based on its `package.json`; the backend technologies reflect the supplied project specification and belong to the separate backend service.
 
-Open [http://localhost:3000](http://localhost:3000).
+## 8. Project Overview
 
-## Available Commands
+Screenshots of the FixItNow application, in the sequence shown in the project’s `screenshots/` folder. All images use relative paths so GitHub can display them directly from the repository.
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the local development server. |
-| `npm run lint` | Run ESLint. |
-| `npm run build` | Create a production build. |
-| `npm run start` | Serve the production build. |
-| `npm run test:e2e` | Run the optional end-to-end suite against the local backend and test data. |
+![FixItNow project screenshot 01](./screenshots/1.jpg)
 
-The end-to-end suite expects the backend repository and its local configuration. `FIXITNOW_TEST_TECH_FILE` can provide test account details. Set `FIXITNOW_MUTATION_TESTS` to `1` to enable tests that change availability. Use isolated test data for this suite.
+![FixItNow project screenshot 02](./screenshots/2.jpg)
 
-## Main Routes
+![FixItNow project screenshot 03](./screenshots/3.png)
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Browse featured services and technicians. |
-| `/services` | Search, filter, sort, and browse services and technicians. |
-| `/technicians/[id]` | View a technician's profile, reviews, services, and booking options. |
-| `/auth/login` | Sign in to an existing account. |
-| `/auth/register` | Create a customer or technician account. |
-| `/dashboard/customer` | Review bookings and manage customer activity. |
-| `/dashboard/customer/payments` | View customer payment history. |
-| `/dashboard/customer/bookings/[id]/pay` | Start payment for an accepted booking. |
-| `/dashboard/customer/bookings/[id]/review` | Review a completed booking. |
-| `/dashboard/technician` | Manage a technician profile, services, and availability. |
-| `/dashboard/technician/bookings` | Review and update assigned booking requests. |
-| `/dashboard/admin` | Review platform activity, users, bookings, and categories. |
-| `/dashboard/admin/technicians` | Search and manage technician accounts. |
-| `/dashboard/admin/payments` | Review platform payment shares. |
-| `/payment/success` and `/payment/cancel` | View payment return information. |
+![FixItNow project screenshot 04](./screenshots/4.jpg)
 
-## Project Structure
+![FixItNow project screenshot 05](./screenshots/5.jpg)
 
-- `app/` contains pages, layouts, and frontend API routes.
-- `components/` contains shared interface components and forms.
-- `lib/` contains API clients and shared application utilities.
-- `validations/` contains frontend request and form schemas.
-- `tests/` contains browser and end-to-end checks.
+![FixItNow project screenshot 06](./screenshots/6.jpg)
+
+![FixItNow project screenshot 07](./screenshots/7.jpg)
+
+![FixItNow project screenshot 08](./screenshots/7-2.jpg)
+
+![FixItNow project screenshot 09](./screenshots/8.png)
+
+![FixItNow project screenshot 10](./screenshots/9.png)
+
+![FixItNow project screenshot 11](./screenshots/10.png)
+
+![FixItNow project screenshot 12](./screenshots/11.png)
+
+![FixItNow project screenshot 13](./screenshots/11-1.jpg)
+
+![FixItNow project screenshot 14](./screenshots/12.png)
+
+![FixItNow project screenshot 15](./screenshots/13.jpeg)
+
+![FixItNow project screenshot 18](./screenshots/15.jpg)
+
+![FixItNow project screenshot 19](./screenshots/16.jpg)
+
+![FixItNow project screenshot 20](./screenshots/17.jpg)
+
+![FixItNow project screenshot 22](./screenshots/19.jpg)
+
+![FixItNow project screenshot 23](./screenshots/20.jpg)
+![FixItNow project screenshot 24](./screenshots/21.jpg)
+![FixItNow project screenshot 25](./screenshots/22.jpg)
+![FixItNow project screenshot 26](./screenshots/23.jpg)
+
+## 9. Project Development
+
+Completed by **Ahmad Zubayer** during the **Next Level Development** course at **Programming Hero**.
+
+## 10. Use of AI
+
+**Codex** was used for formatting, brainstorming, error fixes, and code snippets in parts of this project.
