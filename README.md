@@ -66,13 +66,7 @@ The following table documents the application's frontend page routes. Dynamic `[
 |  23 | `/payment/success`                         | Show successful payment return information | Public     |
 |  24 | `/payment/cancel`                          | Show cancelled checkout return information | Public     |
 
-**Other features:** Role-based route protection, JWT-backed sessions, responsive dashboards, multi-service appointment booking, technician availability scheduling, booking status updates, service moderation, form validation, and Stripe Checkout.
-
-> This table covers user-facing frontend pages, not every internal Next.js API proxy or Express backend endpoint. Backend HTTP endpoints are documented separately through Swagger UI / OpenAPI.
-
 ## 6. Project Structure
-
-The directory tree below covers the tracked root folders and the **verified frontend page folders**. The `app/api/` branch shows examples of internal API handlers rather than an exhaustive listing of every proxy endpoint.
 
 ```text
 FixItNow-Frontend-NextJS-WebDevL2A5/
@@ -159,11 +153,8 @@ FixItNow-Frontend-NextJS-WebDevL2A5/
 | Logger            | Pino                                          |
 | Backend build     | tsup                                          |
 
-The frontend versions are based on its `package.json`; the backend technologies reflect the supplied project specification and belong to the separate backend service.
-
 ## 8. Project Overview
 
-Screenshots of the FixItNow application, in the sequence shown in the project’s `screenshots/` folder. All images use relative paths so GitHub can display them directly from the repository.
 
 ![FixItNow project screenshot 01](./screenshots/1.jpg)
 
